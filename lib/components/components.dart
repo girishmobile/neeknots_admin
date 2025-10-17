@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/models/customer_model.dart';
 
 Widget appCircleIcon({
   IconData? icon,
@@ -180,10 +181,10 @@ Widget appGlassEffect({
   return Container(
     padding: padding ?? const EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.1), // semi-transparent background
+      color: Colors.white.withValues(alpha: 0.2), // semi-transparent background
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
-        color: Colors.white.withValues(alpha: 0.2), // subtle border
+        color: Colors.white.withValues(alpha: 0.3), // subtle border
         width: 1,
       ),
     ),
@@ -291,4 +292,44 @@ double listBottom(BuildContext context, {double extra = 0}) {
   const bottomBarHeight = 70.0; // your Dashboard bottom bar height
 
   return safeBottom + bottomBarHeight + 16 + extra;
+}
+
+Widget customerCard(CustomerModel customer) {
+  return appGlassEffect(
+    child: Row(
+      children: [
+        CircleAvatar(
+          radius: 24,
+          backgroundImage: AssetImage(customer.imageUrl),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                customer.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                customer.email,
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+              Text(
+                "Orders: ${customer.totalOrders} • \$${customer.totalSpent.toStringAsFixed(2)}",
+                style: const TextStyle(fontSize: 12, color: Colors.black87),
+              ),
+            ],
+          ),
+        ),
+        Text(
+          "${customer.joinedDate.day}/${customer.joinedDate.month}",
+          style: const TextStyle(fontSize: 12, color: Colors.black54),
+        ),
+      ],
+    ),
+  );
 }

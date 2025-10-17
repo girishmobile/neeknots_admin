@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/common/order_card.dart';
+import 'package:neeknots_admin/common/sales_bar_chart.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/constants/string_constant.dart';
+import 'package:neeknots_admin/models/order_model.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 
 class HomePage extends StatelessWidget {
@@ -74,7 +77,7 @@ class HomePage extends StatelessWidget {
             width: double.infinity,
             height: 250,
             alignment: Alignment.center,
-            child: Text("Sales report"),
+            child: SalesBarChart(),
           ),
         ),
         const SizedBox(height: 16),
@@ -219,8 +222,11 @@ class HomePage extends StatelessWidget {
       height: 270,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: sampleOrders.length,
         itemBuilder: (context, index) {
+          final order = sampleOrders[index];
+          return OrderCard(order: order);
+          /*
           return Container(
             width: 170,
             margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -241,7 +247,9 @@ class HomePage extends StatelessWidget {
                       topRight: Radius.circular(8),
                     ),
                     child: loadAssetImage(
-                      name: productImage_1,
+                      name: order.items.isNotEmpty
+                          ? order.items[0].imageUrl
+                          : productImage,
                       width: 168,
                       height: 140,
                       fit: BoxFit.cover,
@@ -263,16 +271,20 @@ class HomePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "TOTAL:- ${formatPrice(150 + index)}",
+                          "TOTAL:- ${formatPrice(order.totalAmount)}",
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: Colors.black54,
                           ),
                         ),
+
                         Text(
-                          "Qty:- 1",
-                          style: TextStyle(fontSize: 12, color: Colors.black54),
+                          "Qty: ${order.items.fold<int>(0, (sum, item) => sum + item.quantity)}",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.black54,
+                          ),
                         ),
                         Text(
                           "16-sept-25 10:30 AM",
@@ -289,6 +301,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
           );
+           */
         },
       ),
     );

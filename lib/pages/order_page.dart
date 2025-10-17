@@ -7,10 +7,10 @@ class OrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [_listOfProducts(context), _searchBar(context)]);
+    return Stack(children: [_listOfOrders(context), _searchBar(context)]);
   }
 
-  Widget _listOfProducts(BuildContext context) {
+  Widget _listOfOrders(BuildContext context) {
     return ListView.separated(
       padding: EdgeInsets.only(
         left: 24,
