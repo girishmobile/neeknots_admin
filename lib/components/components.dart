@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
+import 'package:neeknots_admin/models/notification_model.dart';
 
 Widget appCircleIcon({
   IconData? icon,
@@ -251,7 +252,7 @@ Widget appTextField({required String hintText, IconData? icon}) {
         minHeight: 32,
       ), // removes extra padding
       filled: true,
-      fillColor: Colors.white.withValues(alpha: 0.25), // glassy effect
+      fillColor: Colors.white.withValues(alpha: 0.2), // glassy effect
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30), // rounded corners
@@ -283,7 +284,6 @@ double listTop(BuildContext context, {double extra = 0}) {
   final safeTop = MediaQuery.of(context).padding.top;
   const topBarHeight = 56.0; // your Dashboard SafeArea Row
   const searchBoxHeight = 60.0;
-
   return safeTop + topBarHeight + searchBoxHeight + 16 + extra;
 }
 
@@ -310,7 +310,7 @@ Widget customerCard(CustomerModel customer) {
               Text(
                 customer.name,
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
               ),
@@ -329,7 +329,111 @@ Widget customerCard(CustomerModel customer) {
           "${customer.joinedDate.day}/${customer.joinedDate.month}",
           style: const TextStyle(fontSize: 12, color: Colors.black54),
         ),
+        SizedBox(width: 4),
+        Icon(Icons.chevron_right_outlined, color: Colors.black26),
       ],
+    ),
+  );
+}
+
+Widget notificationCard(NotificationModel notification) {
+  return appGlassEffect(
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 4,
+            children: [
+              Text(
+                notification.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                notification.message,
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  timeAgo(notification.time),
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        SizedBox(width: 4),
+        Icon(Icons.chevron_right_outlined, color: Colors.black38),
+      ],
+    ),
+  );
+}
+
+String timeAgo(DateTime date) {
+  final diff = DateTime.now().difference(date);
+
+  if (diff.inMinutes < 1) return "just now";
+  if (diff.inMinutes < 60) return "${diff.inMinutes}m ago";
+  if (diff.inHours < 24) return "${diff.inHours}h ago";
+  return "${diff.inDays}d ago";
+}
+
+Widget loadTitleText({
+  String? title,
+  double? fontSize,
+  Color? fontColor,
+  FontWeight? fontWight,
+  TextAlign? textAlign,
+  TextOverflow? textOverflow,
+}) {
+  return Text(
+    title ?? "",
+    style: TextStyle(
+      color: fontColor ?? Colors.white.withValues(alpha: 1),
+      fontSize: fontSize ?? 16,
+      fontWeight: fontWight ?? FontWeight.w700,
+    ),
+    textAlign: textAlign ?? TextAlign.left,
+    overflow: textOverflow,
+  );
+}
+
+Widget appNavigationBar({required String title, VoidCallback? onTap}) {
+  return SafeArea(
+    child: Container(
+      height: 48,
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: appCircleIcon(
+              icon: Icons.arrow_back_rounded,
+              iconSize: 24,
+              //gradient: appGradient(),
+              iconColor: Colors.black87,
+              onTap: onTap,
+            ),
+          ),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

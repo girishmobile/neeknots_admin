@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:provider/provider.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
@@ -41,7 +42,11 @@ class DashboardPage extends StatelessWidget {
           screens[provider.pageIndex],
           // IndexedStack(index: provider.pageIndex, children: screens),
           //Top bar
-          topBar(provider, titles[provider.pageIndex]),
+          topBar(
+            context,
+            provider: provider,
+            title: titles[provider.pageIndex],
+          ),
           //Bottom bar
           bottomBar(context),
         ],
@@ -49,7 +54,11 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget topBar(DashboardProvider provider, String title) {
+  Widget topBar(
+    BuildContext context, {
+    required DashboardProvider provider,
+    required String title,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: Row(
@@ -58,7 +67,9 @@ class DashboardPage extends StatelessWidget {
           appCircleImage(
             imageUrl: "https://picsum.photos/200",
             radius: 18,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.profilePage);
+            },
           ),
 
           // ✅ Show logo only for Home, otherwise show title
@@ -73,9 +84,12 @@ class DashboardPage extends StatelessWidget {
                 ),
           appCircleIcon(
             icon: Icons.notifications_outlined,
-            iconColor: Colors.black54,
-            iconSize: 20,
-            onTap: () {},
+
+            gradient: appGradient(),
+            iconSize: 24,
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.notificationPage);
+            },
           ),
         ],
       ),

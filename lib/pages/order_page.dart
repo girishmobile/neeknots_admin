@@ -28,7 +28,7 @@ class OrderPage extends StatelessWidget {
 
   Widget _searchBar(BuildContext context) {
     final safeTop = MediaQuery.of(context).padding.top;
-    final topBarHeight = 56.0; // from Dashboard SafeArea Row
+    final topBarHeight = 48.0; // from Dashboard SafeArea Row
 
     return Positioned(
       top: safeTop + topBarHeight + 8,

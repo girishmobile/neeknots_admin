@@ -105,12 +105,13 @@ class HomePage extends StatelessWidget {
     required String value,
   }) {
     return appGlassEffect(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         spacing: 4,
         children: [
-          Icon(icon, size: 36, color: Colors.black54),
+          //  Icon(icon, size: 36, color: Colors.black54),
+          appCircleIcon(icon: icon, iconSize: 36, gradient: appGradient()),
           Text(
             title,
             style: TextStyle(
@@ -119,18 +120,11 @@ class HomePage extends StatelessWidget {
               color: Colors.black54,
             ),
           ),
-          Text(
-            subTitle,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Colors.black54,
-            ),
-          ),
+
           Text(
             value,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               fontSize: 18,
               color: Colors.black54,
             ),

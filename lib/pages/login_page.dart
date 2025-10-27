@@ -3,6 +3,7 @@ import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/constants/colors.dart';
 import 'package:neeknots_admin/constants/string_constant.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -17,9 +18,19 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo
-              loadAssetImage(name: applogo, height: 48),
+              loadAssetImage(name: applogo, height: 52),
               const SizedBox(height: 32),
 
+              Align(
+                alignment: Alignment.center,
+                child: loadTitleText(
+                  title: "WELCOME",
+                  fontSize: 20,
+                  fontWight: FontWeight.w600,
+                  fontColor: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 16),
               appTextField(hintText: "Email", icon: Icons.email_outlined),
               const SizedBox(height: 16),
               appTextField(hintText: "Password", icon: Icons.lock_outline),
@@ -33,7 +44,13 @@ class LoginPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      RouteName.dashBoardPage,
+                      (route) => false,
+                    );
+                  },
                   icon: const Icon(Icons.login, color: Colors.white),
                   label: const Text(
                     "LOGIN",
@@ -48,3 +65,17 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
+// class LoginPage extends StatefulWidget {
+//   const LoginPage({super.key});
+
+//   @override
+//   State<LoginPage> createState() => _LoginPageState();
+// }
+
+// class _LoginPageState extends State<LoginPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
