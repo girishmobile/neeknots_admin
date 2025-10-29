@@ -44,7 +44,10 @@ class ProductPage extends StatelessWidget {
         childAspectRatio: 0.65,
       ),
       itemBuilder: (context, index) {
-        return GestureDetector(onTap: () {}, child: _buildGridItem());
+        return GestureDetector(
+          onTap: () {},
+          child: _buildGridItem(index: index),
+        );
       },
       itemCount: 20,
     );
@@ -108,7 +111,7 @@ class ProductPage extends StatelessWidget {
     );
   }
 
-  Widget _buildGridItem() {
+  Widget _buildGridItem({required int index}) {
     return appGlassEffect(
       padding: const EdgeInsets.only(left: 1, right: 1, top: 1, bottom: 1),
       child: Column(
@@ -121,7 +124,7 @@ class ProductPage extends StatelessWidget {
               topRight: Radius.circular(8),
             ),
             child: loadAssetImage(
-              name: productImage,
+              name: index % 2 == 0 ? productImage : productImage_1,
               width: double.infinity,
               height: 140,
               fit: BoxFit.cover,

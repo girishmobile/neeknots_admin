@@ -26,19 +26,19 @@ class DashboardPage extends StatelessWidget {
 
     final screens = [
       ProductPage(),
-      //OrderPage(),
-      // HomePage(),
-      LeaveScreen(),
-      HomeScreen(),
-      MyKpiScreen(),
-      //CustomerPage(),
+      OrderPage(),
+      HomePage(),
+      //LeaveScreen(),
+      //HomeScreen(),
+      //MyKpiScreen(),
+      CustomerPage(),
       SettingPage(),
     ];
     final titles = [
-      "CALENDAR",
-      "LEAVES",
+      "LIST OF PRODUCT",
+      "LIST OF ORDER",
       "", // Home has logo
-      "KRA KPI",
+      "CUSTOMERS",
       "SETTINGS",
     ];
 
@@ -81,7 +81,7 @@ class DashboardPage extends StatelessWidget {
 
           // ✅ Show logo only for Home, otherwise show title
           provider.pageIndex == 2
-              ? loadAssetImage(name: headerlogo, height: 28)
+              ? loadAssetImage(name: headerlogo, height: 26)
               : Text(
                   title,
                   style: const TextStyle(
@@ -141,7 +141,7 @@ class DashboardPage extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),
           child: _buildGlassEffect(
-            borderRadius: 55,
+            borderRadius: 45,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,37 +149,37 @@ class DashboardPage extends StatelessWidget {
                 _buildBottomIcon(
                   context,
                   index: 0,
-                  icon: Icons.calendar_month_outlined,
-                  title: "Calendar",
-                  size: 20,
+                  icon: Icons.inventory_2_outlined,
+                  title: "Product",
+                  size: 24,
                 ),
                 _buildBottomIcon(
                   context,
                   index: 1,
-                  icon: Icons.rocket_launch_outlined,
-                  title: "Leave",
-                  size: 24,
+                  icon: Icons.shopping_bag_outlined,
+                  title: "Order",
+                  size: 28,
                 ),
                 _buildBottomIcon(
                   context,
                   index: 2,
                   icon: Icons.home_outlined,
                   title: "Home",
-                  size: 24,
+                  size: 28,
                 ),
                 _buildBottomIcon(
                   context,
                   index: 3,
-                  icon: Icons.leaderboard_outlined,
-                  title: "KRA KPI",
-                  size: 24,
+                  icon: Icons.people_alt_outlined,
+                  title: "Customer",
+                  size: 28,
                 ),
                 _buildBottomIcon(
                   context,
                   index: 4,
                   icon: Icons.settings_outlined,
                   title: "Setting",
-                  size: 24,
+                  size: 28,
                 ),
               ],
             ),
@@ -214,9 +214,7 @@ class DashboardPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w600,
-            color: isSelected
-                ? btnColor2.withValues(alpha: 0.7)
-                : Colors.black54,
+            color: isSelected ? Colors.deepPurple : Colors.black54,
           ),
         ),
       ],

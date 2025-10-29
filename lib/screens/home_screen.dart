@@ -22,9 +22,43 @@ class HomeScreen extends StatelessWidget {
           ),
           children: [
             appGlassEffect(
-              child: SizedBox(
-                height: 230,
-                child: loadTitleText(title: "Record Your Attendance"),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 16,
+                children: [
+                  loadTitleText(title: "Record Your Attendance"),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildItem(title: "Attendance", value: "1 Days"),
+                      ),
+                      Expanded(
+                        child: _buildItem(title: "Late", value: "0 Days"),
+                      ),
+                      Expanded(
+                        child: _buildItem(title: "Absent", value: "0 Days"),
+                      ),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildItem(title: "Half Days", value: "0 Days"),
+                      ),
+                      Expanded(
+                        child: _buildItem(
+                          title: "Worked hours",
+                          value: "0 Days",
+                        ),
+                      ),
+                      const Expanded(
+                        child: SizedBox(),
+                      ), // empty to maintain alignment
+                    ],
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 16),
@@ -185,6 +219,31 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildItem({required String title, required String value}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.black87,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.black54,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }
