@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
-import 'package:neeknots_admin/constants/string_constant.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({super.key});

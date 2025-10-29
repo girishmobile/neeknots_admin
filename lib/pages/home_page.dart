@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/order_card.dart';
 import 'package:neeknots_admin/common/sales_bar_chart.dart';
 import 'package:neeknots_admin/components/components.dart';
-import 'package:neeknots_admin/constants/string_constant.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 
@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final safeTop = MediaQuery.of(context).padding.top;
-    const topBarHeight = 56.0; // your Dashboard SafeArea Row
+    const topBarHeight = 48.0; // your Dashboard SafeArea Row
     final listTop = safeTop + topBarHeight + 8; // search bar height + spacing
 
     return ListView(

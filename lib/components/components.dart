@@ -240,7 +240,7 @@ Widget appTextField({required String hintText, IconData? icon}) {
   return TextField(
     decoration: InputDecoration(
       hintText: hintText,
-      hintStyle: const TextStyle(color: Colors.black54, fontSize: 16),
+      hintStyle: const TextStyle(color: Colors.black54, fontSize: 14),
       prefixIcon: icon != null
           ? Padding(
               padding: const EdgeInsets.only(left: 12, right: 8), // adjust here
@@ -284,7 +284,7 @@ double listTop(BuildContext context, {double extra = 0}) {
   final safeTop = MediaQuery.of(context).padding.top;
   const topBarHeight = 56.0; // your Dashboard SafeArea Row
   const searchBoxHeight = 60.0;
-  return safeTop + topBarHeight + searchBoxHeight + 16 + extra;
+  return safeTop + topBarHeight + searchBoxHeight + 8 + extra;
 }
 
 double listBottom(BuildContext context, {double extra = 0}) {
@@ -395,9 +395,29 @@ Widget loadTitleText({
   return Text(
     title ?? "",
     style: TextStyle(
-      color: fontColor ?? Colors.white.withValues(alpha: 1),
+      color: fontColor ?? Colors.black87,
       fontSize: fontSize ?? 16,
-      fontWeight: fontWight ?? FontWeight.w700,
+      fontWeight: fontWight ?? FontWeight.w600,
+    ),
+    textAlign: textAlign ?? TextAlign.left,
+    overflow: textOverflow,
+  );
+}
+
+Widget loadSubText({
+  String? title,
+  double? fontSize,
+  Color? fontColor,
+  FontWeight? fontWight,
+  TextAlign? textAlign,
+  TextOverflow? textOverflow,
+}) {
+  return Text(
+    title ?? "",
+    style: TextStyle(
+      color: fontColor ?? Colors.black54,
+      fontSize: fontSize ?? 14,
+      fontWeight: fontWight ?? FontWeight.w500,
     ),
     textAlign: textAlign ?? TextAlign.left,
     overflow: textOverflow,

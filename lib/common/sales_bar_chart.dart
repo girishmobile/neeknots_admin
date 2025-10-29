@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
-import 'package:neeknots_admin/constants/colors.dart';
+import 'package:neeknots_admin/core/constants/colors.dart';
 
 class SalesBarChart extends StatelessWidget {
   final List<double> sales = [1200, 1800, 900, 1500, 2000, 1700, 2500];

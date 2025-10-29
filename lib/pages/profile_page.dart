@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -8,14 +9,22 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final safeTop = MediaQuery.of(context).padding.top;
-    const topBarHeight = 56.0; // your Dashboard SafeArea Row
+    const topBarHeight = 48.0; // your Dashboard SafeArea Row
     final listTop = safeTop + topBarHeight + 8; // search bar height + spacing
     return AppScaffold(
       child: Stack(
         children: [
           ListView(
             padding: EdgeInsets.only(left: 24, right: 24, top: listTop),
-            children: [_buildProfileImage()],
+            children: [
+              _buildProfileImage(),
+              SizedBox(height: 16),
+              loadTitleText(
+                title: "Girish Chauhan",
+                textAlign: TextAlign.center,
+              ),
+              loadSubText(title: "iOS Developer", textAlign: TextAlign.center),
+            ],
           ),
           appNavigationBar(
             title: "PROFILE",
@@ -39,11 +48,7 @@ class ProfilePage extends StatelessWidget {
         height: 120,
         width: 120,
         decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-        child: appCircleImage(
-          imageUrl: "https://picsum.photos/200",
-          radius: 60,
-          onTap: () {},
-        ),
+        child: appCircleImage(imageUrl: hostImage, radius: 58, onTap: () {}),
       ),
     );
   }

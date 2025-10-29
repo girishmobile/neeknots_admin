@@ -1,4 +1,4 @@
-import 'package:neeknots_admin/constants/string_constant.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 
 class OrderModel {
   final String orderId;

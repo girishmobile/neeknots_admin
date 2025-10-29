@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neeknots_admin/constants/colors.dart';
+import 'package:neeknots_admin/core/constants/colors.dart';
 
 class AppScaffold extends StatelessWidget {
   final Widget child;

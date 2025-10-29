@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/core/router/route_generate.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/dashboard_page.dart';
-import 'package:neeknots_admin/pages/home_page.dart';
-import 'package:neeknots_admin/pages/login_page.dart';
+import 'package:neeknots_admin/provider/app_provider.dart';
 import 'package:neeknots_admin/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider<DashboardProvider>(create: (_) => DashboardProvider()),
+  ChangeNotifierProvider<AppProvider>(create: (_) => AppProvider()),
 ];
 void main() {
   runApp(const MyApp());
