@@ -1,17 +1,22 @@
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 
+enum OrderStatus { pending, processing, shipped, onWay, delivered, cancelled }
+
 class OrderModel {
   final String orderId;
   final String customerName;
   final DateTime orderDate;
   final double totalAmount;
   final List<OrderItem> items;
+  final OrderStatus status;
+
   OrderModel({
     required this.orderId,
     required this.customerName,
     required this.orderDate,
     required this.totalAmount,
     required this.items,
+    this.status = OrderStatus.pending,
   });
 }
 
@@ -36,6 +41,7 @@ List<OrderModel> sampleOrders = [
     customerName: "John Doe",
     orderDate: DateTime.now().subtract(const Duration(days: 1)),
     totalAmount: 150.75,
+    status: OrderStatus.delivered,
     items: [
       OrderItem(
         productId: "PROD1",
@@ -58,6 +64,7 @@ List<OrderModel> sampleOrders = [
     customerName: "Jane Smith",
     orderDate: DateTime.now().subtract(const Duration(days: 2)),
     totalAmount: 200.00,
+    status: OrderStatus.onWay,
     items: [
       OrderItem(
         productId: "PROD3",

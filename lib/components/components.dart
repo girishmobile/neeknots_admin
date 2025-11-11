@@ -457,3 +457,24 @@ Widget appNavigationBar({required String title, VoidCallback? onTap}) {
     ),
   );
 }
+
+Widget gradientCircleView({required Widget child, double size = 50}) {
+  return Center(
+    child: Container(
+      padding: const EdgeInsets.all(3), // thickness of the gradient border
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: appGradient(),
+      ),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white, // inner circle color
+        ),
+        child: child,
+      ),
+    ),
+  );
+}

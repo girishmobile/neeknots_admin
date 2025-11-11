@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 
 class ProductPage extends StatelessWidget {
@@ -45,7 +46,9 @@ class ProductPage extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, RouteName.productDetailPage);
+          },
           child: _buildGridItem(index: index),
         );
       },

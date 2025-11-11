@@ -4,6 +4,7 @@ import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/dashboard_page.dart';
 import 'package:neeknots_admin/pages/login_page.dart';
 import 'package:neeknots_admin/pages/notification_page.dart';
+import 'package:neeknots_admin/pages/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
 
 class RouteGenerate {
@@ -21,6 +22,9 @@ class RouteGenerate {
         break;
       case RouteName.notificationPage:
         screen = NotificationPage();
+        break;
+      case RouteName.productDetailPage:
+        screen = ProductDetailPage();
         break;
       default:
         screen = AppScaffold(

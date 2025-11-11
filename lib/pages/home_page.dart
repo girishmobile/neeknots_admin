@@ -284,10 +284,8 @@ class HomePage extends StatelessWidget {
                           "16-sept-25 10:30 AM",
                           style: TextStyle(fontSize: 12, color: Colors.black54),
                         ),
-                        Text(
-                          "Delivered",
-                          style: TextStyle(fontSize: 12, color: Colors.black54),
-                        ),
+                        const SizedBox(height: 6),
+                        orderStatusBadge(order.status),
                       ],
                     ),
                   ),
