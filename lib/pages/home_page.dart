@@ -3,6 +3,7 @@ import 'package:neeknots_admin/common/order_card.dart';
 import 'package:neeknots_admin/common/sales_bar_chart.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 
@@ -141,68 +142,72 @@ class HomePage extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) {
-          return Container(
-            width: 170,
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            child: appGlassEffect(
-              padding: const EdgeInsets.only(
-                left: 1,
-                right: 1,
-                bottom: 8,
-                top: 1,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
+          return GestureDetector(
+            onTap: () =>
+                Navigator.pushNamed(context, RouteName.productDetailPage),
+            child: Container(
+              width: 170,
+              margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              child: appGlassEffect(
+                padding: const EdgeInsets.only(
+                  left: 1,
+                  right: 1,
+                  bottom: 8,
+                  top: 1,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                      child: loadAssetImage(
+                        name: productImage,
+                        width: 168,
+                        height: 140,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    child: loadAssetImage(
-                      name: productImage,
-                      width: 168,
-                      height: 140,
-                      fit: BoxFit.cover,
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Umbrella Lamp-Large 36 inch",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            formatPrice(120 + index),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
+                            10 > 0 ? "In Stock: ${10}" : "Out of Stock",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: 10 > 0 ? Colors.black54 : Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Umbrella Lamp-Large 36 inch",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          formatPrice(120 + index),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        Text(
-                          10 > 0 ? "In Stock: ${10}" : "Out of Stock",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: 10 > 0 ? Colors.black54 : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -219,81 +224,11 @@ class HomePage extends StatelessWidget {
         itemCount: sampleOrders.length,
         itemBuilder: (context, index) {
           final order = sampleOrders[index];
-          return OrderCard(order: order);
-          /*
-          return Container(
-            width: 170,
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            child: appGlassEffect(
-              padding: const EdgeInsets.only(
-                left: 1,
-                right: 1,
-                bottom: 8,
-                top: 1,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                    child: loadAssetImage(
-                      name: order.items.isNotEmpty
-                          ? order.items[0].imageUrl
-                          : productImage,
-                      width: 168,
-                      height: 140,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "ORDER#${1000 + index}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "TOTAL:- ${formatPrice(order.totalAmount)}",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black54,
-                          ),
-                        ),
-
-                        Text(
-                          "Qty: ${order.items.fold<int>(0, (sum, item) => sum + item.quantity)}",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        Text(
-                          "16-sept-25 10:30 AM",
-                          style: TextStyle(fontSize: 12, color: Colors.black54),
-                        ),
-                        const SizedBox(height: 6),
-                        orderStatusBadge(order.status),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          return GestureDetector(
+            onTap: () =>
+                Navigator.pushNamed(context, RouteName.orderDetailPage),
+            child: OrderCard(order: order),
           );
-           */
         },
       ),
     );

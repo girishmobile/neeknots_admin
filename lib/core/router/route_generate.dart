@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/pages/customer/customer_detail_page.dart';
 import 'package:neeknots_admin/pages/dashboard_page.dart';
-import 'package:neeknots_admin/pages/login_page.dart';
+import 'package:neeknots_admin/pages/login/forgot_password_page.dart';
+import 'package:neeknots_admin/pages/login/login_page.dart';
+import 'package:neeknots_admin/pages/login/signup_page.dart';
 import 'package:neeknots_admin/pages/notification_page.dart';
-import 'package:neeknots_admin/pages/product_detail_page.dart';
+import 'package:neeknots_admin/pages/order/order_detail_page.dart';
+import 'package:neeknots_admin/pages/product/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
 
 class RouteGenerate {
@@ -13,6 +17,12 @@ class RouteGenerate {
     switch (settings.name) {
       case RouteName.loginPage:
         screen = const LoginPage();
+        break;
+      case RouteName.singUpPage:
+        screen = const SignupPage();
+        break;
+      case RouteName.forgotPasswordPage:
+        screen = const ForgotPasswordPage();
         break;
       case RouteName.dashBoardPage:
         screen = DashboardPage();
@@ -25,6 +35,12 @@ class RouteGenerate {
         break;
       case RouteName.productDetailPage:
         screen = ProductDetailPage();
+        break;
+      case RouteName.orderDetailPage:
+        screen = OrderDetailPage();
+        break;
+      case RouteName.customerDetailPage:
+        screen = CustomerDetailPage();
         break;
       default:
         screen = AppScaffold(

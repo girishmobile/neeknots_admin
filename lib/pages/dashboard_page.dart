@@ -1,19 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
-import 'package:neeknots_admin/screens/home_screen.dart';
-import 'package:neeknots_admin/screens/leave_screen.dart';
-import 'package:neeknots_admin/screens/my_kpi_screen.dart';
+import 'package:neeknots_admin/pages/customer/customer_page.dart';
+import 'package:neeknots_admin/pages/order/order_page.dart';
+
 import 'package:provider/provider.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
-import 'package:neeknots_admin/pages/customer_page.dart';
 import 'package:neeknots_admin/pages/home_page.dart';
-import 'package:neeknots_admin/pages/order_page.dart';
-import 'package:neeknots_admin/pages/product_page.dart';
+import 'package:neeknots_admin/pages/product/product_page.dart';
 import 'package:neeknots_admin/pages/setting_page.dart';
 import 'package:neeknots_admin/provider/dashboard_provider.dart';
 

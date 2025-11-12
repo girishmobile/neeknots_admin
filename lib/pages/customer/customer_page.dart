@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
 
 class CustomerPage extends StatelessWidget {
@@ -21,7 +22,12 @@ class CustomerPage extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final custModel = sampleCustomers[index];
-        return GestureDetector(onTap: () {}, child: customerCard(custModel));
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, RouteName.customerDetailPage);
+          },
+          child: customerCard(custModel),
+        );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: sampleCustomers.length,

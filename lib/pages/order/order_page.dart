@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 
 class OrderPage extends StatelessWidget {
@@ -21,7 +22,12 @@ class OrderPage extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final order = sampleOrders[index % sampleOrders.length];
-        return GestureDetector(onTap: () {}, child: orderItem(order));
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, RouteName.orderDetailPage);
+          },
+          child: orderItem(order),
+        );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: 20,
@@ -44,7 +50,6 @@ class OrderPage extends StatelessWidget {
     return appGlassEffect(
       padding: const EdgeInsets.only(left: 1, right: 1, top: 1, bottom: 1),
       child: Row(
-        spacing: 12,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.only(
@@ -60,24 +65,48 @@ class OrderPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
+          SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 6,
               children: [
-                loadTitleText(title: "Order #${order.orderId}", fontSize: 16),
+                loadTitleText(title: "Order #${order.orderId}", fontSize: 14),
                 loadSubText(
                   title: "Customer: ${order.customerName}",
-                  fontSize: 13,
+                  fontSize: 12,
                 ),
                 loadSubText(
                   title: "Total: \$${order.totalAmount.toStringAsFixed(2)}",
-                  fontSize: 13,
+                  fontSize: 12,
                 ),
-                Align(alignment: Alignment.centerRight, child: Text("Status")),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+                      Icon(
+                        Icons.local_shipping_outlined,
+                        size: 18,
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(width: 4),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 0),
+                        child: loadSubText(
+                          title: order.status.name,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
+
+          appForwardIcon(),
         ],
       ),
     );

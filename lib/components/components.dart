@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/core/constants/colors.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
 
@@ -294,6 +296,15 @@ double listBottom(BuildContext context, {double extra = 0}) {
   return safeBottom + bottomBarHeight + 16 + extra;
 }
 
+double appTopPadding(BuildContext context) {
+  final safeTop = MediaQuery.of(context).padding.top;
+  const topBarHeight = 48.0; // your Dashboard SafeArea Row
+
+  final listTop = safeTop + topBarHeight + 8; // search bar height + spacing
+
+  return listTop;
+}
+
 Widget customerCard(CustomerModel customer) {
   return appGlassEffect(
     child: Row(
@@ -306,6 +317,7 @@ Widget customerCard(CustomerModel customer) {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 4,
             children: [
               Text(
                 customer.name,
@@ -320,7 +332,11 @@ Widget customerCard(CustomerModel customer) {
               ),
               Text(
                 "Orders: ${customer.totalOrders} • \$${customer.totalSpent.toStringAsFixed(2)}",
-                style: const TextStyle(fontSize: 12, color: Colors.black87),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -330,7 +346,7 @@ Widget customerCard(CustomerModel customer) {
           style: const TextStyle(fontSize: 12, color: Colors.black54),
         ),
         SizedBox(width: 4),
-        Icon(Icons.chevron_right_outlined, color: Colors.black26),
+        appForwardIcon(),
       ],
     ),
   );
@@ -369,10 +385,14 @@ Widget notificationCard(NotificationModel notification) {
         ),
 
         SizedBox(width: 4),
-        Icon(Icons.chevron_right_outlined, color: Colors.black38),
+        appForwardIcon(),
       ],
     ),
   );
+}
+
+Widget appForwardIcon() {
+  return Icon(Icons.chevron_right_outlined, color: Colors.black26);
 }
 
 String timeAgo(DateTime date) {
@@ -474,6 +494,49 @@ Widget gradientCircleView({required Widget child, double size = 50}) {
           color: Colors.white, // inner circle color
         ),
         child: child,
+      ),
+    ),
+  );
+}
+
+Widget gradientButton({
+  required String title,
+  required VoidCallback onPressed,
+}) {
+  return Container(
+    width: double.infinity,
+    height: 52,
+    decoration: BoxDecoration(
+      gradient: appGradient(colors: [btnColor1, btnColor2]),
+      borderRadius: BorderRadius.circular(30),
+    ),
+    child: TextButton.icon(
+      onPressed: onPressed,
+      icon: const Icon(Icons.login, color: Colors.white),
+      label: Text(
+        title,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget appProfileImage({String imaheUrl = hostImage, double radius = 60}) {
+  return Container(
+    padding: const EdgeInsets.all(3), // thickness of border
+    decoration: BoxDecoration(shape: BoxShape.circle, gradient: appGradient()),
+    child: Container(
+      height: radius * 2,
+      width: radius * 2,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+      child: appCircleImage(
+        imageUrl: hostImage,
+        radius: (radius - 2),
+        onTap: () {},
       ),
     ),
   );

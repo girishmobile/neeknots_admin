@@ -3,8 +3,8 @@ import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class CustomerDetailPage extends StatelessWidget {
+  const CustomerDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,22 @@ class ProfilePage extends StatelessWidget {
             children: [
               appProfileImage(imaheUrl: hostImage, radius: 60),
               SizedBox(height: 16),
-              loadTitleText(title: "Shophia Lee", textAlign: TextAlign.center),
-              loadSubText(title: "Execiutive", textAlign: TextAlign.center),
+              loadTitleText(title: "John Smith", textAlign: TextAlign.center),
+              SizedBox(height: 4),
+              loadSubText(
+                title: "Joined: 25-oct-2024",
+                textAlign: TextAlign.center,
+                fontSize: 12,
+              ),
+              loadSubText(
+                title: "Status: Active",
+                textAlign: TextAlign.center,
+                fontSize: 14,
+              ),
             ],
           ),
           appNavigationBar(
-            title: "PROFILE",
+            title: "CUSTOMER DETAILS",
             onTap: () {
               Navigator.pop(context);
             },
@@ -34,20 +44,4 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
-
-  // Widget _buildProfileImage() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(4), // thickness of border
-  //     decoration: BoxDecoration(
-  //       shape: BoxShape.circle,
-  //       gradient: appGradient(),
-  //     ),
-  //     child: Container(
-  //       height: 120,
-  //       width: 120,
-  //       decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-  //       child: appCircleImage(imageUrl: hostImage, radius: 58, onTap: () {}),
-  //     ),
-  //   );
-  // }
 }
