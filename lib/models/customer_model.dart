@@ -3,14 +3,14 @@ import 'package:neeknots_admin/core/constants/string_constant.dart';
 class CustomerModel {
   final String name;
   final String email;
-  final String imageUrl;
+  final String? imageUrl;
   final DateTime joinedDate;
   final int totalOrders;
   final double totalSpent;
   CustomerModel({
     required this.name,
     required this.email,
-    required this.imageUrl,
+    this.imageUrl,
     required this.joinedDate,
     required this.totalOrders,
     required this.totalSpent,
@@ -21,7 +21,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "John Doe",
     email: "john.doe@example.com",
-    imageUrl: productImage,
+    imageUrl: hostImage,
     joinedDate: DateTime.now().subtract(const Duration(days: 10)),
     totalOrders: 8,
     totalSpent: 1250.50,
@@ -37,7 +37,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Michael Brown",
     email: "michael.brown@example.com",
-    imageUrl: productImage,
+    imageUrl: hostImage,
     joinedDate: DateTime.now().subtract(const Duration(days: 45)),
     totalOrders: 12,
     totalSpent: 2050.75,

@@ -34,14 +34,18 @@ class HomePage extends StatelessWidget {
           children: [
             Expanded(
               child: _dashboardItem(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteName.todaySalesPage),
                 icon: Icons.trending_up_rounded,
-                title: "Total Sales",
+                title: "Today Sales",
                 subTitle: "+10% income",
                 value: "989",
               ),
             ),
             Expanded(
               child: _dashboardItem(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteName.allProductPage),
                 icon: Icons.production_quantity_limits_rounded,
                 title: "Total Product",
                 subTitle: "+8% New product",
@@ -56,6 +60,8 @@ class HomePage extends StatelessWidget {
           children: [
             Expanded(
               child: _dashboardItem(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteName.allOrderPage),
                 icon: Icons.shopping_bag_outlined,
                 title: "Total Order",
                 subTitle: "+10% income",
@@ -104,8 +110,10 @@ class HomePage extends StatelessWidget {
     required String title,
     required String subTitle,
     required String value,
+    VoidCallback? onTap,
   }) {
     return appGlassEffect(
+      onTap: onTap,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -117,7 +125,7 @@ class HomePage extends StatelessWidget {
             title,
             style: TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 16,
+              fontSize: 15,
               color: Colors.black54,
             ),
           ),
@@ -125,9 +133,9 @@ class HomePage extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               fontSize: 18,
-              color: Colors.black54,
+              color: Colors.black87,
             ),
           ),
         ],

@@ -11,7 +11,7 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        //_listOfProducts(context),
+        // _listOfProducts(context),
         _gridOfProducts(context),
         _searchBar(context),
       ],
@@ -53,64 +53,6 @@ class ProductPage extends StatelessWidget {
         );
       },
       itemCount: 20,
-    );
-  }
-
-  Widget _buildProductItem() {
-    return appGlassEffect(
-      padding: const EdgeInsets.only(left: 2, right: 8, top: 2, bottom: 2),
-      child: Row(
-        spacing: 8,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8),
-              bottomLeft: Radius.circular(8),
-            ),
-            child: loadAssetImage(
-              name: productImage,
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 4,
-              children: [
-                Text(
-                  "Astribatry product",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
-                ),
-                Text(
-                  formatPrice(99),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54,
-                  ),
-                ),
-                // Stock info
-                Text(
-                  10 > 0 ? "In Stock: ${10}" : "Out of Stock",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: 10 > 0 ? Colors.black54 : Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(Icons.chevron_right_rounded, color: Colors.white54, size: 24),
-        ],
-      ),
     );
   }
 

@@ -9,9 +9,8 @@ const btnColor2 = Color.fromRGBO(153, 45, 254, 1);
 const colormint = Color(0xFFDFF5E1);
 const colorcyan = Color(0xFFB9E5F2);
 const colorpurple = Color(0xFFCDB8F2);
-
-const new_color1 = Color(0xFFFFA500);
-const new_color2 = Color(0xFFFF5E62);
-const new_color3 = Color(0xFFFFC371);
-const new_color4 = Color(0xFFB2FF59);
-const new_color5 = Color(0xFF64B5F6);
+const colororange = Color(0xFFFFE0B3);
+const coloryellow = Color(0xFFFFF3B0);
+const colorgreen = Color(0xFFDAF5D4);
+const colorred = Color(0xFFFFC1C1);
+const colorblue = Color(0xFFB3D9FF);

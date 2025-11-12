@@ -1,15 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 
-class OrderPage extends StatelessWidget {
-  const OrderPage({super.key});
+class AllOrderPage extends StatelessWidget {
+  const AllOrderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [_listOfOrders(context), _searchBar(context)]);
+    return AppScaffold(
+      child: Stack(
+        children: [
+          _listOfOrders(context),
+          _searchBar(context),
+          appNavigationBar(
+            title: "ALL ORDERS",
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _searchBar(BuildContext context) {
+    final safeTop = MediaQuery.of(context).padding.top;
+    final topBarHeight = 48.0; // from Dashboard SafeArea Row
+
+    return Positioned(
+      top: safeTop + topBarHeight + 8,
+      left: 24,
+      right: 24,
+      child: appTextField(hintText: "search", icon: Icons.search),
+    );
   }
 
   Widget _listOfOrders(BuildContext context) {
@@ -31,18 +57,6 @@ class OrderPage extends StatelessWidget {
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: 20,
-    );
-  }
-
-  Widget _searchBar(BuildContext context) {
-    final safeTop = MediaQuery.of(context).padding.top;
-    final topBarHeight = 48.0; // from Dashboard SafeArea Row
-
-    return Positioned(
-      top: safeTop + topBarHeight + 8,
-      left: 24,
-      right: 24,
-      child: appTextField(hintText: "search", icon: Icons.search),
     );
   }
 

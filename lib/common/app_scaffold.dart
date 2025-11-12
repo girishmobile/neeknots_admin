@@ -27,7 +27,9 @@ class AppScaffold extends StatelessWidget {
               ),
             ),
           ),
-
+          // Container(
+          //   color: Colors.white.withValues(alpha: 0.05), // light overlay
+          // ),
           SafeArea(top: isTopSafeArea, bottom: isBottomSafeArea, child: child),
         ],
       ),

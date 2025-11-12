@@ -177,25 +177,37 @@ Widget loadAssetImage({
 
 Widget appGlassEffect({
   required Widget child,
-  EdgeInsetsGeometry? padding,
   double borderRadius = 8,
-  Color blurColor = Colors.white,
+  EdgeInsetsGeometry? padding,
+  double blurSigma = 10,
+  Color overlayColor = Colors.white,
+  double opacity = 0.15,
+  Color borderColor = Colors.white,
+  double borderWidth = 1.0,
+  VoidCallback? onTap,
 }) {
-  return Container(
-    padding: padding ?? const EdgeInsets.all(8),
-    decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.2), // semi-transparent background
-      borderRadius: BorderRadius.circular(borderRadius),
-      border: Border.all(
-        color: Colors.white.withValues(alpha: 0.3), // subtle border
-        width: 1,
-      ),
-    ),
+  final shape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(borderRadius),
+  );
+
+  return GestureDetector(
+    onTap: onTap,
     child: ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // blur effect
-        child: child,
+        filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+        child: Container(
+          padding: padding ?? const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: overlayColor.withValues(alpha: opacity),
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(
+              color: borderColor.withValues(alpha: 0.3),
+              width: borderWidth,
+            ),
+          ),
+          child: child,
+        ),
       ),
     ),
   );
@@ -254,7 +266,7 @@ Widget appTextField({required String hintText, IconData? icon}) {
         minHeight: 32,
       ), // removes extra padding
       filled: true,
-      fillColor: Colors.white.withValues(alpha: 0.2), // glassy effect
+      fillColor: Colors.white.withValues(alpha: 0.15), // glassy effect
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30), // rounded corners
@@ -309,10 +321,11 @@ Widget customerCard(CustomerModel customer) {
   return appGlassEffect(
     child: Row(
       children: [
-        CircleAvatar(
-          radius: 24,
-          backgroundImage: AssetImage(customer.imageUrl),
-        ),
+        // CircleAvatar(
+        //   radius: 24,
+        //   backgroundImage: AssetImage(customer.imageUrl),
+        // ),
+        appCircleImage(imageUrl: customer.imageUrl, radius: 24),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -392,6 +405,7 @@ Widget notificationCard(NotificationModel notification) {
 }
 
 Widget appForwardIcon() {
+  // Icon(Icons.chevron_right_rounded, color: Colors.white54, size: 24),
   return Icon(Icons.chevron_right_outlined, color: Colors.black26);
 }
 

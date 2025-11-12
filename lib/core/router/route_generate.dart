@@ -7,9 +7,12 @@ import 'package:neeknots_admin/pages/login/forgot_password_page.dart';
 import 'package:neeknots_admin/pages/login/login_page.dart';
 import 'package:neeknots_admin/pages/login/signup_page.dart';
 import 'package:neeknots_admin/pages/notification_page.dart';
+import 'package:neeknots_admin/pages/order/all_order_page.dart';
 import 'package:neeknots_admin/pages/order/order_detail_page.dart';
+import 'package:neeknots_admin/pages/product/all_product_page.dart';
 import 'package:neeknots_admin/pages/product/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
+import 'package:neeknots_admin/pages/today_sale_page.dart';
 
 class RouteGenerate {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -24,6 +27,9 @@ class RouteGenerate {
       case RouteName.forgotPasswordPage:
         screen = const ForgotPasswordPage();
         break;
+      case RouteName.todaySalesPage:
+        screen = TodaySalePage();
+        break;
       case RouteName.dashBoardPage:
         screen = DashboardPage();
         break;
@@ -33,8 +39,14 @@ class RouteGenerate {
       case RouteName.notificationPage:
         screen = NotificationPage();
         break;
+      case RouteName.allProductPage:
+        screen = AllProductPage();
+        break;
       case RouteName.productDetailPage:
         screen = ProductDetailPage();
+        break;
+      case RouteName.allOrderPage:
+        screen = AllOrderPage();
         break;
       case RouteName.orderDetailPage:
         screen = OrderDetailPage();

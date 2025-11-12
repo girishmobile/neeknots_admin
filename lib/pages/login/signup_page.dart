@@ -23,7 +23,7 @@ class SignupPage extends StatelessWidget {
               bottom: MediaQuery.of(context).padding.bottom + 16,
             ),
             children: [
-              loadAssetImage(name: headerlogo, height: 44),
+              loadAssetImage(name: headerlogo, height: 36),
               const SizedBox(height: 32),
               Align(
                 alignment: Alignment.centerLeft,
