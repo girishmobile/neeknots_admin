@@ -6,6 +6,7 @@ import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
+import 'package:neeknots_admin/models/order_model.dart';
 
 Widget appCircleIcon({
   IconData? icon,
@@ -308,11 +309,12 @@ double listBottom(BuildContext context, {double extra = 0}) {
   return safeBottom + bottomBarHeight + 16 + extra;
 }
 
-double appTopPadding(BuildContext context) {
+double appTopPadding(BuildContext context, {double extra = 0}) {
   final safeTop = MediaQuery.of(context).padding.top;
   const topBarHeight = 48.0; // your Dashboard SafeArea Row
 
-  final listTop = safeTop + topBarHeight + 8; // search bar height + spacing
+  final listTop =
+      safeTop + topBarHeight + 8 + extra; // search bar height + spacing
 
   return listTop;
 }
@@ -398,6 +400,72 @@ Widget notificationCard(NotificationModel notification) {
         ),
 
         SizedBox(width: 4),
+        appForwardIcon(),
+      ],
+    ),
+  );
+}
+
+Widget orderCard(OrderModel order) {
+  return appGlassEffect(
+    padding: const EdgeInsets.only(left: 1, right: 4, top: 1, bottom: 1),
+    child: Row(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8),
+            bottomLeft: Radius.circular(8),
+          ),
+          child: loadAssetImage(
+            name: order.items.isNotEmpty
+                ? order.items[0].imageUrl
+                : productImage,
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 6,
+            children: [
+              loadTitleText(title: "Order #${order.orderId}", fontSize: 14),
+              loadSubText(
+                title: "Customer: ${order.customerName}",
+                fontSize: 12,
+              ),
+              loadSubText(
+                title: "Total: \$${order.totalAmount.toStringAsFixed(2)}",
+                fontSize: 12,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+
+                  children: [
+                    Icon(
+                      Icons.local_shipping_outlined,
+                      size: 18,
+                      color: Colors.black54,
+                    ),
+                    const SizedBox(width: 4),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 0),
+                      child: loadSubText(
+                        title: order.status.name,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
         appForwardIcon(),
       ],
     ),
@@ -539,9 +607,13 @@ Widget gradientButton({
   );
 }
 
-Widget appProfileImage({String imaheUrl = hostImage, double radius = 60}) {
+Widget appProfileImage({
+  String imaheUrl = hostImage,
+  double radius = 60,
+  EdgeInsetsGeometry? padding,
+}) {
   return Container(
-    padding: const EdgeInsets.all(3), // thickness of border
+    padding: padding ?? const EdgeInsets.all(3), // thickness of border
     decoration: BoxDecoration(shape: BoxShape.circle, gradient: appGradient()),
     child: Container(
       height: radius * 2,

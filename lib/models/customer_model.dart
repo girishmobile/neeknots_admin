@@ -69,7 +69,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Daniel Wilson",
     email: "daniel.wilson@example.com",
-    imageUrl: productImage,
+    imageUrl: hostImage,
     joinedDate: DateTime.now().subtract(const Duration(days: 20)),
     totalOrders: 7,
     totalSpent: 950.25,

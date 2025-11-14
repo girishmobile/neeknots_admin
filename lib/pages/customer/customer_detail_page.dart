@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 
 class CustomerDetailPage extends StatelessWidget {
   const CustomerDetailPage({super.key});
@@ -54,6 +55,8 @@ class CustomerDetailPage extends StatelessWidget {
               ),
               SizedBox(height: 8),
               appGlassEffect(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteName.customerOrdersPage),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Row(
@@ -62,12 +65,13 @@ class CustomerDetailPage extends StatelessWidget {
                       Icon(
                         Icons.shopping_bag_outlined,
                         size: 24,
-                        color: Colors.black87,
+                        color: Colors.black54,
                       ),
                       loadTitleText(
                         title: "Orders 15",
+
                         fontWight: FontWeight.w500,
-                        fontColor: Colors.black87,
+                        fontColor: Colors.black54,
                       ),
                       Spacer(),
                       appForwardIcon(),

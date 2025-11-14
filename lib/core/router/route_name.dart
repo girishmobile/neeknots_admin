@@ -9,6 +9,8 @@ class RouteName {
   static const String allOrderPage = "/AllOrderPage";
   static const String orderDetailPage = "/OrderDetailPage";
   static const String customerDetailPage = "/CustomerDetailPage";
+  static const String customerOrdersPage = "/CustomerOrdersPage";
+
   static const String singUpPage = "/SingupPage";
   static const String forgotPasswordPage = "/ForgotPasswordPage";
 }
