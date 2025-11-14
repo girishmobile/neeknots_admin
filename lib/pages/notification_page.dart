@@ -34,11 +34,16 @@ class NotificationPage extends StatelessWidget {
         top: listTop(context),
         bottom: safeBottom,
       ),
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: true,
+      cacheExtent: 500,
       itemBuilder: (context, index) {
         final dataModel = listOfnotification[index];
-        return GestureDetector(
-          onTap: () {},
-          child: notificationCard(dataModel),
+        return RepaintBoundary(
+          child: GestureDetector(
+            onTap: () {},
+            child: notificationCard(dataModel),
+          ),
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),

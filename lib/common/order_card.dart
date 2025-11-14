@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 
 class OrderCard extends StatefulWidget {
@@ -74,16 +75,22 @@ class _OrderCardState extends State<OrderCard> {
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),
-                  child: Image.asset(
-                    item.imageUrl,
-                    fit: BoxFit.cover,
+                  child: loadNetworkImage(
+                    imageUrl: item.imageUrl,
                     width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
                 );
               },
             ),
           ),
-
+          /**
+   * Image.asset(
+                    item.imageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  )
+   */
           // 🔹 Page Indicator (Dots)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

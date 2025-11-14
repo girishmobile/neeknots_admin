@@ -14,12 +14,22 @@ class CustomerOrdersPage extends StatelessWidget {
       child: Stack(
         children: [
           _listOfOrders(context),
-          customerInformation(context),
-          appNavigationBar(
-            title: "CUSTOMER ORDERS",
-            onTap: () {
-              Navigator.pop(context);
-            },
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: customerInformation(context),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: appNavigationBar(
+              title: "CUSTOMER ORDERS",
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
         ],
       ),
@@ -66,13 +76,18 @@ class CustomerOrdersPage extends StatelessWidget {
         top: appTopPadding(context, extra: 56 + 16),
         bottom: listBottom(context),
       ),
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: true,
+      cacheExtent: 500,
       itemBuilder: (context, index) {
         final order = sampleOrders[index % sampleOrders.length];
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, RouteName.orderDetailPage);
-          },
-          child: orderCard(order),
+        return RepaintBoundary(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.orderDetailPage);
+            },
+            child: orderCard(order),
+          ),
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),

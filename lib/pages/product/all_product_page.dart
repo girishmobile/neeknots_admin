@@ -67,12 +67,17 @@ class AllProductPage extends StatelessWidget {
         top: listTop(context, extra: 24),
         bottom: safeBottom,
       ),
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: true,
+      cacheExtent: 500,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, RouteName.productDetailPage);
-          },
-          child: _buildProductItem(),
+        return RepaintBoundary(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.productDetailPage);
+            },
+            child: _buildProductItem(),
+          ),
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),

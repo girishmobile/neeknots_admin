@@ -92,6 +92,53 @@ Widget appCircleImage({
   );
 }
 
+Widget loadNetworkImage({
+  required String? imageUrl,
+  double? width,
+  double? height,
+  IconData? icon,
+  Color? iconColor,
+  String? text,
+  BoxFit fit = BoxFit.contain,
+}) {
+  if (imageUrl != null && imageUrl.isNotEmpty) {
+    if (imageUrl.startsWith("http")) {
+      // Network image
+      return CachedNetworkImage(
+        imageUrl: imageUrl,
+        width: width ?? 100,
+        height: height ?? 100,
+        fit: fit,
+        placeholder: (_, __) => Center(
+          child: SizedBox(
+            height: 16,
+            width: 16,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+        errorWidget: (_, __, ___) => _fallBackContent(icon, iconColor, text),
+      );
+    } else if (imageUrl.contains(".png") ||
+        imageUrl.contains(".jpg") ||
+        imageUrl.contains(".jpeg") ||
+        imageUrl.contains(".svg")) {
+      // Asset image (valid extensions only)
+      return loadAssetImage(
+        name: imageUrl,
+        fit: BoxFit.cover,
+        width: width ?? 100,
+        height: height ?? 100,
+      );
+    } else {
+      // Invalid string (like "Girish") → fallback
+      return _fallBackContent(icon, iconColor, text ?? imageUrl);
+    }
+  }
+
+  // If no imageUrl, show fallback
+  return _fallBackContent(icon, iconColor, text);
+}
+
 Widget _buildImageOrFallback({
   required String? imageUrl,
   required double radius,
@@ -133,7 +180,11 @@ Widget _buildImageOrFallback({
       );
     } else {
       // Invalid string (like "Girish") → fallback
-      return _fallBackContent(icon, iconColor, text ?? imageUrl);
+      return _fallBackContent(
+        Icons.image_outlined,
+        iconColor,
+        text ?? imageUrl,
+      );
     }
   }
 
@@ -187,28 +238,21 @@ Widget appGlassEffect({
   double borderWidth = 1.0,
   VoidCallback? onTap,
 }) {
-  final shape = RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(borderRadius),
-  );
-
   return GestureDetector(
     onTap: onTap,
     child: ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-        child: Container(
-          padding: padding ?? const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: overlayColor.withValues(alpha: opacity),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              color: borderColor.withValues(alpha: 0.3),
-              width: borderWidth,
-            ),
+      child: Container(
+        padding: padding ?? const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: overlayColor.withValues(alpha: opacity),
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(
+            color: borderColor.withValues(alpha: 0.3),
+            width: borderWidth,
           ),
-          child: child,
         ),
+        child: child,
       ),
     ),
   );
@@ -323,10 +367,6 @@ Widget customerCard(CustomerModel customer) {
   return appGlassEffect(
     child: Row(
       children: [
-        // CircleAvatar(
-        //   radius: 24,
-        //   backgroundImage: AssetImage(customer.imageUrl),
-        // ),
         appCircleImage(imageUrl: customer.imageUrl, radius: 24),
         const SizedBox(width: 12),
         Expanded(
@@ -416,10 +456,10 @@ Widget orderCard(OrderModel order) {
             topLeft: Radius.circular(8),
             bottomLeft: Radius.circular(8),
           ),
-          child: loadAssetImage(
-            name: order.items.isNotEmpty
+          child: loadNetworkImage(
+            imageUrl: order.items.isNotEmpty
                 ? order.items[0].imageUrl
-                : productImage,
+                : productUrl,
             width: 100,
             height: 100,
             fit: BoxFit.cover,

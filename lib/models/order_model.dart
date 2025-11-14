@@ -46,14 +46,14 @@ List<OrderModel> sampleOrders = [
       OrderItem(
         productId: "PROD1",
         productName: "Product 1",
-        imageUrl: productImage_1,
+        imageUrl: productUrl,
         quantity: 2,
         price: 50.00,
       ),
       OrderItem(
         productId: "PROD2",
         productName: "Product 2",
-        imageUrl: productImage,
+        imageUrl: productUrl,
         quantity: 1,
         price: 50.75,
       ),
@@ -69,7 +69,7 @@ List<OrderModel> sampleOrders = [
       OrderItem(
         productId: "PROD3",
         productName: "Product 3",
-        imageUrl: productImage,
+        imageUrl: productUrl,
         quantity: 4,
         price: 50.00,
       ),

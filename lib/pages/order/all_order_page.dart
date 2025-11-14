@@ -46,13 +46,18 @@ class AllOrderPage extends StatelessWidget {
         top: listTop(context),
         bottom: listBottom(context),
       ),
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: true,
+      cacheExtent: 500,
       itemBuilder: (context, index) {
         final order = sampleOrders[index % sampleOrders.length];
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, RouteName.orderDetailPage);
-          },
-          child: orderItem(order),
+        return RepaintBoundary(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.orderDetailPage);
+            },
+            child: orderItem(order),
+          ),
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
