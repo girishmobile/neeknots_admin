@@ -56,78 +56,12 @@ class AllOrderPage extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, RouteName.orderDetailPage);
             },
-            child: orderItem(order),
+            child: orderCard(order),
           ),
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: 20,
-    );
-  }
-
-  Widget orderItem(OrderModel order) {
-    return appGlassEffect(
-      padding: const EdgeInsets.only(left: 1, right: 4, top: 1, bottom: 1),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8),
-              bottomLeft: Radius.circular(8),
-            ),
-            child: loadAssetImage(
-              name: order.items.isNotEmpty
-                  ? order.items[0].imageUrl
-                  : productImage,
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 6,
-              children: [
-                loadTitleText(title: "Order #${order.orderId}", fontSize: 14),
-                loadSubText(
-                  title: "Customer: ${order.customerName}",
-                  fontSize: 12,
-                ),
-                loadSubText(
-                  title: "Total: \$${order.totalAmount.toStringAsFixed(2)}",
-                  fontSize: 12,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-
-                    children: [
-                      Icon(
-                        Icons.local_shipping_outlined,
-                        size: 18,
-                        color: Colors.black54,
-                      ),
-                      const SizedBox(width: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 0),
-                        child: loadSubText(
-                          title: order.status.name,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          appForwardIcon(),
-        ],
-      ),
     );
   }
 }

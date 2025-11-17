@@ -3,6 +3,7 @@ import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/customer/customer_detail_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_orders_page.dart';
+import 'package:neeknots_admin/pages/customer/customer_spent_page.dart';
 import 'package:neeknots_admin/pages/dashboard_page.dart';
 import 'package:neeknots_admin/pages/login/forgot_password_page.dart';
 import 'package:neeknots_admin/pages/login/login_page.dart';
@@ -57,6 +58,9 @@ class RouteGenerate {
         break;
       case RouteName.customerOrdersPage:
         screen = CustomerOrdersPage();
+        break;
+      case RouteName.customerSpentPage:
+        screen = CustomerSpentPage();
         break;
       default:
         screen = AppScaffold(

@@ -53,7 +53,7 @@ List<OrderModel> sampleOrders = [
       OrderItem(
         productId: "PROD2",
         productName: "Product 2",
-        imageUrl: productUrl,
+        imageUrl: productUrl1,
         quantity: 1,
         price: 50.75,
       ),

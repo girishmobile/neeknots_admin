@@ -460,8 +460,8 @@ Widget orderCard(OrderModel order) {
             imageUrl: order.items.isNotEmpty
                 ? order.items[0].imageUrl
                 : productUrl,
-            width: 100,
-            height: 100,
+            width: 90,
+            height: 90,
             fit: BoxFit.cover,
           ),
         ),
@@ -664,6 +664,16 @@ Widget appProfileImage({
         radius: (radius - 2),
         onTap: () {},
       ),
+    ),
+  );
+}
+
+Widget appBackdropFilter({required Widget child, double borderRadius = 0}) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(borderRadius),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: child,
     ),
   );
 }
