@@ -1,9 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/customer/customer_page.dart';
 import 'package:neeknots_admin/pages/order/order_page.dart';
+import 'package:neeknots_admin/screens/calendar_screen.dart';
+import 'package:neeknots_admin/screens/home_screen.dart';
+import 'package:neeknots_admin/screens/leave_screen.dart';
+import 'package:neeknots_admin/screens/my_kpi_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
@@ -25,10 +30,14 @@ class DashboardPage extends StatelessWidget {
       ProductPage(),
       OrderPage(),
       HomePage(),
-      //LeaveScreen(),
-      //HomeScreen(),
-      //MyKpiScreen(),
       CustomerPage(),
+      SettingPage(),
+    ];
+    final hrmsScreens = [
+      CalendarScreen(),
+      LeaveScreen(),
+      HomeScreen(),
+      MyKpiScreen(),
       SettingPage(),
     ];
     final titles = [
@@ -43,7 +52,7 @@ class DashboardPage extends StatelessWidget {
       isTopSafeArea: true,
       child: Stack(
         children: [
-          screens[provider.pageIndex],
+          hrmsScreens[provider.pageIndex],
           // IndexedStack(index: provider.pageIndex, children: screens),
           //Top bar
           topBar(
@@ -52,7 +61,8 @@ class DashboardPage extends StatelessWidget {
             title: titles[provider.pageIndex],
           ),
           //Bottom bar
-          bottomBar(context),
+          //bottomBar(context),
+          hrmsBottomBar(context),
         ],
       ),
     );
@@ -79,12 +89,13 @@ class DashboardPage extends StatelessWidget {
           // ✅ Show logo only for Home, otherwise show title
           provider.pageIndex == 2
               ? loadAssetImage(name: headerlogo, height: 26)
-              : Text(
-                  title,
+              : appGradientText(
+                  text: title,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
+                  gradient: appGradient(),
                 ),
           appCircleIcon(
             icon: Icons.notifications_outlined,
@@ -186,6 +197,62 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
+  Widget hrmsBottomBar(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SafeArea(
+        bottom: true,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          child: _buildGlassEffect(
+            borderRadius: 45,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildBottomIcon(
+                  context,
+                  index: 0,
+                  icon: Icons.calendar_month_outlined,
+                  title: "Calendar",
+                  size: 24,
+                ),
+                _buildBottomIcon(
+                  context,
+                  index: 1,
+                  icon: Icons.rocket_launch_outlined,
+                  title: "Leave",
+                  size: 28,
+                ),
+                _buildBottomIcon(
+                  context,
+                  index: 2,
+                  icon: Icons.home_outlined,
+                  title: "Home",
+                  size: 28,
+                ),
+                _buildBottomIcon(
+                  context,
+                  index: 3,
+                  icon: Icons.bar_chart_outlined,
+                  title: "KPI",
+                  size: 28,
+                ),
+                _buildBottomIcon(
+                  context,
+                  index: 4,
+                  icon: Icons.settings_outlined,
+                  title: "Setting",
+                  size: 28,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBottomIcon(
     BuildContext context, {
     required int index,
@@ -206,13 +273,12 @@ class DashboardPage extends StatelessWidget {
               : LinearGradient(colors: [Colors.grey, Colors.black54]),
           onTap: () => context.read<DashboardProvider>().setPageIndex(index),
         ),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: isSelected ? Colors.deepPurple : Colors.black54,
-          ),
+        appGradientText(
+          text: title,
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+          gradient: isSelected
+              ? appGradient()
+              : LinearGradient(colors: [Colors.grey, Colors.black54]),
         ),
       ],
     );

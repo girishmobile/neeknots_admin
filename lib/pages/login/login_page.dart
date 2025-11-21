@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
-import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 
@@ -59,7 +58,7 @@ class LoginPage extends StatelessWidget {
                           "Forgot Password?",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            color: Colors.black87,
+                            color: Colors.black54,
                           ),
                         ),
                       ),
@@ -103,7 +102,7 @@ class LoginPage extends StatelessWidget {
                     "Sign Up",
                     style: TextStyle(
                       color: Colors.black87,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       // decoration: TextDecoration.underline,
                     ),
                   ),

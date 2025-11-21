@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -25,10 +26,11 @@ class AppScaffold extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [color1, color2, color3],
               ),
+              // gradient: orangeOptionA(),
             ),
           ),
           // Container(
-          //   color: Colors.white.withValues(alpha: 0.05), // light overlay
+          //   color: Colors.black.withValues(alpha: 0.05), // light overlay
           // ),
           SafeArea(top: isTopSafeArea, bottom: isBottomSafeArea, child: child),
         ],

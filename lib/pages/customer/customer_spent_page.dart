@@ -52,25 +52,25 @@ class CustomerSpentPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              loadTitleText(title: "Total Spent"),
-              loadTitleText(title: "\$1500.00"),
+              loadSubText(title: "Total Spent", fontWight: FontWeight.w500),
+              loadSubText(title: "\$1500.00", fontWight: FontWeight.w500),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              loadTitleText(title: "Total Orders"),
-              loadTitleText(title: "15"),
+              loadSubText(title: "Total Orders", fontWight: FontWeight.w500),
+              loadSubText(title: "15", fontWight: FontWeight.w500),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              loadTitleText(title: "Payment Method"),
-              loadTitleText(title: "Credit Card"),
+              loadSubText(title: "Payment Method", fontWight: FontWeight.w500),
+              loadSubText(title: "Credit Card", fontWight: FontWeight.w500),
             ],
           ),
-          loadSubText(title: "Last Order:- 10-Nov-2025"),
+          loadSubText(title: "Last Order:- 10-Nov-2025", fontSize: 12),
         ],
       ),
     );

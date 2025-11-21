@@ -233,7 +233,7 @@ Widget appGlassEffect({
   EdgeInsetsGeometry? padding,
   double blurSigma = 10,
   Color overlayColor = Colors.white,
-  double opacity = 0.15,
+  double opacity = 0.05,
   Color borderColor = Colors.white,
   double borderWidth = 1.0,
   VoidCallback? onTap,
@@ -248,7 +248,7 @@ Widget appGlassEffect({
           color: overlayColor.withValues(alpha: opacity),
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(
-            color: borderColor.withValues(alpha: 0.3),
+            color: borderColor.withValues(alpha: 0.35),
             width: borderWidth,
           ),
         ),
@@ -286,12 +286,7 @@ LinearGradient appGradient({
   return LinearGradient(
     begin: begin,
     end: end,
-    colors:
-        colors ??
-        [
-          Color.fromRGBO(93, 161, 251, 1), // Blue
-          Color.fromRGBO(153, 45, 254, 1), // Purple
-        ],
+    colors: colors ?? [btnColor1, btnColor2],
   );
 }
 
@@ -580,19 +575,20 @@ Widget appNavigationBar({required String title, VoidCallback? onTap}) {
             child: appCircleIcon(
               icon: Icons.arrow_back_rounded,
               iconSize: 24,
-              //gradient: appGradient(),
-              iconColor: Colors.black87,
+              gradient: appGradient(),
+              //iconColor: Colors.black87,
               onTap: onTap,
             ),
           ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
+          appGradientText(
+            text: title,
+            //textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
+            gradient: appGradient(),
           ),
         ],
       ),
