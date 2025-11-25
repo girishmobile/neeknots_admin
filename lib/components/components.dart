@@ -8,6 +8,9 @@ import 'package:neeknots_admin/models/customer_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 
+double leftPadding = 16;
+double rightPadding = 16;
+
 Widget appCircleIcon({
   IconData? icon,
   double? iconSize = 28,
@@ -258,6 +261,46 @@ Widget appGlassEffect({
   );
 }
 
+Widget appViewEffect({
+  required Widget child,
+  double borderRadius = 8,
+  EdgeInsetsGeometry? padding,
+  double blurSigma = 10,
+  Color? overlayColor, // make nullable so we can override
+  double opacity = 0.08, // slightly visible orange shade
+  Color? borderColor,
+  double borderWidth = 1.0,
+  VoidCallback? onTap,
+}) {
+  // Your three orange theme shades
+  final extraLightOrange = Color(
+    0xFFFFF3E8,
+  ).withValues(alpha: 0.3); // very soft
+
+  final effectiveBorderColor =
+      borderColor ?? const Color(0xFFFFAC55).withValues(alpha: 0.4);
+
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: padding ?? const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            extraLightOrange, // top soft shade
+            Colors.white,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(color: effectiveBorderColor, width: borderWidth),
+      ),
+      child: child,
+    ),
+  );
+}
+
 Widget appGradientText({
   required String text,
   required TextStyle style,
@@ -287,6 +330,45 @@ LinearGradient appGradient({
     begin: begin,
     end: end,
     colors: colors ?? [btnColor1, btnColor2],
+  );
+}
+
+LinearGradient appOffGradient({
+  Alignment begin = Alignment.topLeft,
+  Alignment end = Alignment.bottomRight,
+}) {
+  return LinearGradient(
+    begin: begin,
+    end: end,
+    colors: [Colors.grey, Colors.black54],
+  );
+}
+
+LinearGradient appOrangeOnGradient() {
+  return LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Colors.white, Colors.white60],
+  );
+}
+
+LinearGradient appOrangeOffGradient() {
+  return LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Colors.black45, Colors.black54],
+  );
+}
+
+LinearGradient appOrangeGradient({
+  Alignment begin = Alignment.topLeft,
+  Alignment end = Alignment.bottomRight,
+}) {
+  return LinearGradient(
+    begin: begin,
+    end: end,
+    colors: [color1, color2, color3],
+    stops: [0.0, 0.45, 1.0],
   );
 }
 
@@ -327,6 +409,53 @@ Widget appTextField({required String hintText, IconData? icon}) {
         borderSide: BorderSide(
           color: Colors.white.withValues(alpha: 0.8),
           width: 1.5,
+        ),
+      ),
+    ),
+    style: const TextStyle(color: Colors.black87),
+  );
+}
+
+Widget appOrangeTextField({required String hintText, IconData? icon}) {
+  return TextField(
+    decoration: InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(color: Colors.black54, fontSize: 14),
+      prefixIcon: icon != null
+          ? Padding(
+              padding: const EdgeInsets.only(left: 12, right: 8), // adjust here
+              child: Icon(icon, color: Colors.black54, size: 20),
+            )
+          : null,
+      prefixIconConstraints: const BoxConstraints(
+        minWidth: 32,
+        minHeight: 32,
+      ), // removes extra padding
+      filled: true,
+      fillColor: color1.withValues(
+        alpha: 0.15,
+      ), // Colors.white.withValues(alpha: 0.15), // glassy effect
+      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30), // rounded corners
+        borderSide: BorderSide(
+          color:
+              color2, // Colors.white.withValues(alpha: 0.4), // subtle border
+          width: 1.1,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(
+          color: color2, //Colors.white.withValues(alpha: 0.4),
+          width: 1.1,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(
+          color: color3, // Colors.white.withValues(alpha: 0.8),
+          width: 1.3,
         ),
       ),
     ),

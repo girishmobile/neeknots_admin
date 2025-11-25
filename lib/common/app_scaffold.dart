@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 
 class AppScaffold extends StatelessWidget {
   final Widget child;
@@ -21,12 +22,13 @@ class AppScaffold extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [color1, color2, color3],
-              ),
-              // gradient: orangeOptionA(),
+              // gradient: LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              //   colors: [color1, color2, color3],
+              // ),
+              //gradient: appOrangeGradient(),
+              color: Colors.white,
             ),
           ),
           // Container(

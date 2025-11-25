@@ -23,34 +23,39 @@ class SignupPage extends StatelessWidget {
               bottom: MediaQuery.of(context).padding.bottom + 16,
             ),
             children: [
-              loadAssetImage(name: headerlogo, height: 36),
+              //loadAssetImage(name: applogo, height: 64),
               const SizedBox(height: 32),
               Align(
                 alignment: Alignment.centerLeft,
-                child: loadTitleText(
-                  title: "CREATE ACCOUNT",
-                  fontSize: 18,
-                  fontWight: FontWeight.w500,
-                  fontColor: Colors.black54,
+                child: appGradientText(
+                  text: "CREATE ACCOUNT",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  gradient: appGradient(),
                 ),
               ),
               const SizedBox(height: 16),
-              appTextField(hintText: "Username", icon: Icons.person_outline),
+              appOrangeTextField(
+                hintText: "Username",
+                icon: Icons.person_outline,
+              ),
               const SizedBox(height: 16),
-              appTextField(
+              appOrangeTextField(
                 hintText: "Employee ID or Email",
                 icon: Icons.email_outlined,
               ),
               const SizedBox(height: 16),
-              appTextField(
+              appOrangeTextField(
                 hintText: "Mobile Number",
                 icon: Icons.phone_iphone_outlined,
               ),
               const SizedBox(height: 16),
-              appTextField(hintText: "Password", icon: Icons.lock_outline),
+              appOrangeTextField(
+                hintText: "Password",
+                icon: Icons.lock_outline,
+              ),
               const SizedBox(height: 16),
 
-              appTextField(
+              appOrangeTextField(
                 hintText: "Confirm Password",
                 icon: Icons.lock_outline,
               ),

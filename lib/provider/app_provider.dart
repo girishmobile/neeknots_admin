@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AppProvider extends ChangeNotifier {
-  int _appIndex = 1;
-  int get appIndex => _appIndex;
+  bool _isManager = false;
+  bool get isManager => _isManager;
 
-  void setAppIndex(int index) {
-    _appIndex = index;
+  int _pageIndex = 2;
+
+  int get pageIndex => _pageIndex;
+
+  void setPageIndex(int index) {
+    _pageIndex = index;
+    notifyListeners();
+  }
+
+  void setIsManagerOrSelf(bool value) {
+    _isManager = value;
     notifyListeners();
   }
 }

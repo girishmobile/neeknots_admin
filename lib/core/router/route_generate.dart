@@ -15,6 +15,7 @@ import 'package:neeknots_admin/pages/product/all_product_page.dart';
 import 'package:neeknots_admin/pages/product/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
 import 'package:neeknots_admin/pages/today_sale_page.dart';
+import 'package:neeknots_admin/screens/dashboard_screen.dart';
 
 class RouteGenerate {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -61,6 +62,10 @@ class RouteGenerate {
         break;
       case RouteName.customerSpentPage:
         screen = CustomerSpentPage();
+        break;
+      //Orange theme
+      case RouteName.dashboardScreen:
+        screen = DashboardScreen();
         break;
       default:
         screen = AppScaffold(

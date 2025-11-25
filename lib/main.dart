@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           fontFamily: "Poppins",
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         ),
         initialRoute: RouteName.loginPage,
         onGenerateRoute: RouteGenerate.onGenerateRoute,

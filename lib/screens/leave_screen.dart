@@ -12,7 +12,6 @@ class LeaveScreen extends StatelessWidget {
     return Stack(
       children: [
         _listOfLeaves(context),
-        _searchBar(context),
         _buildFilter(context),
         _leaveRequest(context),
       ],
@@ -24,43 +23,43 @@ class LeaveScreen extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 24,
         right: 24,
-        top: listTop(context, extra: 54),
+        top: listTop(context),
         bottom: listBottom(context, extra: 48),
       ),
       children: [
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         SizedBox(height: 8),
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         SizedBox(height: 8),
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         SizedBox(height: 8),
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         SizedBox(height: 8),
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         SizedBox(height: 8),
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         SizedBox(height: 8),
         SizedBox(
           height: 90,
-          child: appGlassEffect(child: Text("Leave requested...")),
+          child: appViewEffect(child: Text("Leave requested...")),
         ),
         //SizedBox(height: 48),
       ],
@@ -86,18 +85,16 @@ class LeaveScreen extends StatelessWidget {
               gradient: appGradient(colors: [btnColor1, btnColor2]),
               borderRadius: BorderRadius.circular(30),
             ),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton.icon(
               onPressed: () {},
-              icon: const Icon(
-                Icons.rocket_launch_outlined,
-                color: Colors.white,
-              ),
+
               label: const Text(
-                "Leave Request",
+                "Apply Leave",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -114,24 +111,27 @@ class LeaveScreen extends StatelessWidget {
       top: safeTop + topBarHeight + 8,
       left: 24,
       right: 24,
-      child: appTextField(hintText: "search", icon: Icons.search),
+      child: appOrangeTextField(hintText: "search", icon: Icons.search),
     );
   }
 
   Widget _buildFilter(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: listTop(context)),
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+    final safeTop = MediaQuery.of(context).padding.top;
+    final topBarHeight = 48.0; // from Dashboard SafeArea Row
+    return Positioned(
+      top: safeTop + topBarHeight + 8,
+      left: 24,
+      right: 24,
       child: Row(
         spacing: 16,
         children: [
           Expanded(
-            child: _buildGlassEffect(
+            child: appViewEffect(
               child: Text(
                 "Duration All",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   fontSize: 14,
                   color: Colors.black87,
                 ),
@@ -139,12 +139,12 @@ class LeaveScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: _buildGlassEffect(
+            child: appViewEffect(
               child: Text(
                 "Status All",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   fontSize: 14,
                   color: Colors.black54,
                 ),

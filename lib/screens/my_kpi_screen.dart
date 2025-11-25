@@ -23,7 +23,7 @@ class MyKpiScreen extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
-        childAspectRatio: 0.95,
+        childAspectRatio: 1,
       ),
       itemBuilder: (context, index) {
         return GestureDetector(onTap: () {}, child: _buildGridItem());
@@ -33,7 +33,7 @@ class MyKpiScreen extends StatelessWidget {
   }
 
   Widget _buildGridItem() {
-    return appGlassEffect(
+    return appViewEffect(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -41,9 +41,9 @@ class MyKpiScreen extends StatelessWidget {
         children: [
           // Flexible details section
           appCircleIcon(
-            icon: Icons.workspace_premium_outlined,
+            icon: Icons.line_axis_outlined,
             gradient: appGradient(),
-            iconSize: 54,
+            iconSize: 36,
           ),
           Text(
             "January",
@@ -89,7 +89,8 @@ class MyKpiScreen extends StatelessWidget {
               color: Colors.black87,
             ),
           ),
-          _buildGlassEffect(
+          appViewEffect(
+            padding: EdgeInsets.all(8),
             borderRadius: 8,
             child: Row(
               mainAxisSize: MainAxisSize.min,

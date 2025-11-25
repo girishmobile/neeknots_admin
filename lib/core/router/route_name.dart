@@ -14,4 +14,7 @@ class RouteName {
 
   static const String singUpPage = "/SingupPage";
   static const String forgotPasswordPage = "/ForgotPasswordPage";
+
+  //orange theme
+  static const String dashboardScreen = "/DashboardScreen";
 }

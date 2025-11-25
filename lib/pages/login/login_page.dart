@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 
@@ -21,24 +22,34 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Logo
-                    loadAssetImage(name: headerlogo, height: 64),
+                    loadAssetImage(name: applogo, height: 128),
+                    // appGradientText(
+                    //   text: "KAUSHALAM",
+                    //   style: TextStyle(
+                    //     fontSize: 36,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    //   gradient: appGradient(),
+                    // ),
                     const SizedBox(height: 32),
                     Align(
                       alignment: Alignment.center,
-                      child: loadTitleText(
-                        title: "WELCOME BACK!",
-                        fontSize: 18,
-                        fontWight: FontWeight.w500,
-                        fontColor: Colors.black54,
+                      child: appGradientText(
+                        text: "WELCOME BACK!",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        gradient: appGradient(),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    appTextField(
-                      hintText: "Employee ID or Email",
+                    appOrangeTextField(
+                      hintText: "Employee email",
                       icon: Icons.email_outlined,
                     ),
                     const SizedBox(height: 16),
-                    appTextField(
+                    appOrangeTextField(
                       hintText: "Password",
                       icon: Icons.lock_outline,
                     ),
@@ -71,7 +82,7 @@ class LoginPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
-                          RouteName.dashBoardPage,
+                          RouteName.dashboardScreen,
                           (route) => false,
                         );
                       },
@@ -88,25 +99,26 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Don't have an account? ",
+                  "© 2025 Kaushalam Inc",
                   style: TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
+                    fontSize: 12,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, RouteName.singUpPage);
-                  },
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                      // decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.pushNamed(context, RouteName.singUpPage);
+                //   },
+                //   child: const Text(
+                //     "Sign Up",
+                //     style: TextStyle(
+                //       color: Colors.black87,
+                //       fontWeight: FontWeight.w500,
+                //       // decoration: TextDecoration.underline,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

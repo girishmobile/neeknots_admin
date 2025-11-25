@@ -1,14 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/customer/customer_page.dart';
 import 'package:neeknots_admin/pages/order/order_page.dart';
-import 'package:neeknots_admin/screens/calendar_screen.dart';
-import 'package:neeknots_admin/screens/home_screen.dart';
-import 'package:neeknots_admin/screens/leave_screen.dart';
-import 'package:neeknots_admin/screens/my_kpi_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
@@ -33,13 +28,7 @@ class DashboardPage extends StatelessWidget {
       CustomerPage(),
       SettingPage(),
     ];
-    final hrmsScreens = [
-      CalendarScreen(),
-      LeaveScreen(),
-      HomeScreen(),
-      MyKpiScreen(),
-      SettingPage(),
-    ];
+
     final titles = [
       "LIST OF PRODUCT",
       "LIST OF ORDER",
@@ -52,7 +41,7 @@ class DashboardPage extends StatelessWidget {
       isTopSafeArea: true,
       child: Stack(
         children: [
-          hrmsScreens[provider.pageIndex],
+          screens[provider.pageIndex],
           // IndexedStack(index: provider.pageIndex, children: screens),
           //Top bar
           topBar(
@@ -61,8 +50,8 @@ class DashboardPage extends StatelessWidget {
             title: titles[provider.pageIndex],
           ),
           //Bottom bar
-          //bottomBar(context),
-          hrmsBottomBar(context),
+          bottomBar(context),
+          //hrmsBottomBar(context),
         ],
       ),
     );
@@ -88,7 +77,11 @@ class DashboardPage extends StatelessWidget {
 
           // ✅ Show logo only for Home, otherwise show title
           provider.pageIndex == 2
-              ? loadAssetImage(name: headerlogo, height: 26)
+              ? appGradientText(
+                  text: "KAUSHALAM",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                  gradient: appGradient(),
+                ) //loadAssetImage(name: headerlogo, height: 26)
               : appGradientText(
                   text: title,
                   style: const TextStyle(
