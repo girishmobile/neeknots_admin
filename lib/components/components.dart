@@ -365,14 +365,6 @@ LinearGradient appOffGradient({
   );
 }
 
-LinearGradient appOrangeOnGradient() {
-  return LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Colors.white, Colors.white60],
-  );
-}
-
 LinearGradient appOrangeOffGradient() {
   return LinearGradient(
     begin: Alignment.topLeft,
@@ -597,6 +589,114 @@ Widget employeeCard(CustomerModel customer) {
 
         SizedBox(width: 4),
         appForwardIcon(),
+      ],
+    ),
+  );
+}
+
+Widget leaveCard(CustomerModel customer) {
+  return appViewEffect(
+    child: Column(
+      spacing: 4,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            appCircleImage(imageUrl: customer.imageUrl, radius: 24),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          customer.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Days: 3",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Text(
+                    "Leave On:-24-Nov to 26-Nov",
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Row(
+                    spacing: 4,
+                    children: [
+                      Text(
+                        "Reason:",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Going to out of town",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        SizedBox(height: 8),
+
+        Row(
+          spacing: 8,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            acceptOrRejectBtn(
+              bgColor: Colors.green,
+              title: "Accept",
+              icon: Icons.check,
+              onTap: () {},
+            ),
+            acceptOrRejectBtn(
+              bgColor: Colors.red,
+              title: "Decline",
+              icon: Icons.close,
+              onTap: () {},
+            ),
+            acceptOrRejectBtn(
+              title: "Info",
+              bgColor: Colors.grey,
+
+              icon: Icons.info,
+              onTap: () {
+                print("Info");
+              },
+            ),
+          ],
+        ),
       ],
     ),
   );
@@ -959,4 +1059,115 @@ loadMultiLineTextField({
       ),
     ),
   );
+}
+
+Widget leaveActionButton({
+  required String title,
+  required Color bgColor,
+  required Color textColor,
+  IconData? icon,
+  required VoidCallback onTap,
+}) {
+  return Material(
+    color: Colors.transparent,
+    borderRadius: BorderRadius.circular(4),
+    child: Ink(
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: onTap,
+        child: Container(
+          height: 32,
+          padding: EdgeInsets.symmetric(horizontal: 12),
+
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 18, color: textColor),
+                SizedBox(width: 6),
+              ],
+              Text(
+                title,
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget acceptOrRejectBtn({
+  required Color bgColor,
+  required String title,
+  IconData? icon,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      height: 32,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: bgColor.withValues(alpha: 0.07),
+        border: Border.all(color: bgColor.withValues(alpha: 0.6), width: 1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 18, color: bgColor),
+            SizedBox(width: 4),
+          ],
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: bgColor,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Future<DateTime?> appDatePicker(
+  BuildContext context, {
+  required DateTime minDate,
+}) async {
+  final DateTime today = DateTime.now();
+  final DateTime endOfYear = DateTime(today.year, 12, 31);
+
+  DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: minDate,
+    firstDate: minDate,
+    lastDate: endOfYear,
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: Colors.orange,
+            onPrimary: Colors.white,
+            onSurface: Colors.black,
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
+
+  return pickedDate; // 👈 return selected date
 }

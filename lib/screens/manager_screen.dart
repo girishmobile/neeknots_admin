@@ -18,6 +18,34 @@ class ManagerScreen extends StatelessWidget {
           ),
           children: [
             appGradientText(
+              text: "Leave Request",
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+              gradient: appGradient(),
+            ),
+            const SizedBox(height: 8),
+
+            _buildRowItem(
+              title: "Today's leave (1)",
+              icon: Icons.pending_actions_outlined,
+              onTap: () {},
+            ),
+            const SizedBox(height: 12),
+            _buildRowItem(
+              icon: Icons.rocket_launch_outlined,
+              title: "Pending leave request",
+              onTap: () =>
+                  Navigator.pushNamed(context, RouteName.pendingLeavePage),
+            ),
+            const SizedBox(height: 12),
+            _buildRowItem(
+              icon: Icons.people_outline,
+              title: "Employees leave balance",
+              onTap: () =>
+                  Navigator.pushNamed(context, RouteName.employeeLeaveBalance),
+            ),
+
+            SizedBox(height: 16),
+            appGradientText(
               text: "HR Department",
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               gradient: appGradient(),
@@ -46,27 +74,7 @@ class ManagerScreen extends StatelessWidget {
               title: "Online Employees",
             ),
             const SizedBox(height: 16),
-            appGradientText(
-              text: "Leave Request",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              gradient: appGradient(),
-            ),
-            const SizedBox(height: 8),
-            _buildRowItem(
-              icon: Icons.rocket_launch_outlined,
-              title: "Pending leave request",
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.pendingLeavePage),
-            ),
-            const SizedBox(height: 12),
-            _buildRowItem(
-              icon: Icons.people_outline,
-              title: "Employees leave balance",
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.employeeLeaveBalance),
-            ),
 
-            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

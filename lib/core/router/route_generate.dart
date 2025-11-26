@@ -15,6 +15,7 @@ import 'package:neeknots_admin/pages/product/all_product_page.dart';
 import 'package:neeknots_admin/pages/product/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
 import 'package:neeknots_admin/pages/today_sale_page.dart';
+import 'package:neeknots_admin/screens/all_leave_page.dart';
 import 'package:neeknots_admin/screens/apply_leave_page.dart';
 import 'package:neeknots_admin/screens/birthday_list.dart';
 import 'package:neeknots_admin/screens/dashboard_screen.dart';
@@ -49,71 +50,75 @@ class RouteGenerate {
         screen = DashboardPage();
         break;
       case RouteName.profilePage:
-        screen = ProfilePage();
+        screen = const ProfilePage();
         break;
       case RouteName.notificationPage:
-        screen = NotificationPage();
+        screen = const NotificationPage();
         break;
       case RouteName.allProductPage:
-        screen = AllProductPage();
+        screen = const AllProductPage();
         break;
       case RouteName.productDetailPage:
-        screen = ProductDetailPage();
+        screen = const ProductDetailPage();
         break;
       case RouteName.allOrderPage:
-        screen = AllOrderPage();
+        screen = const AllOrderPage();
         break;
       case RouteName.orderDetailPage:
-        screen = OrderDetailPage();
+        screen = const OrderDetailPage();
         break;
       case RouteName.customerDetailPage:
-        screen = CustomerDetailPage();
+        screen = const CustomerDetailPage();
         break;
       case RouteName.customerOrdersPage:
-        screen = CustomerOrdersPage();
+        screen = const CustomerOrdersPage();
         break;
       case RouteName.customerSpentPage:
-        screen = CustomerSpentPage();
+        screen = const CustomerSpentPage();
         break;
       //Orange theme
       case RouteName.dashboardScreen:
-        screen = DashboardScreen();
+        screen = const DashboardScreen();
         break;
       case RouteName.leaveSummaryPage:
-        screen = LeaveSummaryPage();
+        final args = settings.arguments as String;
+        screen = LeaveSummaryPage(pageTitle: args);
         break;
       case RouteName.applyLeavePage:
-        screen = ApplyLeavePage();
+        screen = const ApplyLeavePage();
         break;
       case RouteName.profileScreen:
-        screen = ProfileScreen();
+        screen = const ProfileScreen();
         break;
       case RouteName.editProfilePage:
-        screen = EditProfilePage();
+        screen = const EditProfilePage();
         break;
       case RouteName.changePasswordPage:
-        screen = ChangePasswordPage();
+        screen = const ChangePasswordPage();
         break;
       case RouteName.myHoursPage:
-        screen = MyHoursPage();
+        screen = const MyHoursPage();
         break;
       case RouteName.allEmplyeePage:
-        screen = AllEmplyeePage();
+        screen = const AllEmplyeePage();
         break;
       case RouteName.employeeDetailPage:
-        screen = EmployeeDetailPage();
+        screen = const EmployeeDetailPage();
         break;
       case RouteName.holidayPage:
-        screen = HolidayPage();
+        screen = const HolidayPage();
         break;
       case RouteName.pendingLeavePage:
-        screen = PendingLeavePage();
+        screen = const PendingLeavePage();
         break;
       case RouteName.birthdayList:
-        screen = BirthdayList();
+        screen = const BirthdayList();
         break;
       case RouteName.employeeLeaveBalance:
-        screen = EmployeeLeaveBalance();
+        screen = const EmployeeLeaveBalance();
+        break;
+      case RouteName.allLeavePage:
+        screen = const AllLeavePage();
         break;
       default:
         screen = AppScaffold(

@@ -2,46 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
-import 'package:neeknots_admin/core/router/route_name.dart';
-import 'package:neeknots_admin/models/customer_model.dart';
 
-class PendingLeavePage extends StatefulWidget {
-  const PendingLeavePage({super.key});
+class AllLeavePage extends StatefulWidget {
+  const AllLeavePage({super.key});
 
   @override
-  State<PendingLeavePage> createState() => _PendingLeavePageState();
+  State<AllLeavePage> createState() => _AllLeavePageState();
 }
 
-class _PendingLeavePageState extends State<PendingLeavePage> {
+class _AllLeavePageState extends State<AllLeavePage> {
   int selectedIndex = 0;
 
   final List<String> filters = [
-    "Recent Leave",
-    "Today Leave",
-    "Early Leave",
-    "Pending Leave",
-    "Approved Leave",
-    "Rejected Leave",
-    "Canceled Leave",
+    "All",
+    "Casual Leave",
+    "Sick Leave",
+    "Paid Leave",
   ];
-
   @override
   Widget build(BuildContext context) {
-    final safeTop = MediaQuery.of(context).padding.top;
-    final topBarHeight = 48.0; // from Dashboard SafeArea Row
     return AppScaffold(
       child: Stack(
         children: [
-          _listOfLeaveRequest(context),
-
+          ListView(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: listTop(context),
+              bottom: appBottomPadding(context),
+            ),
+            children: [Text("comming soon...")],
+          ),
           Positioned(
-            top: safeTop + topBarHeight + 8,
+            top: appTopPadding(context),
             left: 24,
             right: 24,
             child: _filterOption(),
           ),
           appNavigationBar(
-            title: "LEAVES REQUEST",
+            title: "ALL LEAVES",
             onTap: () => Navigator.pop(context),
           ),
         ],
@@ -52,7 +51,7 @@ class _PendingLeavePageState extends State<PendingLeavePage> {
   Widget _filterOption() {
     return SizedBox(
       width: double.infinity,
-      height: 44,
+      height: 36,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
 
@@ -97,33 +96,6 @@ class _PendingLeavePageState extends State<PendingLeavePage> {
         separatorBuilder: (_, _) => SizedBox(width: 10),
         itemCount: filters.length,
       ),
-    );
-  }
-
-  Widget _listOfLeaveRequest(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
-        top: appTopPadding(context, extra: 56),
-        bottom: appBottomPadding(context),
-      ),
-      addAutomaticKeepAlives: false,
-      addRepaintBoundaries: true,
-      cacheExtent: 500,
-      itemBuilder: (context, index) {
-        final custModel = sampleCustomers[index];
-        return RepaintBoundary(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.employeeDetailPage);
-            },
-            child: leaveCard(custModel),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
-      itemCount: sampleCustomers.length,
     );
   }
 }

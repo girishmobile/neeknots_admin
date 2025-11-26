@@ -76,16 +76,22 @@ class EmployeeScreen extends StatelessWidget {
             _buildRowItem(
               title: "Pending leave (1)",
               icon: Icons.pending_actions_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () => Navigator.pushNamed(
+                context,
+                RouteName.leaveSummaryPage,
+                arguments: "PENDING LEAVES",
+              ),
             ),
             const SizedBox(height: 12),
 
             _buildRowItem(
               title: "Approval leave (2)",
               icon: Icons.approval_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () => Navigator.pushNamed(
+                context,
+                RouteName.leaveSummaryPage,
+                arguments: "APROVAL LEAVES",
+              ),
             ),
 
             const SizedBox(height: 12),
@@ -93,23 +99,28 @@ class EmployeeScreen extends StatelessWidget {
             _buildRowItem(
               title: "Cancel leave (1)",
               icon: Icons.cancel_presentation_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () => Navigator.pushNamed(
+                context,
+                RouteName.leaveSummaryPage,
+                arguments: "CANCEL LEAVES",
+              ),
             ),
             const SizedBox(height: 12),
 
             _buildRowItem(
               title: "Reject leave (0)",
               icon: Icons.close_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () => Navigator.pushNamed(
+                context,
+                RouteName.leaveSummaryPage,
+                arguments: "REJECT LEAVES",
+              ),
             ),
             const SizedBox(height: 12),
             _buildRowItem(
               title: "All leave (4)",
               icon: Icons.calendar_month_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () => Navigator.pushNamed(context, RouteName.allLeavePage),
             ),
 
             const SizedBox(height: 16),
@@ -123,24 +134,24 @@ class EmployeeScreen extends StatelessWidget {
             _buildRowItem(
               title: "Casual Leaves (9)",
               icon: Icons.pending_actions_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () {},
+              //Navigator.pushNamed(context, RouteName.leaveSummaryPage),
             ),
             const SizedBox(height: 12),
 
             _buildRowItem(
               title: "Sick Leaves (2)",
               icon: Icons.sick_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () {},
+              //Navigator.pushNamed(context, RouteName.leaveSummaryPage),
             ),
             const SizedBox(height: 12),
 
             _buildRowItem(
               title: "Paid Leaves (0)",
               icon: Icons.paid_outlined,
-              onTap: () =>
-                  Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+              onTap: () {},
+              // Navigator.pushNamed(context, RouteName.leaveSummaryPage),
             ),
             const SizedBox(height: 16),
             Row(

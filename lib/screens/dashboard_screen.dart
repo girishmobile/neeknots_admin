@@ -233,7 +233,7 @@ class DashboardScreen extends StatelessWidget {
           padding: EdgeInsets.only(bottom: safeBottom + bottomBarHeight + 4),
           child: Container(
             //margin: const EdgeInsets.symmetric(horizontal: 24),
-            height: 48,
+            height: 44,
             decoration: BoxDecoration(
               gradient: appGradient(colors: [btnColor1, btnColor2]),
               borderRadius: BorderRadius.circular(30),
@@ -247,8 +247,8 @@ class DashboardScreen extends StatelessWidget {
                 "Apply Leave",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),

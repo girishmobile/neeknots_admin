@@ -30,4 +30,5 @@ class RouteName {
   static const String birthdayList = '/BirthdayList';
   static const String pendingLeavePage = '/PendingLeavePage';
   static const String employeeLeaveBalance = "/EmployeeLeaveBalance";
+  static const String allLeavePage = '/AllLeavePage';
 }
