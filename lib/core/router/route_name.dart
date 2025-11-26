@@ -15,6 +15,19 @@ class RouteName {
   static const String singUpPage = "/SingupPage";
   static const String forgotPasswordPage = "/ForgotPasswordPage";
 
-  //orange theme
+  //HRMS with Orange theme
   static const String dashboardScreen = "/DashboardScreen";
+  static const String leaveSummaryPage = '/LeaveSummaryPage';
+  static const String applyLeavePage = "/ApplyLeavePage";
+  static const String profileScreen = "/ProfileScreen";
+  //Under setting screen
+  static const String editProfilePage = '/EditProfilePage';
+  static const String changePasswordPage = "/ChangePasswordPage";
+  static const String myHoursPage = '/MyHoursPage';
+  static const String allEmplyeePage = "/AllEmployeePage";
+  static const String employeeDetailPage = '/EmployeeDetailPage';
+  static const String holidayPage = '/HolidayPage';
+  static const String birthdayList = '/BirthdayList';
+  static const String pendingLeavePage = '/PendingLeavePage';
+  static const String employeeLeaveBalance = "/EmployeeLeaveBalance";
 }

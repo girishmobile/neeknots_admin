@@ -8,11 +8,12 @@ import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/setting_page.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
-import 'package:neeknots_admin/provider/dashboard_provider.dart';
+import 'package:neeknots_admin/screens/attendance_screen.dart';
 import 'package:neeknots_admin/screens/calendar_screen.dart';
 import 'package:neeknots_admin/screens/home_screen.dart';
 import 'package:neeknots_admin/screens/leave_screen.dart';
 import 'package:neeknots_admin/screens/my_kpi_screen.dart';
+import 'package:neeknots_admin/screens/setting_screen.dart';
 import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -24,10 +25,10 @@ class DashboardScreen extends StatelessWidget {
 
     final hrmsScreens = [
       CalendarScreen(),
-      LeaveScreen(),
-      HomeScreen(),
       MyKpiScreen(),
-      SettingPage(),
+      HomeScreen(),
+      AttendanceScreen(),
+      SettingScreen(),
     ];
     final titles = [
       "CALENDAR",
@@ -68,7 +69,7 @@ class DashboardScreen extends StatelessWidget {
             imageUrl: hostImage,
             radius: 18,
             onTap: () {
-              Navigator.pushNamed(context, RouteName.profilePage);
+              Navigator.pushNamed(context, RouteName.profileScreen);
             },
           ),
 
@@ -125,8 +126,8 @@ class DashboardScreen extends StatelessWidget {
                 _buildBottomIcon(
                   context,
                   index: 1,
-                  icon: Icons.rocket_launch_outlined,
-                  title: "Leaves",
+                  icon: Icons.grade_outlined,
+                  title: "My KPI",
                   size: 28,
                 ),
                 _buildBottomIcon(
@@ -139,9 +140,9 @@ class DashboardScreen extends StatelessWidget {
                 _buildBottomIcon(
                   context,
                   index: 3,
-                  icon: Icons.grade_outlined,
+                  icon: Icons.perm_contact_cal_outlined,
                   title: "Attendance",
-                  size: 28,
+                  size: 24,
                 ),
                 _buildBottomIcon(
                   context,
@@ -195,7 +196,7 @@ class DashboardScreen extends StatelessWidget {
     required String title,
     double? size,
   }) {
-    final provider = context.watch<DashboardProvider>();
+    final provider = context.watch<AppProvider>();
     final isSelected = provider.pageIndex == index;
 
     return Column(
@@ -239,7 +240,8 @@ class DashboardScreen extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton.icon(
-              onPressed: () {},
+              onPressed: () =>
+                  Navigator.pushNamed(context, RouteName.applyLeavePage),
 
               label: const Text(
                 "Apply Leave",

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 
-class LeaveSummaryPage extends StatelessWidget {
-  const LeaveSummaryPage({super.key});
+class HolidayPage extends StatelessWidget {
+  const HolidayPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +14,12 @@ class LeaveSummaryPage extends StatelessWidget {
             padding: EdgeInsets.only(
               left: 24,
               right: 24,
-              top: listTop(context),
+              top: appTopPadding(context),
             ),
-            children: [Center(child: Text("Comming soon"))],
+            children: [Center(child: Text("Holiday List"))],
           ),
           appNavigationBar(
-            title: "Leave Summary",
+            title: "HOLIDAY LIST",
             onTap: () {
               Navigator.pop(context);
             },

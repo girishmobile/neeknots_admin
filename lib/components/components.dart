@@ -66,16 +66,19 @@ Widget appCircleIcon({
 Widget appCircleImage({
   IconData? icon,
   double radius = 24,
-  double? iconSize = 20,
+  double? iconSize = 24,
   VoidCallback? onTap,
   Color? iconColor = Colors.white,
   String? text,
   Color? backgroundColor,
   String? imageUrl,
+  Color? borderColor = Colors.white24,
 }) {
   return Material(
     color: Colors.transparent,
-    shape: CircleBorder(side: BorderSide(color: Colors.white24, width: 1.5)),
+    shape: CircleBorder(
+      side: BorderSide(color: borderColor ?? Colors.white24, width: 1),
+    ),
     child: InkWell(
       splashColor: Colors.transparent,
       customBorder: const CircleBorder(),
@@ -89,6 +92,7 @@ Widget appCircleImage({
           icon: icon,
           iconColor: iconColor,
           text: text,
+          iconSize: iconSize,
         ),
       ),
     ),
@@ -103,6 +107,7 @@ Widget loadNetworkImage({
   Color? iconColor,
   String? text,
   BoxFit fit = BoxFit.contain,
+  double iconSize = 24,
 }) {
   if (imageUrl != null && imageUrl.isNotEmpty) {
     if (imageUrl.startsWith("http")) {
@@ -119,7 +124,8 @@ Widget loadNetworkImage({
             child: CircularProgressIndicator(strokeWidth: 2),
           ),
         ),
-        errorWidget: (_, __, ___) => _fallBackContent(icon, iconColor, text),
+        errorWidget: (_, __, ___) =>
+            _fallBackContent(icon, iconColor, text, iconSize),
       );
     } else if (imageUrl.contains(".png") ||
         imageUrl.contains(".jpg") ||
@@ -134,12 +140,12 @@ Widget loadNetworkImage({
       );
     } else {
       // Invalid string (like "Girish") → fallback
-      return _fallBackContent(icon, iconColor, text ?? imageUrl);
+      return _fallBackContent(icon, iconColor, text ?? imageUrl, iconSize);
     }
   }
 
   // If no imageUrl, show fallback
-  return _fallBackContent(icon, iconColor, text);
+  return _fallBackContent(icon, iconColor, text, iconSize);
 }
 
 Widget _buildImageOrFallback({
@@ -148,6 +154,7 @@ Widget _buildImageOrFallback({
   IconData? icon,
   Color? iconColor,
   String? text,
+  double? iconSize = 24,
 }) {
   if (imageUrl != null && imageUrl.isNotEmpty) {
     if (imageUrl.startsWith("http")) {
@@ -165,7 +172,8 @@ Widget _buildImageOrFallback({
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
           ),
-          errorWidget: (_, __, ___) => _fallBackContent(icon, iconColor, text),
+          errorWidget: (_, __, ___) =>
+              _fallBackContent(icon, iconColor, text, iconSize),
         ),
       );
     } else if (imageUrl.contains(".png") ||
@@ -187,24 +195,30 @@ Widget _buildImageOrFallback({
         Icons.image_outlined,
         iconColor,
         text ?? imageUrl,
+        iconSize,
       );
     }
   }
 
   // If no imageUrl, show fallback
-  return _fallBackContent(icon, iconColor, text);
+  return _fallBackContent(icon, iconColor, text, iconSize);
 }
 
-Widget _fallBackContent(IconData? icon, Color? iconColor, String? text) {
+Widget _fallBackContent(
+  IconData? icon,
+  Color? iconColor,
+  String? text,
+  double? iconSize,
+) {
   if (icon != null) {
-    return Icon(icon, color: iconColor, size: 20);
+    return Icon(icon, color: iconColor, size: iconSize ?? 24);
   } else if (text != null && text.isNotEmpty) {
     return Text(
       text.characters.first.toUpperCase(),
       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
     );
   } else {
-    return const Icon(Icons.person, size: 20, color: Colors.grey);
+    return const Icon(Icons.person, size: 24, color: Colors.grey);
   }
 }
 
@@ -261,6 +275,20 @@ Widget appGlassEffect({
   );
 }
 
+LinearGradient viewBackgroundGradinet() {
+  final extraLightOrange = Color(
+    0xFFFFF3E8,
+  ).withValues(alpha: 0.3); // very soft
+  return LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      extraLightOrange, // top soft shade
+      Colors.white,
+    ],
+  );
+}
+
 Widget appViewEffect({
   required Widget child,
   double borderRadius = 8,
@@ -285,14 +313,7 @@ Widget appViewEffect({
     child: Container(
       padding: padding ?? const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            extraLightOrange, // top soft shade
-            Colors.white,
-          ],
-        ),
+        gradient: viewBackgroundGradinet(),
         borderRadius: BorderRadius.circular(borderRadius),
         border: Border.all(color: effectiveBorderColor, width: borderWidth),
       ),
@@ -487,6 +508,15 @@ double appTopPadding(BuildContext context, {double extra = 0}) {
   return listTop;
 }
 
+double appBottomPadding(BuildContext context, {double extra = 0}) {
+  final safeBottom = MediaQuery.of(context).padding.bottom;
+  // const topBarHeight = 48.0; // your Dashboard SafeArea Row
+
+  final listTop = safeBottom + 8 + extra; // search bar height + spacing
+
+  return listTop;
+}
+
 Widget customerCard(CustomerModel customer) {
   return appGlassEffect(
     child: Row(
@@ -531,8 +561,96 @@ Widget customerCard(CustomerModel customer) {
   );
 }
 
+Widget employeeCard(CustomerModel customer) {
+  return appViewEffect(
+    child: Row(
+      children: [
+        appCircleImage(imageUrl: customer.imageUrl, radius: 24),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 4,
+            children: [
+              Text(
+                customer.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                customer.email,
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+              Text(
+                "Joined:- 13-June-2013",
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        SizedBox(width: 4),
+        appForwardIcon(),
+      ],
+    ),
+  );
+}
+
+Widget holidayCard() {
+  return SizedBox(
+    width: 300,
+    child: appViewEffect(
+      padding: const EdgeInsets.only(left: 16, right: 8, bottom: 8, top: 8),
+      child: Row(
+        spacing: 8,
+        children: [
+          Container(
+            // width: 98,
+            // height: 98,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              //color: Colors.white,
+              // borderRadius: BorderRadius.circular(4),
+              gradient: viewBackgroundGradinet(),
+              border: Border.all(color: btnColor2, width: 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                loadTitleText(title: "25", fontSize: 14, fontColor: btnColor2),
+                loadTitleText(
+                  title: "Thus",
+                  fontSize: 14,
+                  fontColor: btnColor2,
+                ),
+              ],
+            ),
+          ),
+          Column(
+            spacing: 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              loadTitleText(title: "Christmas", fontSize: 14),
+              loadSubText(title: "25-Dec-2025", fontSize: 12),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget notificationCard(NotificationModel notification) {
-  return appGlassEffect(
+  return appViewEffect(
     child: Row(
       children: [
         Expanded(
@@ -799,6 +917,46 @@ Widget appBackdropFilter({required Widget child, double borderRadius = 0}) {
     child: BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: child,
+    ),
+  );
+}
+
+loadMultiLineTextField({
+  Color? bgColor,
+  String? hintText,
+  TextEditingController? textController,
+  int? maxLine,
+  int? minLine,
+}) {
+  final effectiveBorderColor = const Color(0xFFFFAC55).withValues(alpha: 0.4);
+
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: effectiveBorderColor),
+
+      gradient: viewBackgroundGradinet(),
+    ),
+    child: TextField(
+      keyboardType: TextInputType.multiline,
+      controller: textController,
+      maxLines: maxLine ?? 7,
+      minLines: minLine ?? 4,
+      style: TextStyle(
+        color: Colors.black87,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      decoration: InputDecoration(
+        hintText: hintText ?? 'Enter your message...',
+        hintStyle: TextStyle(
+          color: Colors.black45,
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+        ),
+        border: InputBorder.none,
+      ),
     ),
   );
 }

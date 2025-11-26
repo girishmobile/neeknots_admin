@@ -15,7 +15,19 @@ import 'package:neeknots_admin/pages/product/all_product_page.dart';
 import 'package:neeknots_admin/pages/product/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
 import 'package:neeknots_admin/pages/today_sale_page.dart';
+import 'package:neeknots_admin/screens/apply_leave_page.dart';
+import 'package:neeknots_admin/screens/birthday_list.dart';
 import 'package:neeknots_admin/screens/dashboard_screen.dart';
+import 'package:neeknots_admin/screens/employee_leave_balance.dart';
+import 'package:neeknots_admin/screens/holiday_page.dart';
+import 'package:neeknots_admin/screens/leave_summary_page.dart';
+import 'package:neeknots_admin/screens/pending_leave_page.dart';
+import 'package:neeknots_admin/screens/profile_screen.dart';
+import 'package:neeknots_admin/screens/setting/all_emplyee_page.dart';
+import 'package:neeknots_admin/screens/setting/change_password_page.dart';
+import 'package:neeknots_admin/screens/setting/edit_profile_page.dart';
+import 'package:neeknots_admin/screens/setting/employee_detail_page.dart';
+import 'package:neeknots_admin/screens/setting/my_hours_page.dart';
 
 class RouteGenerate {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -66,6 +78,42 @@ class RouteGenerate {
       //Orange theme
       case RouteName.dashboardScreen:
         screen = DashboardScreen();
+        break;
+      case RouteName.leaveSummaryPage:
+        screen = LeaveSummaryPage();
+        break;
+      case RouteName.applyLeavePage:
+        screen = ApplyLeavePage();
+        break;
+      case RouteName.profileScreen:
+        screen = ProfileScreen();
+        break;
+      case RouteName.editProfilePage:
+        screen = EditProfilePage();
+        break;
+      case RouteName.changePasswordPage:
+        screen = ChangePasswordPage();
+        break;
+      case RouteName.myHoursPage:
+        screen = MyHoursPage();
+        break;
+      case RouteName.allEmplyeePage:
+        screen = AllEmplyeePage();
+        break;
+      case RouteName.employeeDetailPage:
+        screen = EmployeeDetailPage();
+        break;
+      case RouteName.holidayPage:
+        screen = HolidayPage();
+        break;
+      case RouteName.pendingLeavePage:
+        screen = PendingLeavePage();
+        break;
+      case RouteName.birthdayList:
+        screen = BirthdayList();
+        break;
+      case RouteName.employeeLeaveBalance:
+        screen = EmployeeLeaveBalance();
         break;
       default:
         screen = AppScaffold(

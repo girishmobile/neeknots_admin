@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
 
 class ManagerScreen extends StatelessWidget {
   const ManagerScreen({super.key});
@@ -22,7 +23,12 @@ class ManagerScreen extends StatelessWidget {
               gradient: appGradient(),
             ),
             const SizedBox(height: 8),
-            _buildRowItem(icon: Icons.people_outline, title: "Total Employees"),
+            _buildRowItem(
+              icon: Icons.people_outline,
+              title: "Total Employees",
+              onTap: () =>
+                  Navigator.pushNamed(context, RouteName.allEmplyeePage),
+            ),
             const SizedBox(height: 12),
             _buildRowItem(
               title: "Today's leave (1)",
@@ -41,28 +47,49 @@ class ManagerScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             appGradientText(
-              text: "Pending Approvals",
+              text: "Leave Request",
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               gradient: appGradient(),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              height: 340,
-              child: appViewEffect(
-                child: Center(child: Text("comming soon...")),
-              ),
+            _buildRowItem(
+              icon: Icons.rocket_launch_outlined,
+              title: "Pending leave request",
+              onTap: () =>
+                  Navigator.pushNamed(context, RouteName.pendingLeavePage),
             ),
-            const SizedBox(height: 16),
-            appGradientText(
-              text: "Upcoming Holidays",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              gradient: appGradient(),
+            const SizedBox(height: 12),
+            _buildRowItem(
+              icon: Icons.people_outline,
+              title: "Employees leave balance",
+              onTap: () =>
+                  Navigator.pushNamed(context, RouteName.employeeLeaveBalance),
             ),
-            const SizedBox(height: 8),
+
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                appGradientText(
+                  text: "Upcoming Holidays",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  gradient: appGradient(),
+                ),
+                TextButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, RouteName.holidayPage),
+                  child: loadSubText(title: "See All"),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
             SizedBox(
-              height: 340,
-              child: appViewEffect(
-                child: Center(child: Text("comming soon...")),
+              height: 110,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => holidayCard(),
+                separatorBuilder: (_, _) => SizedBox(width: 12),
+                itemCount: 4,
               ),
             ),
           ],
