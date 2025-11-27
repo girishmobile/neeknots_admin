@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/utility/utils.dart';
 
 class ApplyLeavePage extends StatefulWidget {
   const ApplyLeavePage({super.key});
@@ -9,20 +10,53 @@ class ApplyLeavePage extends StatefulWidget {
   State<ApplyLeavePage> createState() => _ApplyLeavePageState();
 }
 
+final leaveTypes = ["Casual Leave", "Sick Leave", "Paid Leave"];
+final halfDayTypes = ["First Half", "Second Half"];
+
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
   DateTime? fromDate;
   DateTime? toDate;
+  String? selectedLeaveType;
+
+  //half day
+  bool isHalfDay = false;
+  String? halfDayType;
+  double totalDays = 0.0;
+
+  final reasonController = TextEditingController();
 
   String formatDate(DateTime? date) {
     if (date == null) return "dd/mm/yyyy";
     return "${date.day}-${date.month}-${date.year}";
   }
 
-  int calculateDays() {
-    if (fromDate == null || toDate == null) return 0;
+  void calculateDays() {
+    if (fromDate == null || toDate == null) {
+      totalDays = 0;
+      return;
+    }
 
-    // +1 because both start & end dates are included in leave
-    return toDate!.difference(fromDate!).inDays + 1;
+    // 🔥 Validation
+    if (isHalfDay && fromDate != toDate) {
+      isHalfDay = false; // auto turn OFF
+      totalDays = (toDate!.difference(fromDate!).inDays + 1).toDouble();
+
+      // Show message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Half day is allowed only for the same date")),
+      );
+      return;
+    }
+
+    // 🔥 Normal days
+    if (!isHalfDay) {
+      totalDays = (toDate!.difference(fromDate!).inDays + 1).toDouble();
+    }
+
+    // 🔥 Half-day
+    if (isHalfDay && fromDate == toDate) {
+      totalDays = 0.5;
+    }
   }
 
   @override
@@ -49,7 +83,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   if (picked != null) {
                     setState(() {
                       fromDate = picked;
+                      resetLeave();
                     });
+                    calculateDays();
                   }
                 },
                 child: Row(
@@ -67,6 +103,12 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               SizedBox(height: 8),
               appViewEffect(
                 onTap: () async {
+                  if (fromDate == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please select From Date first")),
+                    );
+                    return;
+                  }
                   final picked = await appDatePicker(
                     context,
                     minDate: fromDate ?? DateTime.now(),
@@ -74,7 +116,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   if (picked != null) {
                     setState(() {
                       toDate = picked;
+                      resetLeave();
                     });
+                    calculateDays();
                   }
                 },
                 child: Row(
@@ -91,19 +135,30 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               appViewEffect(
                 child: Row(
                   children: [
-                    Expanded(child: Text("${calculateDays()} Days")),
+                    Expanded(child: Text("$totalDays Days")),
                     Icon(Icons.pending_actions, color: Colors.black54),
                   ],
                 ),
               ),
-
               SizedBox(height: 16),
               loadSubText(title: "Leave Type", fontWight: FontWeight.w600),
-              SizedBox(height: 8),
+              SizedBox(height: 16),
               appViewEffect(
+                onTap: () async {
+                  final selected = await appBottomSheet(
+                    context,
+                    selected: selectedLeaveType,
+                    dataType: leaveTypes,
+                  );
+                  if (selected != null) {
+                    setState(() => selectedLeaveType = selected);
+                  }
+                },
                 child: Row(
                   children: [
-                    Expanded(child: Text("CL or SL")),
+                    Expanded(
+                      child: Text(selectedLeaveType ?? "Select Leave Type"),
+                    ),
                     Icon(Icons.arrow_drop_down, color: Colors.black54),
                   ],
                 ),
@@ -112,25 +167,149 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               SizedBox(height: 16),
               loadSubText(title: "Half day", fontWight: FontWeight.w600),
               SizedBox(height: 8),
-              Row(children: [Switch(value: false, onChanged: (value) {})]),
-
+              _buildHaldDay(),
               SizedBox(height: 16),
               loadSubText(title: "Reason", fontWight: FontWeight.w600),
               SizedBox(height: 8),
-              loadMultiLineTextField(),
+              loadMultiLineTextField(textController: reasonController),
 
               SizedBox(height: 24),
-              gradientButton(title: "Apply Leave", onPressed: () {}),
+              gradientButton(
+                title: "Apply Leave",
+                onPressed: validateAndApplyLeave,
+              ),
             ],
           ),
 
           // NAV BAR
           appNavigationBar(
-            title: "Apply Leave",
+            title: "LEAVE REQUEST",
             onTap: () => Navigator.pop(context),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildHaldDay() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Switch(
+          value: isHalfDay,
+          onChanged: (value) {
+            setState(() {
+              isHalfDay = value;
+              // default value when turned ON
+              if (isHalfDay) {
+                // Validate immediately
+                if (fromDate == null || toDate == null) {
+                  isHalfDay = false;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Please select From & To date first"),
+                    ),
+                  );
+                } else if (fromDate != toDate) {
+                  isHalfDay = false;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Half day allowed only when dates match"),
+                    ),
+                  );
+                }
+              }
+              if (isHalfDay) {
+                halfDayType = "First Half";
+              } else {
+                halfDayType = null;
+              }
+              calculateDays();
+            });
+          },
+        ),
+
+        if (isHalfDay)
+          appViewEffect(
+            onTap: () async {
+              final selected = await appBottomSheet(
+                context,
+                selected: halfDayType,
+                dataType: halfDayTypes,
+              );
+              if (selected != null) {
+                setState(() => halfDayType = selected);
+              }
+            },
+            child: Row(
+              children: [
+                Text(halfDayType ?? "First Half"),
+                Icon(Icons.arrow_drop_down, color: Colors.black54),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  void validateAndApplyLeave() {
+    if (fromDate == null) {
+      showError("Please select From Date");
+      return;
+    }
+
+    if (toDate == null) {
+      showError("Please select To Date");
+      return;
+    }
+
+    if (toDate!.isBefore(fromDate!)) {
+      showError("To Date must be after From Date");
+      return;
+    }
+    if (selectedLeaveType == null) {
+      showError("Please select a leave type");
+      return;
+    }
+    // Half Day Only for Single Day
+    if (isHalfDay && fromDate != toDate) {
+      showError("Half-day leave can be applied only for one day");
+      return;
+    }
+
+    if (isHalfDay && halfDayType == null) {
+      showError("Please select First Half or Second Half");
+      return;
+    }
+
+    if (isHalfDay) {
+      totalDays = 0.5;
+    } else {
+      totalDays = toDate!.difference(fromDate!).inDays + 1;
+    }
+    if (reasonController.text.trim().isEmpty) {
+      return showError("Please enter reason for leave");
+    }
+    // Success
+    showSuccess("Leave applied successfully");
+  }
+
+  void showError(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  void showSuccess(String msg) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.green));
+  }
+
+  void resetLeave() {
+    // reset leave type when date changes
+    selectedLeaveType = null;
+    // when user change FROM date, re-check half day rule
+    if (isHalfDay && fromDate != toDate) {
+      isHalfDay = false;
+    }
   }
 }

@@ -35,7 +35,7 @@ class _PendingLeavePageState extends State<PendingLeavePage> {
           _listOfLeaveRequest(context),
 
           Positioned(
-            top: safeTop + topBarHeight + 8,
+            top: safeTop + topBarHeight + 16,
             left: 24,
             right: 24,
             child: _filterOption(),
@@ -52,7 +52,7 @@ class _PendingLeavePageState extends State<PendingLeavePage> {
   Widget _filterOption() {
     return SizedBox(
       width: double.infinity,
-      height: 44,
+      height: 36,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
 

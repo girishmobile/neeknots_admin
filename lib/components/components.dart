@@ -7,6 +7,7 @@ import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
 import 'package:neeknots_admin/models/order_model.dart';
+import 'package:neeknots_admin/utility/utils.dart';
 
 double leftPadding = 16;
 double rightPadding = 16;
@@ -300,11 +301,6 @@ Widget appViewEffect({
   double borderWidth = 1.0,
   VoidCallback? onTap,
 }) {
-  // Your three orange theme shades
-  final extraLightOrange = Color(
-    0xFFFFF3E8,
-  ).withValues(alpha: 0.3); // very soft
-
   final effectiveBorderColor =
       borderColor ?? const Color(0xFFFFAC55).withValues(alpha: 0.4);
 
@@ -474,39 +470,6 @@ Widget appOrangeTextField({required String hintText, IconData? icon}) {
     ),
     style: const TextStyle(color: Colors.black87),
   );
-}
-
-double listTop(BuildContext context, {double extra = 0}) {
-  final safeTop = MediaQuery.of(context).padding.top;
-  const topBarHeight = 56.0; // your Dashboard SafeArea Row
-  const searchBoxHeight = 60.0;
-  return safeTop + topBarHeight + searchBoxHeight + 8 + extra;
-}
-
-double listBottom(BuildContext context, {double extra = 0}) {
-  final safeBottom = MediaQuery.of(context).padding.bottom;
-  const bottomBarHeight = 70.0; // your Dashboard bottom bar height
-
-  return safeBottom + bottomBarHeight + 16 + extra;
-}
-
-double appTopPadding(BuildContext context, {double extra = 0}) {
-  final safeTop = MediaQuery.of(context).padding.top;
-  const topBarHeight = 48.0; // your Dashboard SafeArea Row
-
-  final listTop =
-      safeTop + topBarHeight + 8 + extra; // search bar height + spacing
-
-  return listTop;
-}
-
-double appBottomPadding(BuildContext context, {double extra = 0}) {
-  final safeBottom = MediaQuery.of(context).padding.bottom;
-  // const topBarHeight = 48.0; // your Dashboard SafeArea Row
-
-  final listTop = safeBottom + 8 + extra; // search bar height + spacing
-
-  return listTop;
 }
 
 Widget customerCard(CustomerModel customer) {
@@ -859,15 +822,6 @@ Widget appForwardIcon() {
   return Icon(Icons.chevron_right_outlined, color: Colors.black26);
 }
 
-String timeAgo(DateTime date) {
-  final diff = DateTime.now().difference(date);
-
-  if (diff.inMinutes < 1) return "just now";
-  if (diff.inMinutes < 60) return "${diff.inMinutes}m ago";
-  if (diff.inHours < 24) return "${diff.inHours}h ago";
-  return "${diff.inDays}d ago";
-}
-
 Widget loadTitleText({
   String? title,
   double? fontSize,
@@ -1021,7 +975,7 @@ Widget appBackdropFilter({required Widget child, double borderRadius = 0}) {
   );
 }
 
-loadMultiLineTextField({
+Widget loadMultiLineTextField({
   Color? bgColor,
   String? hintText,
   TextEditingController? textController,
@@ -1170,4 +1124,75 @@ Future<DateTime?> appDatePicker(
   );
 
   return pickedDate; // 👈 return selected date
+}
+
+Future<String?> appBottomSheet(
+  BuildContext context, {
+  String? selected,
+  required List<String> dataType,
+}) async {
+  return await showModalBottomSheet<String>(
+    context: context,
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (context) => Container(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Do you want to select a option?",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          SizedBox(height: 12),
+          ...dataType.map((e) {
+            final isSelected = e == selected;
+            return GestureDetector(
+              onTap: () => Navigator.pop(context, e),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 6),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: isSelected ? btnColor2 : color2,
+                    width: 1,
+                  ),
+                  gradient: viewBackgroundGradinet(),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        e,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                    if (isSelected)
+                      Icon(Icons.check, color: Colors.orange, size: 20),
+                  ],
+                ),
+              ),
+            );
+          }),
+          SizedBox(height: 12),
+        ],
+      ),
+    ),
+  );
 }
