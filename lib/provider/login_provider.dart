@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/api/network_repository.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/models/user_model.dart';
 import 'package:neeknots_admin/utility/secure_storage.dart';
 
 class LoginProvider with ChangeNotifier {
@@ -40,10 +41,8 @@ class LoginProvider with ChangeNotifier {
   Future<void> checkLoginStatus() async {
     String? token = await SecureStorage.getToken();
     if (token != null && token.isNotEmpty) {
-      print("token islogin = true");
       _loginSuccess = true;
     } else {
-      print("islogin = false");
       _loginSuccess = false;
     }
     notifyListeners();
@@ -62,9 +61,13 @@ class LoginProvider with ChangeNotifier {
         headers: null,
       );
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
+        final decoded = jsonDecode(response);
+
         if (decoded['response'] == "success") {
-          await SecureStorage.saveUser(decoded);
+          // Convert JSON → UserModel
+          final user = UserModel.fromApiJson(decoded);
+          // Save in SecureStorage
+          await SecureStorage.saveUser(user);
           _setLoginSuccess(true);
         } else if (decoded['response'] == "error") {
           errorMessage = decoded['message'] ?? "Invalid credentials";

@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
+import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/screens/attendance_screen.dart';
 import 'package:neeknots_admin/screens/calendar_screen.dart';
 import 'package:neeknots_admin/screens/home_screen.dart';
@@ -14,8 +16,24 @@ import 'package:neeknots_admin/screens/my_kpi_screen.dart';
 import 'package:neeknots_admin/screens/setting_screen.dart';
 import 'package:provider/provider.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<ProfileProvider>(
+        context,
+        listen: false,
+      ).loadProfileFromStorage();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,46 +76,58 @@ class DashboardScreen extends StatelessWidget {
     required AppProvider provider,
     required String title,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          appCircleImage(
-            imageUrl: hostImage,
-            radius: 18,
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.profileScreen);
-            },
+    return Consumer<ProfileProvider>(
+      builder: (context, profilePro, child) {
+        final fullImageUrl =
+            (profilePro.profileImage != null &&
+                profilePro.profileImage!.isNotEmpty)
+            ? "${ApiConfig.imageBaseUrl}${profilePro.profileImage}"
+            : hostImage;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              appCircleImage(
+                imageUrl: fullImageUrl,
+                radius: 18,
+                onTap: () {
+                  Navigator.pushNamed(context, RouteName.profileScreen);
+                },
+              ),
+
+              // ✅ Show logo only for Home, otherwise show title
+              provider.pageIndex == 2
+                  ? appGradientText(
+                      text: "KAUSHALAM",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      gradient: appGradient(),
+                    ) //loadAssetImage(name: headerlogo, height: 26)
+                  : appGradientText(
+                      text: title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      gradient: appGradient(),
+                    ), //loadAssetImage(name: headerlogo, height: 26)
+
+              appCircleIcon(
+                icon: Icons.notifications_outlined,
+
+                gradient: appGradient(),
+                iconSize: 24,
+                onTap: () {
+                  Navigator.pushNamed(context, RouteName.notificationPage);
+                },
+              ),
+            ],
           ),
-
-          // ✅ Show logo only for Home, otherwise show title
-          provider.pageIndex == 2
-              ? appGradientText(
-                  text: "KAUSHALAM",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                  gradient: appGradient(),
-                ) //loadAssetImage(name: headerlogo, height: 26)
-              : appGradientText(
-                  text: title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  gradient: appGradient(),
-                ), //loadAssetImage(name: headerlogo, height: 26)
-
-          appCircleIcon(
-            icon: Icons.notifications_outlined,
-
-            gradient: appGradient(),
-            iconSize: 24,
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.notificationPage);
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

@@ -2,24 +2,49 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
+import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/screens/employee_screen.dart';
 import 'package:neeknots_admin/screens/manager_screen.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    //initApp();
+  }
+
+  Future<void> initApp() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<ProfileProvider>(
+        context,
+        listen: false,
+      ).loadProfileFromStorage();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profile = context.watch<ProfileProvider>();
+    final isManager = profile.isManager;
+
     return Consumer<AppProvider>(
       builder: (context, provider, child) {
         return Stack(
           children: [
             provider.isManager ? ManagerScreen() : EmployeeScreen(),
-            topBar(context),
+            if (isManager) topBar(context),
           ],
         );
       },

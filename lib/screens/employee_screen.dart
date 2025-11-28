@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class EmployeeScreen extends StatelessWidget {
   const EmployeeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final profile = context.watch<ProfileProvider>();
+    final isManager = profile.isManager;
+
     return Stack(
       children: [
         ListView(
           padding: EdgeInsets.only(
             left: 24,
             right: 24,
-            top: listTop(context),
+            top: isManager
+                ? listTop(context)
+                : appTopPadding(context, extra: 8),
             bottom: listBottom(context, extra: 44),
           ),
           children: [

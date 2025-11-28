@@ -1,17 +1,22 @@
+import 'package:neeknots_admin/utility/secure_storage.dart';
+
 class ApiConfig {
   static String apiBaseUrl = "https://redefinecommerce.net/krms/backend/api";
+
+  static String imageBaseUrl =
+      "https://redefinecommerce.net/krms/backend/public/upload/";
 
   //End point
   static String loginUrl = "$apiBaseUrl/login";
 
   //API header
   static Future<Map<String, String>> getApiHeaders() async {
-    // UserModel? user = await AppConfigCache.getUserModel();
+    final token = await SecureStorage.getToken();
+
     return {
       'Content-Type': 'application/json',
       'accept': '*/*',
-      'Authorization':
-          'Bearer ${'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3JlZGVmaW5lY29tbWVyY2UubmV0L2tybXMvYmFja2VuZC9hcGkvbG9naW4iLCJpYXQiOjE3NjQyNDQzODEsImV4cCI6MTc2NDI4MDM4MSwibmJmIjoxNzY0MjQ0MzgxLCJqdGkiOiJEbXJQM1pXUkVLa1BDbmFKIiwic3ViIjoiNSIsInBydiI6ImY5MzA3ZWI1ZjI5YzcyYTkwZGJhYWVmMGUyNmYwMjYyZWRlODZmNTUifQ.crZn25gmVx2CmnLNWk9MSa__waF5ULLU59XnHCFPaLk'}',
+      'Authorization': 'Bearer $token',
     };
   }
 }

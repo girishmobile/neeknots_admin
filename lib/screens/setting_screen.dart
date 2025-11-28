@@ -58,6 +58,8 @@ class SettingScreen extends StatelessWidget {
                 onTap: () =>
                     Navigator.pushNamed(context, RouteName.allEmplyeePage),
               ),
+              const SizedBox(height: 24),
+              gradientButton(title: "LOGOUT", onPressed: () {}),
             ],
           ),
         ],
