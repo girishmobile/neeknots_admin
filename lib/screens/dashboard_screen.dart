@@ -27,12 +27,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ProfileProvider>(
-        context,
-        listen: false,
-      ).loadProfileFromStorage();
-    });
   }
 
   @override

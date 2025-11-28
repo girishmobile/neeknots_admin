@@ -2,12 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/provider/emp_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 import 'package:provider/provider.dart';
 
-class EmployeeScreen extends StatelessWidget {
+class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
+
+  @override
+  State<EmployeeScreen> createState() => _EmployeeScreenState();
+}
+
+class _EmployeeScreenState extends State<EmployeeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      initEmp();
+    });
+  }
+
+  Future<void> initEmp() async {
+    final provider = Provider.of<EmpProvider>(context, listen: false);
+    await Future.wait([provider.getCurrentAttendance()]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,48 +50,8 @@ class EmployeeScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               gradient: appGradient(),
             ),
-
             SizedBox(height: 8),
-            appViewEffect(
-              padding: const EdgeInsets.all(16),
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 16,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildItem(title: "Attendance", value: "1 Days"),
-                      ),
-                      Expanded(
-                        child: _buildItem(title: "Late", value: "0 Days"),
-                      ),
-                      Expanded(
-                        child: _buildItem(title: "Absent", value: "0 Days"),
-                      ),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildItem(title: "Half Days", value: "0 Days"),
-                      ),
-                      Expanded(
-                        child: _buildItem(
-                          title: "Worked hours",
-                          value: "0 Days",
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ), // empty to maintain alignment
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            _attendanceCart(context),
             const SizedBox(height: 16),
             appGradientText(
               text: "Leave summary",
@@ -216,6 +195,53 @@ class EmployeeScreen extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _attendanceCart(BuildContext context) {
+    return appViewEffect(
+      padding: const EdgeInsets.all(16),
+      child: Consumer<EmpProvider>(
+        builder: (context, provider, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 16,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildItem(
+                      title: "Attendance",
+                      value:
+                          "${provider.attendanceModel?.presentDays ?? 0} Days",
+                    ),
+                  ),
+                  Expanded(
+                    child: _buildItem(title: "Late", value: "0 Days"),
+                  ),
+                  Expanded(
+                    child: _buildItem(title: "Absent", value: "0 Days"),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildItem(title: "Half Days", value: "0 Days"),
+                  ),
+                  Expanded(
+                    child: _buildItem(title: "Worked hours", value: "0 Days"),
+                  ),
+                  const Expanded(
+                    child: SizedBox(),
+                  ), // empty to maintain alignment
+                ],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 

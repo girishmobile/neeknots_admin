@@ -68,3 +68,17 @@ double appBottomPadding(BuildContext context, {double extra = 0}) {
 void hideKeyboard(BuildContext context) {
   FocusScope.of(context).unfocus();
 }
+
+void showSnackBar(
+  BuildContext context, {
+  required String message,
+  Color? bgColor,
+}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message, style: const TextStyle(color: Colors.white)),
+      backgroundColor: bgColor ?? Colors.black87,
+      duration: const Duration(seconds: 2),
+    ),
+  );
+}

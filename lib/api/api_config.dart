@@ -5,6 +5,8 @@ class ApiConfig {
 
   static String imageBaseUrl =
       "https://redefinecommerce.net/krms/backend/public/upload/";
+  static String attendanceUrl =
+      "$apiBaseUrl/hikattendance/currentMonthHikAttendanceRecord";
 
   //End point
   static String loginUrl = "$apiBaseUrl/login";

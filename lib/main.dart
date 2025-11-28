@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/core/router/route_generate.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
+import 'package:neeknots_admin/provider/emp_provider.dart';
 import 'package:neeknots_admin/provider/login_provider.dart';
 import 'package:neeknots_admin/provider/product_detail_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
@@ -14,6 +15,7 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
   ChangeNotifierProvider<AppProvider>(create: (_) => AppProvider()),
   ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
+  ChangeNotifierProvider<EmpProvider>(create: (_) => EmpProvider()),
   ChangeNotifierProvider<ProductDetailProvider>(
     create: (_) => ProductDetailProvider(),
   ),

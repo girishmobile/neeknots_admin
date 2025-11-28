@@ -113,9 +113,9 @@ class LoginPage extends StatelessWidget {
                                         );
                                         if (!context.mounted) return;
                                         if (provider.loginSuccess) {
-                                          TopSnackBar.show(
+                                          showSnackBar(
                                             context,
-                                            message: "Login Successful",
+                                            message: "Login Sccussful",
                                             bgColor: Colors.green,
                                           );
                                           Navigator.pushNamedAndRemoveUntil(
@@ -124,11 +124,9 @@ class LoginPage extends StatelessWidget {
                                             (route) => false,
                                           );
                                         } else {
-                                          TopSnackBar.show(
+                                          showSnackBar(
                                             context,
-                                            message:
-                                                provider.errorMessage ??
-                                                "Invalid username or password!",
+                                            message: "Invalid credentials",
                                             bgColor: Colors.redAccent,
                                           );
                                         }
