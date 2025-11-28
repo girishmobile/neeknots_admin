@@ -1,0 +1,85 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:neeknots_admin/api/api_config.dart';
+import 'package:neeknots_admin/api/network_repository.dart';
+import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/utility/secure_storage.dart';
+
+class LoginProvider with ChangeNotifier {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _obscurePassword = true;
+  bool get obscurePassword => _obscurePassword;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  bool _loginSuccess = false;
+
+  bool get loginSuccess => _loginSuccess; // getter
+
+  String? errorMessage;
+
+  void _setLoginSuccess(bool val) {
+    _isLoading = false;
+    _loginSuccess = val;
+    notifyListeners();
+  }
+
+  void _setLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
+
+  void togglePassword() {
+    _obscurePassword = !_obscurePassword;
+    notifyListeners();
+  }
+
+  Future<void> checkLoginStatus() async {
+    String? token = await SecureStorage.getToken();
+    if (token != null && token.isNotEmpty) {
+      print("token islogin = true");
+      _loginSuccess = true;
+    } else {
+      print("islogin = false");
+      _loginSuccess = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> loginApi(
+    BuildContext context, {
+    required Map<String, dynamic> body,
+  }) async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.loginUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        if (decoded['response'] == "success") {
+          await SecureStorage.saveUser(decoded);
+          _setLoginSuccess(true);
+        } else if (decoded['response'] == "error") {
+          errorMessage = decoded['message'] ?? "Invalid credentials";
+          _setLoginSuccess(false);
+        } else {
+          errorMessage = "Something went wrong. Try again.";
+          _setLoginSuccess(false);
+        }
+      } else {
+        errorMessage = "Something went wrong. Try again.";
+        _setLoginSuccess(false);
+      }
+    } catch (e) {
+      errorMessage = "Something went wrong. Try again.";
+      _setLoginSuccess(false);
+    }
+  }
+}

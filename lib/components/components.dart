@@ -425,47 +425,60 @@ Widget appTextField({required String hintText, IconData? icon}) {
   );
 }
 
-Widget appOrangeTextField({required String hintText, IconData? icon}) {
-  return TextField(
+Widget appOrangeTextField({
+  required String hintText,
+  IconData? icon,
+  TextEditingController? textController,
+  bool isPassword = false,
+  bool obscure = true,
+  TextInputType? keyboardType,
+  VoidCallback? onTogglePassword,
+  String? Function(String?)? validator,
+}) {
+  return TextFormField(
+    validator: validator,
+    controller: textController,
+    obscureText: isPassword ? obscure : false,
     decoration: InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(color: Colors.black54, fontSize: 14),
+
+      // LEFT ICON
       prefixIcon: icon != null
           ? Padding(
-              padding: const EdgeInsets.only(left: 12, right: 8), // adjust here
+              padding: const EdgeInsets.only(left: 12, right: 8),
               child: Icon(icon, color: Colors.black54, size: 20),
             )
           : null,
-      prefixIconConstraints: const BoxConstraints(
-        minWidth: 32,
-        minHeight: 32,
-      ), // removes extra padding
+      prefixIconConstraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+
+      // RIGHT ICON (Password)
+      suffixIcon: isPassword
+          ? IconButton(
+              icon: Icon(
+                obscure ? Icons.visibility_off : Icons.visibility,
+                color: btnColor2.withValues(alpha: 0.8),
+              ),
+              onPressed: onTogglePassword,
+            )
+          : null,
+
       filled: true,
-      fillColor: color1.withValues(
-        alpha: 0.15,
-      ), // Colors.white.withValues(alpha: 0.15), // glassy effect
+      fillColor: color1.withValues(alpha: 0.15),
+
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30), // rounded corners
-        borderSide: BorderSide(
-          color:
-              color2, // Colors.white.withValues(alpha: 0.4), // subtle border
-          width: 1.1,
-        ),
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: color2, width: 1),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide(
-          color: color2, //Colors.white.withValues(alpha: 0.4),
-          width: 1.1,
-        ),
+        borderSide: BorderSide(color: color2, width: 1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide(
-          color: color3, // Colors.white.withValues(alpha: 0.8),
-          width: 1.3,
-        ),
+        borderSide: BorderSide(color: color3, width: 1.1),
       ),
     ),
     style: const TextStyle(color: Colors.black87),
@@ -1192,6 +1205,26 @@ Future<String?> appBottomSheet(
           }),
           SizedBox(height: 12),
         ],
+      ),
+    ),
+  );
+}
+
+Widget showProgressIndicator({Color? color, Color? colorBG}) {
+  return Center(
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: appGradient(),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: SizedBox(
+        height: 40,
+        width: 40,
+        child: CircularProgressIndicator(
+          color: color ?? Colors.white,
+          strokeWidth: 2,
+        ),
       ),
     ),
   );

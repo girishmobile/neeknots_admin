@@ -1,4 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
+class Utils {
+  static final Uuid _uuid = Uuid();
+
+  /// Generate a random UUID (v4)
+  static String generateUUID() {
+    return _uuid.v4();
+  }
+
+  /// Generate a time-based UUID (v1)
+  static String generateTimeUUID() {
+    return _uuid.v1();
+  }
+}
 
 String formatPrice(dynamic price, {String currency = "\$"}) {
   final value = (price is double)
@@ -48,4 +63,8 @@ double appBottomPadding(BuildContext context, {double extra = 0}) {
   final listTop = safeBottom + 8 + extra; // search bar height + spacing
 
   return listTop;
+}
+
+void hideKeyboard(BuildContext context) {
+  FocusScope.of(context).unfocus();
 }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/core/router/route_generate.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
-import 'package:neeknots_admin/pages/dashboard_page.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
-import 'package:neeknots_admin/provider/dashboard_provider.dart';
+import 'package:neeknots_admin/provider/login_provider.dart';
 import 'package:neeknots_admin/provider/product_detail_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 List<SingleChildWidget> providers = [
-  ChangeNotifierProvider<DashboardProvider>(create: (_) => DashboardProvider()),
+  ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
   ChangeNotifierProvider<AppProvider>(create: (_) => AppProvider()),
   ChangeNotifierProvider<ProductDetailProvider>(
     create: (_) => ProductDetailProvider(),
@@ -26,15 +27,16 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: MaterialApp(
+        navigatorKey: navigatorKey, // ✅ IMPORTANT
         title: 'Flutter Demo',
         theme: ThemeData(
           fontFamily: "Poppins",
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         ),
-        initialRoute: RouteName.loginPage,
+        initialRoute: RouteName.splashScreen,
         onGenerateRoute: RouteGenerate.onGenerateRoute,
         debugShowCheckedModeBanner: false,
-        home: DashboardPage(),
+        // home: DashboardPage(),
       ),
     );
   }

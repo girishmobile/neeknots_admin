@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/pages/customer/customer_page.dart';
 import 'package:neeknots_admin/pages/order/order_page.dart';
+import 'package:neeknots_admin/provider/app_provider.dart';
 
 import 'package:provider/provider.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
@@ -12,14 +13,13 @@ import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/pages/home_page.dart';
 import 'package:neeknots_admin/pages/product/product_page.dart';
 import 'package:neeknots_admin/pages/setting_page.dart';
-import 'package:neeknots_admin/provider/dashboard_provider.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<DashboardProvider>();
+    final provider = context.watch<AppProvider>();
 
     final screens = [
       ProductPage(),
@@ -59,7 +59,7 @@ class DashboardPage extends StatelessWidget {
 
   Widget topBar(
     BuildContext context, {
-    required DashboardProvider provider,
+    required AppProvider provider,
     required String title,
   }) {
     return Padding(
@@ -253,7 +253,7 @@ class DashboardPage extends StatelessWidget {
     required String title,
     double? size,
   }) {
-    final provider = context.watch<DashboardProvider>();
+    final provider = context.watch<AppProvider>();
     final isSelected = provider.pageIndex == index;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -264,7 +264,7 @@ class DashboardPage extends StatelessWidget {
           gradient: isSelected
               ? appGradient()
               : LinearGradient(colors: [Colors.grey, Colors.black54]),
-          onTap: () => context.read<DashboardProvider>().setPageIndex(index),
+          onTap: () => context.read<AppProvider>().setPageIndex(index),
         ),
         appGradientText(
           text: title,

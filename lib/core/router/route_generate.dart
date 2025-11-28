@@ -29,11 +29,15 @@ import 'package:neeknots_admin/screens/setting/change_password_page.dart';
 import 'package:neeknots_admin/screens/setting/edit_profile_page.dart';
 import 'package:neeknots_admin/screens/setting/employee_detail_page.dart';
 import 'package:neeknots_admin/screens/setting/my_hours_page.dart';
+import 'package:neeknots_admin/screens/splash_screen.dart';
 
 class RouteGenerate {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     Widget screen;
     switch (settings.name) {
+      case RouteName.splashScreen:
+        screen = const SplashScreen();
+        break;
       case RouteName.loginPage:
         screen = const LoginPage();
         break;
