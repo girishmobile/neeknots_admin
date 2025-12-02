@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:neeknots_admin/utility/secure_storage.dart';
 
 class ApiConfig {
@@ -16,6 +18,11 @@ class ApiConfig {
 
   static String allHolidays = "$BaseUrl/getHolidayData2025";
   static String employeeLeaveBalance = "$BaseUrl/datatable/getAllUserLeaves";
+  static String getLeaveDataUrl =
+      "$BaseUrl/leave_application/getSelfLeaveRequiredData";
+
+  static String applyLeave =
+      "$BaseUrl/leave_application/save_leave_application";
 
   //API header
   static Future<Map<String, String>> getApiHeaders() async {

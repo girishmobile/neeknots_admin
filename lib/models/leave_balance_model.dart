@@ -1,20 +1,20 @@
 // ignore_for_file: non_constant_identifier_names
 
 class LeaveBalanceModel {
-  List<LeaveBalance> emp_leave_balance = [];
+  List<EmpLeaveBalance> emp_leave_balance = [];
   LeaveBalanceModel({required this.emp_leave_balance});
 
   /// From API JSON
   factory LeaveBalanceModel.fromApiJson(Map<String, dynamic> json) {
     return LeaveBalanceModel(
       emp_leave_balance: (json["data"] as List<dynamic>)
-          .map((e) => LeaveBalance.fromApiJson(e))
+          .map((e) => EmpLeaveBalance.fromApiJson(e))
           .toList(),
     );
   }
 }
 
-class LeaveBalance {
+class EmpLeaveBalance {
   dynamic id;
   dynamic emp_id;
   String firstname;
@@ -26,7 +26,7 @@ class LeaveBalance {
   dynamic pl;
   dynamic sl;
   dynamic used_upl;
-  LeaveBalance({
+  EmpLeaveBalance({
     required this.id,
     required this.emp_id,
     required this.firstname,
@@ -39,8 +39,8 @@ class LeaveBalance {
     required this.sl,
     required this.used_upl,
   });
-  factory LeaveBalance.fromApiJson(Map<String, dynamic> json) {
-    return LeaveBalance(
+  factory EmpLeaveBalance.fromApiJson(Map<String, dynamic> json) {
+    return EmpLeaveBalance(
       id: json["id"],
       firstname: json["firstname"],
       lastname: json["lastname"],

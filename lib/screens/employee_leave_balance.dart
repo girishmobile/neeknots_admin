@@ -75,7 +75,7 @@ class EmployeeLeaveBalance extends StatelessWidget {
     );
   }
 
-  Widget _leaveBalanceItem({required LeaveBalance item}) {
+  Widget _leaveBalanceItem({required EmpLeaveBalance item}) {
     final fullImageUrl =
         (item.profile_image != null && item.profile_image!.isNotEmpty)
         ? "${ApiConfig.imageBaseUrl}${item.profile_image}"

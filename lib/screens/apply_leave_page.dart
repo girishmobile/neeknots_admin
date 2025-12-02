@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/provider/leave_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class ApplyLeavePage extends StatefulWidget {
   const ApplyLeavePage({super.key});
@@ -16,14 +18,38 @@ final halfDayTypes = ["First Half", "Second Half"];
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
   DateTime? fromDate;
   DateTime? toDate;
-  String? selectedLeaveType;
+  //String? selectedLeaveType;
+  String? employeeId;
+
+  LeaveDropdownItem? selectedLeaveType;
 
   //half day
   bool isHalfDay = false;
   String? halfDayType;
   double totalDays = 0.0;
-
   final reasonController = TextEditingController();
+  //for leave type
+  List<LeaveDropdownItem> dropListItem = [];
+  @override
+  void initState() {
+    super.initState();
+    initEmp();
+  }
+
+  Future<void> initEmp() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final provider = Provider.of<LeaveProvider>(context, listen: false);
+      await Future.wait([
+        provider.loadUserdataFromstorage().then((value) {
+          Map<String, dynamic> body = {"emp_id": provider.employeeId};
+          provider.getLeaveTypes(body: body).then((value) {
+            dropListItem = provider.getLeaveTypeDropdownItems();
+          });
+        }),
+      ]);
+      employeeId = provider.employeeId;
+    });
+  }
 
   String formatDate(DateTime? date) {
     if (date == null) return "dd/mm/yyyy";
@@ -62,131 +88,150 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      child: Stack(
-        children: [
-          ListView(
-            padding: EdgeInsets.only(
-              left: 24,
-              right: 24,
-              top: appTopPadding(context),
-            ),
+      child: Consumer<LeaveProvider>(
+        builder: (context, provider, child) {
+          return Stack(
             children: [
-              // FROM DATE
-              loadSubText(title: "From", fontWight: FontWeight.w600),
-              SizedBox(height: 8),
-              appViewEffect(
-                onTap: () async {
-                  final picked = await appDatePicker(
-                    context,
-                    minDate: DateTime.now(),
-                  );
-                  if (picked != null) {
-                    setState(() {
-                      fromDate = picked;
-                      resetLeave();
-                    });
-                    calculateDays();
-                  }
-                },
-                child: Row(
-                  children: [
-                    Expanded(child: Text(formatDate(fromDate))),
-                    Icon(Icons.calendar_month_outlined, color: Colors.black54),
-                  ],
+              ListView(
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  top: appTopPadding(context),
                 ),
-              ),
-
-              SizedBox(height: 16),
-
-              // TO DATE
-              loadSubText(title: "To", fontWight: FontWeight.w600),
-              SizedBox(height: 8),
-              appViewEffect(
-                onTap: () async {
-                  if (fromDate == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Please select From Date first")),
-                    );
-                    return;
-                  }
-                  final picked = await appDatePicker(
-                    context,
-                    minDate: fromDate ?? DateTime.now(),
-                  );
-                  if (picked != null) {
-                    setState(() {
-                      toDate = picked;
-                      resetLeave();
-                    });
-                    calculateDays();
-                  }
-                },
-                child: Row(
-                  children: [
-                    Expanded(child: Text(formatDate(toDate))),
-                    Icon(Icons.calendar_month_outlined, color: Colors.black54),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 16),
-              loadSubText(title: "Days", fontWight: FontWeight.w600),
-              SizedBox(height: 8),
-              appViewEffect(
-                child: Row(
-                  children: [
-                    Expanded(child: Text("$totalDays Days")),
-                    Icon(Icons.pending_actions, color: Colors.black54),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              loadSubText(title: "Leave Type", fontWight: FontWeight.w600),
-              SizedBox(height: 16),
-              appViewEffect(
-                onTap: () async {
-                  final selected = await appBottomSheet(
-                    context,
-                    selected: selectedLeaveType,
-                    dataType: leaveTypes,
-                  );
-                  if (selected != null) {
-                    setState(() => selectedLeaveType = selected);
-                  }
-                },
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(selectedLeaveType ?? "Select Leave Type"),
+                children: [
+                  // FROM DATE
+                  loadSubText(title: "From", fontWight: FontWeight.w600),
+                  SizedBox(height: 8),
+                  appViewEffect(
+                    onTap: () async {
+                      final picked = await appDatePicker(
+                        context,
+                        minDate: DateTime.now(),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          fromDate = picked;
+                          resetLeave();
+                        });
+                        calculateDays();
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(formatDate(fromDate))),
+                        Icon(
+                          Icons.calendar_month_outlined,
+                          color: Colors.black54,
+                        ),
+                      ],
                     ),
-                    Icon(Icons.arrow_drop_down, color: Colors.black54),
-                  ],
-                ),
+                  ),
+
+                  SizedBox(height: 16),
+
+                  // TO DATE
+                  loadSubText(title: "To", fontWight: FontWeight.w600),
+                  SizedBox(height: 8),
+                  appViewEffect(
+                    onTap: () async {
+                      if (fromDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Please select From Date first"),
+                          ),
+                        );
+                        return;
+                      }
+                      final picked = await appDatePicker(
+                        context,
+                        minDate: fromDate ?? DateTime.now(),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          toDate = picked;
+                          resetLeave();
+                        });
+                        calculateDays();
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(formatDate(toDate))),
+                        Icon(
+                          Icons.calendar_month_outlined,
+                          color: Colors.black54,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 16),
+                  loadSubText(title: "Days", fontWight: FontWeight.w600),
+                  SizedBox(height: 8),
+                  appViewEffect(
+                    child: Row(
+                      children: [
+                        Expanded(child: Text("$totalDays Days")),
+                        Icon(Icons.pending_actions, color: Colors.black54),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  loadSubText(title: "Leave Type", fontWight: FontWeight.w600),
+                  SizedBox(height: 16),
+                  appViewEffect(
+                    onTap: () async {
+                      // final dropListItem = provider.getLeaveTypeDropdownItems();
+
+                      final selected = await appBottomSheet(
+                        context,
+                        selected: selectedLeaveType,
+                        dataType: dropListItem,
+                      );
+                      if (selected != null) {
+                        setState(() => selectedLeaveType = selected);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            selectedLeaveType?.label ?? "Select Leave Type",
+                          ),
+                        ),
+                        Icon(Icons.arrow_drop_down, color: Colors.black54),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 16),
+                  loadSubText(title: "Half day", fontWight: FontWeight.w600),
+                  SizedBox(height: 8),
+                  _buildHaldDay(),
+                  SizedBox(height: 16),
+                  loadSubText(title: "Reason", fontWight: FontWeight.w600),
+                  SizedBox(height: 8),
+                  loadMultiLineTextField(textController: reasonController),
+
+                  SizedBox(height: 24),
+                  gradientButton(
+                    title: "Apply Leave",
+                    onPressed: () {
+                      validateAndApplyLeave(provider);
+                    },
+                  ),
+                ],
               ),
 
-              SizedBox(height: 16),
-              loadSubText(title: "Half day", fontWight: FontWeight.w600),
-              SizedBox(height: 8),
-              _buildHaldDay(),
-              SizedBox(height: 16),
-              loadSubText(title: "Reason", fontWight: FontWeight.w600),
-              SizedBox(height: 8),
-              loadMultiLineTextField(textController: reasonController),
-
-              SizedBox(height: 24),
-              gradientButton(
-                title: "Apply Leave",
-                onPressed: validateAndApplyLeave,
+              // NAV BAR
+              appNavigationBar(
+                title: "LEAVE REQUEST",
+                onTap: () => Navigator.pop(context),
               ),
+              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
             ],
-          ),
-
-          // NAV BAR
-          appNavigationBar(
-            title: "LEAVE REQUEST",
-            onTap: () => Navigator.pop(context),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -232,7 +277,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
         if (isHalfDay)
           appViewEffect(
             onTap: () async {
-              final selected = await appBottomSheet(
+              final selected = await appSimpleBottomSheet(
                 context,
                 selected: halfDayType,
                 dataType: halfDayTypes,
@@ -252,7 +297,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
     );
   }
 
-  void validateAndApplyLeave() {
+  void validateAndApplyLeave(LeaveProvider provider) {
+    print("state employeeId = $employeeId");
+
     if (fromDate == null) {
       showError("Please select From Date");
       return;
@@ -291,7 +338,29 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       return showError("Please enter reason for leave");
     }
     // Success
-    showSuccess("Leave applied successfully");
+
+    ///showSuccess("Leave applied successfully");
+
+    Map<String, dynamic> body = {
+      "user_id": employeeId ?? 0,
+      "leave_date": getFormattedDate(
+        fromDate ?? DateTime.now(),
+        format: "dd-MM-yyyy",
+      ),
+      "leave_end_date": getFormattedDate(
+        toDate ?? DateTime.now(),
+        format: "dd-MM-yyyy",
+      ),
+      "leave_count": totalDays,
+      "leave_type": selectedLeaveType?.type.toJson(),
+      // ✅ This sends full JSON of selected type
+      "half_day": isHalfDay,
+      "half_day_type": halfDayType,
+      "reason": reasonController.text.trim(),
+      // "location ":locationProvider.currentAddress
+    };
+    print("body of Leave:- $body");
+    provider.applyLeave(context, body: body);
   }
 
   void showError(String msg) {
@@ -307,6 +376,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   void resetLeave() {
     // reset leave type when date changes
     selectedLeaveType = null;
+
     // when user change FROM date, re-check half day rule
     if (isHalfDay && fromDate != toDate) {
       isHalfDay = false;

@@ -16,7 +16,6 @@ class LoginProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   bool _loginSuccess = false;
-
   bool get loginSuccess => _loginSuccess; // getter
 
   String? errorMessage;

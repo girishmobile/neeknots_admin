@@ -23,9 +23,9 @@ class LeaveBalanceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<LeaveBalance> emp_leave_balance = [];
+  List<EmpLeaveBalance> emp_leave_balance = [];
 
-  List<LeaveBalance> filteredList = [];
+  List<EmpLeaveBalance> filteredList = [];
 
   void filterByName(String query) {
     if (query.isEmpty) {
@@ -110,7 +110,7 @@ class LeaveBalanceProvider extends ChangeNotifier {
 
         if (decoded['data'] is List && decoded.isNotEmpty) {
           emp_leave_balance = (decoded["data"] as List<dynamic>)
-              .map((e) => LeaveBalance.fromApiJson(e))
+              .map((e) => EmpLeaveBalance.fromApiJson(e))
               .toList();
 
           filteredList = emp_leave_balance;

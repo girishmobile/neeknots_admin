@@ -9,6 +9,7 @@ import 'package:neeknots_admin/models/birth_holiday_model.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
 import 'package:neeknots_admin/models/order_model.dart';
+import 'package:neeknots_admin/provider/leave_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 
 double leftPadding = 16;
@@ -1181,7 +1182,79 @@ Future<DateTime?> appDatePicker(
   return pickedDate; // 👈 return selected date
 }
 
-Future<String?> appBottomSheet(
+Future<LeaveDropdownItem?> appBottomSheet(
+  BuildContext context, {
+  LeaveDropdownItem? selected,
+  required List<LeaveDropdownItem> dataType,
+}) async {
+  return await showModalBottomSheet<LeaveDropdownItem>(
+    context: context,
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (context) => Container(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Do you want to select a option?",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          SizedBox(height: 12),
+          ...dataType.map((e) {
+            // final isSelected = e == selected;
+            final isSelected = e.label == selected?.label;
+            return GestureDetector(
+              onTap: () => Navigator.pop(context, e),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 6),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: isSelected ? btnColor2 : color2,
+                    width: 1,
+                  ),
+                  gradient: viewBackgroundGradinet(),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        e.label,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                    if (isSelected)
+                      Icon(Icons.check, color: Colors.orange, size: 20),
+                  ],
+                ),
+              ),
+            );
+          }),
+          SizedBox(height: 12),
+        ],
+      ),
+    ),
+  );
+}
+
+Future<String?> appSimpleBottomSheet(
   BuildContext context, {
   String? selected,
   required List<String> dataType,
