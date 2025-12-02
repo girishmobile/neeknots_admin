@@ -23,20 +23,4 @@ class ProfileProvider extends ChangeNotifier {
     _profileImage = url;
     notifyListeners();
   }
-
-  Future<void> loadProfileFromStorage() async {
-    UserModel? user = await SecureStorage.getUser();
-    if (user != null) {
-      _profileImage = user.profile;
-      _role = user.role;
-      final roleStr = (user.role["name"] ?? "").toString().toLowerCase();
-      print("roleStr:- $roleStr");
-      if (roleStr == "employee") {
-        _isManager = false;
-      } else {
-        _isManager = true;
-      }
-      notifyListeners();
-    }
-  }
 }

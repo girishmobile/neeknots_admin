@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/api/network_repository.dart';
-import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/user_model.dart';
 import 'package:neeknots_admin/utility/secure_storage.dart';
 
@@ -48,10 +47,7 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loginApi(
-    BuildContext context, {
-    required Map<String, dynamic> body,
-  }) async {
+  Future<void> loginApi({required Map<String, dynamic> body}) async {
     _setLoading(true);
     try {
       final response = await callApi(
@@ -62,7 +58,6 @@ class LoginProvider with ChangeNotifier {
       );
       if (globalStatusCode == 200) {
         final decoded = jsonDecode(response);
-
         if (decoded['response'] == "success") {
           // Convert JSON → UserModel
           final user = UserModel.fromApiJson(decoded);

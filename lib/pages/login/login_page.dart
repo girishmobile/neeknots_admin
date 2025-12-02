@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
@@ -107,10 +108,7 @@ class LoginPage extends StatelessWidget {
                                           "isLogin": "1",
                                           "uuid": Utils.generateUUID(),
                                         };
-                                        await provider.loginApi(
-                                          context,
-                                          body: body,
-                                        );
+                                        await provider.loginApi(body: body);
                                         if (!context.mounted) return;
                                         if (provider.loginSuccess) {
                                           showSnackBar(
@@ -126,7 +124,9 @@ class LoginPage extends StatelessWidget {
                                         } else {
                                           showSnackBar(
                                             context,
-                                            message: "Invalid credentials",
+                                            message:
+                                                errorMessage ??
+                                                "Invalid credentials",
                                             bgColor: Colors.redAccent,
                                           );
                                         }

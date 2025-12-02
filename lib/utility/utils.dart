@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class Utils {
@@ -81,4 +82,27 @@ void showSnackBar(
       duration: const Duration(seconds: 2),
     ),
   );
+}
+
+//Date Time
+DateTime getCurrentDateTime() {
+  return DateTime.now();
+}
+
+//Format date and time
+String formateDateTime(
+  DateTime dateTime, {
+  String format = 'yyyy-MM-dd HH:mm:ss',
+}) {
+  return DateFormat(format).format(dateTime);
+}
+
+//get only date (default yyyy-MM-dd)
+String getFormattedDate(DateTime dateTime, {String format = 'yyyy-MM-dd'}) {
+  return DateFormat(format).format(dateTime);
+}
+
+//Get only time (default HH:mm:ss)
+String getFormattedTime(DateTime dateTime, {String format = 'HH:mm:ss'}) {
+  return DateFormat(format).format(dateTime);
 }

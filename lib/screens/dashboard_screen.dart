@@ -8,12 +8,15 @@ import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
+import 'package:neeknots_admin/provider/emp_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/screens/attendance_screen.dart';
 import 'package:neeknots_admin/screens/calendar_screen.dart';
 import 'package:neeknots_admin/screens/home_screen.dart';
 import 'package:neeknots_admin/screens/my_kpi_screen.dart';
 import 'package:neeknots_admin/screens/setting_screen.dart';
+import 'package:neeknots_admin/utility/secure_storage.dart';
+import 'package:neeknots_admin/utility/utils.dart';
 import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -32,7 +35,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<AppProvider>();
-
     final hrmsScreens = [
       CalendarScreen(),
       MyKpiScreen(),
@@ -242,9 +244,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _leaveRequest(BuildContext context) {
-    final safeBottom = MediaQuery.of(context).padding.bottom;
-    const bottomBarHeight = 60.0; // your Dashboard bottom bar height
-
     return Positioned.fill(
       // bottom: safeBottom + bottomBarHeight + 8,
       //left: 48,
@@ -252,7 +251,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Padding(
-          padding: EdgeInsets.only(bottom: safeBottom + bottomBarHeight + 4),
+          padding: EdgeInsets.only(
+            bottom: appBottomPadding(context, extra: 60),
+          ),
           child: Container(
             //margin: const EdgeInsets.symmetric(horizontal: 24),
             height: 44,

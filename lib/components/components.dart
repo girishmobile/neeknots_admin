@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/models/birth_holiday_model.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
 import 'package:neeknots_admin/models/order_model.dart';
@@ -678,7 +680,12 @@ Widget leaveCard(CustomerModel customer) {
   );
 }
 
-Widget holidayCard() {
+Widget holidayCard({required Holiday item}) {
+  final fullImageUrl =
+      (item.holiday_image != null && item.holiday_image!.isNotEmpty)
+      ? "${ApiConfig.imageBaseUrl}${item.holiday_image}"
+      : null;
+
   return SizedBox(
     width: 300,
     child: appViewEffect(
@@ -686,37 +693,72 @@ Widget holidayCard() {
       child: Row(
         spacing: 8,
         children: [
-          Container(
-            // width: 98,
-            // height: 98,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              //color: Colors.white,
-              // borderRadius: BorderRadius.circular(4),
-              gradient: viewBackgroundGradinet(),
-              border: Border.all(color: btnColor2, width: 1),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                loadTitleText(title: "25", fontSize: 14, fontColor: btnColor2),
-                loadTitleText(
-                  title: "Thus",
-                  fontSize: 14,
-                  fontColor: btnColor2,
-                ),
-              ],
-            ),
+          appCircleImage(
+            iconColor: btnColor2,
+            borderColor: btnColor2.shade200,
+
+            radius: 32,
+            iconSize: 36,
+            imageUrl: fullImageUrl,
+            icon: Icons.festival_outlined,
           ),
           Column(
             spacing: 2,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              loadTitleText(title: "Christmas", fontSize: 14),
-              loadSubText(title: "25-Dec-2025", fontSize: 12),
+              loadTitleText(title: item.event_name, fontSize: 14),
+              loadSubText(
+                title: getFormattedDate(
+                  item.start_date.date,
+                  format: "dd MMM yyyy",
+                ),
+                fontSize: 12,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget birthDayCard({required BirthDay item, double radius = 32}) {
+  final fullImageUrl =
+      (item.profile_image != null && item.profile_image!.isNotEmpty)
+      ? "${ApiConfig.imageBaseUrl}${item.profile_image}"
+      : null;
+
+  return SizedBox(
+    width: 300,
+    child: appViewEffect(
+      padding: const EdgeInsets.only(left: 16, right: 8, bottom: 8, top: 8),
+      child: Row(
+        spacing: 8,
+        children: [
+          appCircleImage(
+            iconColor: btnColor2,
+            borderColor: btnColor2.shade200,
+
+            radius: radius,
+            iconSize: 36,
+            imageUrl: fullImageUrl,
+            icon: Icons.cake_outlined,
+          ),
+          Column(
+            spacing: 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              loadTitleText(title: item.firstname, fontSize: 14),
+              loadSubText(title: item.designation),
+              loadSubText(
+                title: getFormattedDate(
+                  item.dateOfBirth.date,
+                  format: "dd MMM yyyy",
+                ),
+                fontSize: 12,
+              ),
             ],
           ),
         ],

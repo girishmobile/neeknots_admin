@@ -1,44 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
-import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/models/leave_balance_model.dart';
+import 'package:neeknots_admin/provider/emp_provider.dart';
+import 'package:neeknots_admin/provider/leave_balance_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class EmployeeLeaveBalance extends StatelessWidget {
   const EmployeeLeaveBalance({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final safeTop = MediaQuery.of(context).padding.top;
-    final topBarHeight = 48.0; // from Dashboard SafeArea Row
+    /// Fetch API only once when page opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<LeaveBalanceProvider>().getAllEmployeeLeaveBalance();
+    });
+
     return AppScaffold(
-      child: Stack(
-        children: [
-          _listOfEmployee(context),
-          Positioned(
-            top: safeTop + topBarHeight + 8,
-            left: 24,
-            right: 24,
-            child: _searchBar(context),
-          ),
-          appNavigationBar(
-            title: "EMPLOYEES LEAVE BALANCE",
-            onTap: () => Navigator.pop(context),
-          ),
-        ],
+      child: Consumer<EmpProvider>(
+        builder: (context, provider, chld) {
+          return Consumer<LeaveBalanceProvider>(
+            builder: (context, provider, child) {
+              return Stack(
+                children: [
+                  _listOfEmployee(context, provider),
+                  Positioned(
+                    top: appTopPadding(context),
+                    left: 24,
+                    right: 24,
+                    child: _searchBar(context, provider),
+                  ),
+                  appNavigationBar(
+                    title: "LEAVE BALANCE",
+                    onTap: () => Navigator.pop(context),
+                  ),
+                  provider.isLoading
+                      ? showProgressIndicator()
+                      : SizedBox.shrink(),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
 
-  Widget _searchBar(BuildContext context) {
+  Widget _searchBar(BuildContext context, LeaveBalanceProvider provider) {
     return appOrangeTextField(
+      textController: provider.nameController,
       hintText: "search by employee name",
       icon: Icons.search,
     );
   }
 
-  Widget _listOfEmployee(BuildContext context) {
+  Widget _listOfEmployee(BuildContext context, LeaveBalanceProvider provider) {
     return ListView.separated(
       padding: EdgeInsets.only(
         left: 24,
@@ -46,20 +65,34 @@ class EmployeeLeaveBalance extends StatelessWidget {
         top: listTop(context),
         bottom: appBottomPadding(context),
       ),
-      itemBuilder: (context, index) => _leaveBalanceItem(),
+      itemBuilder: (context, index) {
+        final leaves = provider.filteredList[index];
+
+        return _leaveBalanceItem(item: leaves);
+      },
       separatorBuilder: (_, _) => SizedBox(height: 8),
-      itemCount: 80,
+      itemCount: provider.filteredList.length,
     );
   }
 
-  Widget _leaveBalanceItem() {
+  Widget _leaveBalanceItem({required LeaveBalance item}) {
+    final fullImageUrl =
+        (item.profile_image != null && item.profile_image!.isNotEmpty)
+        ? "${ApiConfig.imageBaseUrl}${item.profile_image}"
+        : null;
     return appViewEffect(
       child: Column(
         spacing: 16,
         children: [
           Row(
             children: [
-              appCircleImage(imageUrl: hostImage, radius: 24),
+              appCircleImage(
+                iconColor: btnColor2,
+                borderColor: btnColor2.shade200,
+                radius: 24,
+                imageUrl: fullImageUrl,
+                icon: Icons.person_outline,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -70,7 +103,7 @@ class EmployeeLeaveBalance extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "Girish Chauhan",
+                            "${item.firstname} ${item.lastname}",
                             style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -78,7 +111,7 @@ class EmployeeLeaveBalance extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Total Leave: 08",
+                          "Balance: ${item.balance}",
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.black54,
@@ -86,20 +119,6 @@ class EmployeeLeaveBalance extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
-                    Text(
-                      "Depart: Mobile",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      "Desig: iOS Developer",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
                     ),
                   ],
                 ),
@@ -109,9 +128,9 @@ class EmployeeLeaveBalance extends StatelessWidget {
           Row(
             spacing: 8,
             children: [
-              _buildRowItem(type: "CL", value: "4.5"),
-              _buildRowItem(type: "SL", value: "3.5"),
-              _buildRowItem(type: "PL", value: "0"),
+              _buildRowItem(type: "CL", value: "${item.cl}"),
+              _buildRowItem(type: "SL", value: "${item.sl}"),
+              _buildRowItem(type: "PL", value: "${item.pl}"),
             ],
           ),
         ],

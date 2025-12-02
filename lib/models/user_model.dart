@@ -6,6 +6,7 @@ class UserModel {
   final String? profile;
   final int id;
   final List permission;
+  final String employeeId;
   final Map<String, dynamic> role;
 
   UserModel({
@@ -14,6 +15,7 @@ class UserModel {
     required this.lastname,
     required this.email,
     required this.id,
+    required this.employeeId,
     required this.permission,
     this.profile,
     required this.role,
@@ -30,6 +32,7 @@ class UserModel {
       lastname: user["lastname"],
       email: user["email"],
       id: user["id"],
+      employeeId: user["employee_id"],
       permission: user["permission"],
       profile: user["profile"],
       role: user["role"],
@@ -44,6 +47,7 @@ class UserModel {
       lastname: json["lastname"],
       email: json["email"],
       id: json["id"],
+      employeeId: json["employee_id"],
       permission: json["permission"],
       profile: json["profile"],
       role: json["role"],
@@ -58,6 +62,7 @@ class UserModel {
       "lastname": lastname,
       "email": email,
       "id": id,
+      "employee_id": employeeId,
       "profile": profile,
       "permission": permission,
       "role": role,

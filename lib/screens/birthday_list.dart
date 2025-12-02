@@ -2,60 +2,69 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
+import 'package:neeknots_admin/provider/emp_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class BirthdayList extends StatelessWidget {
   const BirthdayList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final safeTop = MediaQuery.of(context).padding.top;
-    final topBarHeight = 48.0; // from Dashboard SafeArea Row
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<EmpProvider>().getUpcomingBirthHodliday();
+    });
     return AppScaffold(
-      child: Stack(
-        children: [
-          _listOfEmployee(context),
-          Positioned(
-            top: safeTop + topBarHeight + 8,
-            left: 24,
-            right: 24,
-            child: _searchBar(context),
-          ),
-          appNavigationBar(
-            title: "BIRTHDAY LIST",
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+      child: Consumer<EmpProvider>(
+        builder: (context, provider, child) {
+          return Stack(
+            children: [
+              _listOfEmployee(context, provider),
+              // Positioned(
+              //   top: appTopPadding(context),
+              //   left: 24,
+              //   right: 24,
+              //   child: _searchBar(context),
+              // ),
+              appNavigationBar(
+                title: "BIRTHDAY LIST",
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _listOfEmployee(BuildContext context) {
+  Widget _listOfEmployee(BuildContext context, EmpProvider provider) {
     return ListView.separated(
       padding: EdgeInsets.only(
         left: 24,
         right: 24,
-        top: listTop(context),
+        top: appTopPadding(context),
         bottom: listBottom(context),
       ),
       addAutomaticKeepAlives: false,
       addRepaintBoundaries: true,
       cacheExtent: 500,
       itemBuilder: (context, index) {
-        final custModel = sampleCustomers[index];
+        final birthday = provider.birthdays[index];
+
         return RepaintBoundary(
           child: GestureDetector(
             onTap: () {
               //Navigator.pushNamed(context, RouteName.employeeDetailPage);
             },
-            child: employeeCard(custModel),
+            child: birthDayCard(item: birthday),
           ),
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
-      itemCount: sampleCustomers.length,
+      itemCount: provider.birthdays.length,
     );
   }
 

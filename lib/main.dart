@@ -3,7 +3,10 @@ import 'package:neeknots_admin/core/router/route_generate.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
 import 'package:neeknots_admin/provider/emp_provider.dart';
+import 'package:neeknots_admin/provider/leave_balance_provider.dart';
+import 'package:neeknots_admin/provider/leave_provider.dart';
 import 'package:neeknots_admin/provider/login_provider.dart';
+import 'package:neeknots_admin/provider/manager_provider.dart';
 import 'package:neeknots_admin/provider/product_detail_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +19,11 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider<AppProvider>(create: (_) => AppProvider()),
   ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
   ChangeNotifierProvider<EmpProvider>(create: (_) => EmpProvider()),
+  ChangeNotifierProvider<ManagerProvider>(create: (_) => ManagerProvider()),
+  ChangeNotifierProvider<LeaveProvider>(create: (_) => LeaveProvider()),
+  ChangeNotifierProvider<LeaveBalanceProvider>(
+    create: (_) => LeaveBalanceProvider(),
+  ),
   ChangeNotifierProvider<ProductDetailProvider>(
     create: (_) => ProductDetailProvider(),
   ),

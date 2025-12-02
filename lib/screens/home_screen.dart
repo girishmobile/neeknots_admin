@@ -22,29 +22,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    //initApp();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initApp();
+    });
   }
 
   Future<void> initApp() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ProfileProvider>(
-        context,
-        listen: false,
-      ).loadProfileFromStorage();
-    });
+    await Provider.of<AppProvider>(
+      context,
+      listen: false,
+    ).loadAppDataFromStorage();
   }
 
   @override
   Widget build(BuildContext context) {
-    final profile = context.watch<ProfileProvider>();
-    final isManager = profile.isManager;
-
     return Consumer<AppProvider>(
       builder: (context, provider, child) {
+        if (provider.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+
         return Stack(
           children: [
-            provider.isManager ? ManagerScreen() : EmployeeScreen(),
-            if (isManager) topBar(context),
+            provider.isManager
+                ? ManagerScreen()
+                : EmployeeScreen(employeeId: provider.employeeId ?? ''),
+            if (provider.isRole != "employee") topBar(context),
           ],
         );
       },

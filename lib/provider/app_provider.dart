@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:neeknots_admin/models/user_model.dart';
+import 'package:neeknots_admin/utility/secure_storage.dart';
 
 class AppProvider extends ChangeNotifier {
   bool _isManager = false;
@@ -14,6 +16,14 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
+
+  String _isRole = "employee";
+  String get isRole => _isRole;
+  String? _employeeId;
+  String? get employeeId => _employeeId;
+
   void setIsEmployee(bool value) {
     _isEmployee = value;
     notifyListeners();
@@ -22,5 +32,23 @@ class AppProvider extends ChangeNotifier {
   void setIsManagerOrSelf(bool value) {
     _isManager = value;
     notifyListeners();
+  }
+
+  Future<void> loadAppDataFromStorage() async {
+    _isLoading = true;
+    notifyListeners();
+    UserModel? user = await SecureStorage.getUser();
+    if (user != null) {
+      final roleStr = (user.role["name"] ?? "").toString().toLowerCase();
+      _employeeId = user.employeeId;
+
+      if (roleStr == "employee") {
+        _isRole = "employee";
+      } else {
+        _isRole = "manager";
+      }
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

@@ -30,6 +30,8 @@ class ManagerScreen extends StatelessWidget {
               icon: Icons.pending_actions_outlined,
               onTap: () {},
             ),
+
+            //Add leave {{url}}leave_application/save_leave_application
             const SizedBox(height: 12),
             _buildRowItem(
               icon: Icons.rocket_launch_outlined,
@@ -58,12 +60,7 @@ class ManagerScreen extends StatelessWidget {
               onTap: () =>
                   Navigator.pushNamed(context, RouteName.allEmplyeePage),
             ),
-            const SizedBox(height: 12),
-            _buildRowItem(
-              title: "Today's leave (1)",
-              icon: Icons.pending_actions_outlined,
-              onTap: () {},
-            ),
+
             const SizedBox(height: 12),
             _buildRowItem(
               icon: Icons.workspaces_outlined,
@@ -92,15 +89,15 @@ class ManagerScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 8),
-            SizedBox(
-              height: 110,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => holidayCard(),
-                separatorBuilder: (_, _) => SizedBox(width: 12),
-                itemCount: 4,
-              ),
-            ),
+            // SizedBox(
+            //   height: 110,
+            //   child: ListView.separated(
+            //     scrollDirection: Axis.horizontal,
+            //     itemBuilder: (context, index) => holidayCard(),
+            //     separatorBuilder: (_, _) => SizedBox(width: 12),
+            //     itemCount: 4,
+            //   ),
+            // ),
           ],
         ),
       ],
