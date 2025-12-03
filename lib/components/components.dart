@@ -1344,3 +1344,16 @@ Widget showProgressIndicator({Color? color, Color? colorBG}) {
     ),
   );
 }
+
+Widget appRefreshIndicator({
+  required final Future<void> Function() onRefresh,
+  required final Widget child,
+}) {
+  return RefreshIndicator(
+    color: color3,
+    backgroundColor: Colors.white,
+    strokeWidth: 2,
+    onRefresh: onRefresh,
+    child: child,
+  );
+}

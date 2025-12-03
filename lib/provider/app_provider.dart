@@ -19,10 +19,13 @@ class AppProvider extends ChangeNotifier {
   bool _isLoading = true;
   bool get isLoading => _isLoading;
 
+  //Data binding..
   String _isRole = "employee";
   String get isRole => _isRole;
   String? _employeeId;
   String? get employeeId => _employeeId;
+  String? _profileImage;
+  String? get profileImage => _profileImage;
 
   void setIsEmployee(bool value) {
     _isEmployee = value;
@@ -40,8 +43,8 @@ class AppProvider extends ChangeNotifier {
     UserModel? user = await SecureStorage.getUser();
     if (user != null) {
       final roleStr = (user.role["name"] ?? "").toString().toLowerCase();
-      _employeeId = user.employeeId;
-
+      _employeeId = "${user.id}";
+      _profileImage = user.profile;
       if (roleStr == "employee") {
         _isRole = "employee";
       } else {

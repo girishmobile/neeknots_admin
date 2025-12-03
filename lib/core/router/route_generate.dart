@@ -19,6 +19,7 @@ import 'package:neeknots_admin/screens/all_leave_page.dart';
 import 'package:neeknots_admin/screens/apply_leave_page.dart';
 import 'package:neeknots_admin/screens/birthday_list.dart';
 import 'package:neeknots_admin/screens/dashboard_screen.dart';
+import 'package:neeknots_admin/screens/edit_leave_page.dart';
 import 'package:neeknots_admin/screens/employee_leave_balance.dart';
 import 'package:neeknots_admin/screens/holiday_page.dart';
 import 'package:neeknots_admin/screens/leave_summary_page.dart';
@@ -123,6 +124,10 @@ class RouteGenerate {
         break;
       case RouteName.allLeavePage:
         screen = const AllLeavePage();
+        break;
+      case RouteName.editLeavePage:
+        final args = settings.arguments as String;
+        screen = EditLeavePage(leaveId: args);
         break;
       default:
         screen = AppScaffold(

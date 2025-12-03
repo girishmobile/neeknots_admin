@@ -42,186 +42,193 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
       builder: (context, provider, child) {
         final birthdays = provider.birthholidayModel?.birthdays ?? <BirthDay>[];
         final holidays = provider.birthholidayModel?.holidays ?? <Holiday>[];
-        return Stack(
-          children: [
-            ListView(
-              padding: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                top: isrole
-                    ? listTop(context)
-                    : appTopPadding(context, extra: 8),
-                bottom: listBottom(context, extra: 44),
+        return appRefreshIndicator(
+          onRefresh: () async {
+            initEmp();
+          },
+          child: Stack(
+            children: [
+              ListView(
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  top: isrole
+                      ? listTop(context)
+                      : appTopPadding(context, extra: 8),
+                  bottom: listBottom(context, extra: 44),
+                ),
+                children: [
+                  appGradientText(
+                    text: "Your Attendance",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    gradient: appGradient(),
+                  ),
+                  SizedBox(height: 8),
+                  _attendanceCart(context),
+                  const SizedBox(height: 16),
+                  appGradientText(
+                    text: "Leave summary",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    gradient: appGradient(),
+                  ),
+                  const SizedBox(height: 16),
+
+                  _buildRowItem(
+                    title:
+                        "Pending leave (${provider.leaveSummary?.pending ?? "0"})",
+                    icon: Icons.pending_actions_outlined,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteName.leaveSummaryPage,
+                      arguments: "PENDING LEAVES",
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  _buildRowItem(
+                    title:
+                        "Approval leave (${provider.leaveSummary?.accept ?? "0"})",
+                    icon: Icons.approval_outlined,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteName.leaveSummaryPage,
+                      arguments: "APROVAL LEAVES",
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  _buildRowItem(
+                    title:
+                        "Cancel leave (${provider.leaveSummary?.cancel ?? "0"})",
+                    icon: Icons.cancel_presentation_outlined,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteName.leaveSummaryPage,
+                      arguments: "CANCEL LEAVES",
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  _buildRowItem(
+                    title:
+                        "Reject leave (${provider.leaveSummary?.reject ?? "0"})",
+                    icon: Icons.close_outlined,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteName.leaveSummaryPage,
+                      arguments: "REJECT LEAVES",
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildRowItem(
+                    title: "All leave (${provider.leaveSummary?.all ?? "0"})",
+                    icon: Icons.calendar_month_outlined,
+                    onTap: () =>
+                        Navigator.pushNamed(context, RouteName.allLeavePage),
+                  ),
+
+                  const SizedBox(height: 16),
+                  appGradientText(
+                    text: "Leave Balance",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    gradient: appGradient(),
+                  ),
+                  const SizedBox(height: 16),
+
+                  _buildRowItem(
+                    title: "Casual Leaves (${provider.leaveBalance?.cl ?? 0})",
+                    icon: Icons.pending_actions_outlined,
+                    onTap: () {},
+                    //Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+                  ),
+                  const SizedBox(height: 12),
+
+                  _buildRowItem(
+                    title: "Sick Leaves (${provider.leaveBalance?.sl ?? 0})",
+                    icon: Icons.sick_outlined,
+                    onTap: () {},
+                    //Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+                  ),
+                  const SizedBox(height: 12),
+
+                  _buildRowItem(
+                    title: "Paid Leaves (${provider.leaveBalance?.pl ?? 0})",
+                    icon: Icons.paid_outlined,
+                    onTap: () {},
+                    // Navigator.pushNamed(context, RouteName.leaveSummaryPage),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      appGradientText(
+                        text: "Upcoming Birthday",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                        gradient: appGradient(),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pushNamed(
+                          context,
+                          RouteName.birthdayList,
+                        ),
+                        child: loadSubText(title: "See All"),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final birthday = birthdays[index];
+                        return birthDayCard(item: birthday);
+                      },
+                      separatorBuilder: (_, _) => SizedBox(width: 12),
+                      itemCount: birthdays.length,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      appGradientText(
+                        text: "Upcoming Holidays",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                        gradient: appGradient(),
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, RouteName.holidayPage),
+                        child: loadSubText(title: "See All"),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  SizedBox(
+                    height: 110,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final holiday = holidays[index];
+                        return holidayCard(item: holiday);
+                      },
+                      separatorBuilder: (_, _) => SizedBox(width: 12),
+                      itemCount: holidays.length,
+                    ),
+                  ),
+                ],
               ),
-              children: [
-                appGradientText(
-                  text: "Your Attendance",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  gradient: appGradient(),
-                ),
-                SizedBox(height: 8),
-                _attendanceCart(context),
-                const SizedBox(height: 16),
-                appGradientText(
-                  text: "Leave summary",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  gradient: appGradient(),
-                ),
-                const SizedBox(height: 16),
-
-                _buildRowItem(
-                  title:
-                      "Pending leave (${provider.leaveSummary?.pending ?? "0"})",
-                  icon: Icons.pending_actions_outlined,
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteName.leaveSummaryPage,
-                    arguments: "PENDING LEAVES",
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                _buildRowItem(
-                  title:
-                      "Approval leave (${provider.leaveSummary?.accept ?? "0"})",
-                  icon: Icons.approval_outlined,
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteName.leaveSummaryPage,
-                    arguments: "APROVAL LEAVES",
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                _buildRowItem(
-                  title:
-                      "Cancel leave (${provider.leaveSummary?.cancel ?? "0"})",
-                  icon: Icons.cancel_presentation_outlined,
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteName.leaveSummaryPage,
-                    arguments: "CANCEL LEAVES",
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                _buildRowItem(
-                  title:
-                      "Reject leave (${provider.leaveSummary?.reject ?? "0"})",
-                  icon: Icons.close_outlined,
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteName.leaveSummaryPage,
-                    arguments: "REJECT LEAVES",
-                  ),
-                ),
-                const SizedBox(height: 12),
-                _buildRowItem(
-                  title: "All leave (${provider.leaveSummary?.all ?? "0"})",
-                  icon: Icons.calendar_month_outlined,
-                  onTap: () =>
-                      Navigator.pushNamed(context, RouteName.allLeavePage),
-                ),
-
-                const SizedBox(height: 16),
-                appGradientText(
-                  text: "Leave Balance",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  gradient: appGradient(),
-                ),
-                const SizedBox(height: 16),
-
-                _buildRowItem(
-                  title: "Casual Leaves (${provider.leaveBalance?.cl})",
-                  icon: Icons.pending_actions_outlined,
-                  onTap: () {},
-                  //Navigator.pushNamed(context, RouteName.leaveSummaryPage),
-                ),
-                const SizedBox(height: 12),
-
-                _buildRowItem(
-                  title: "Sick Leaves (${provider.leaveBalance?.sl})",
-                  icon: Icons.sick_outlined,
-                  onTap: () {},
-                  //Navigator.pushNamed(context, RouteName.leaveSummaryPage),
-                ),
-                const SizedBox(height: 12),
-
-                _buildRowItem(
-                  title: "Paid Leaves (${provider.leaveBalance?.pl})",
-                  icon: Icons.paid_outlined,
-                  onTap: () {},
-                  // Navigator.pushNamed(context, RouteName.leaveSummaryPage),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    appGradientText(
-                      text: "Upcoming Birthday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                      gradient: appGradient(),
-                    ),
-                    TextButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, RouteName.birthdayList),
-                      child: loadSubText(title: "See All"),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4),
-                SizedBox(
-                  height: 100,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final birthday = birthdays[index];
-                      return birthDayCard(item: birthday);
-                    },
-                    separatorBuilder: (_, _) => SizedBox(width: 12),
-                    itemCount: birthdays.length,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    appGradientText(
-                      text: "Upcoming Holidays",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                      gradient: appGradient(),
-                    ),
-                    TextButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, RouteName.holidayPage),
-                      child: loadSubText(title: "See All"),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4),
-                SizedBox(
-                  height: 110,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final holiday = holidays[index];
-                      return holidayCard(item: holiday);
-                    },
-                    separatorBuilder: (_, _) => SizedBox(width: 12),
-                    itemCount: holidays.length,
-                  ),
-                ),
-              ],
-            ),
-            provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
-          ],
+              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
+            ],
+          ),
         );
       },
     );

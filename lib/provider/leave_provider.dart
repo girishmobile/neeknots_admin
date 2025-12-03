@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/api/network_repository.dart';
+import 'package:neeknots_admin/models/all_leave_model.dart';
 import 'package:neeknots_admin/models/apply_leave_model.dart';
 import 'package:neeknots_admin/models/user_model.dart';
 import 'package:neeknots_admin/utility/secure_storage.dart';
@@ -21,15 +22,14 @@ class LeaveProvider extends ChangeNotifier {
 
   bool _applySuccess = false;
   bool get applySuccess => _applySuccess; // getters
-
-  ApplyLeaveModel? _applyleaveModel;
-
-  ApplyLeaveModel? get applyleaveModel => _applyleaveModel;
+  bool _deleteSuccess = false;
+  bool get deleteSuccess => _deleteSuccess; // getters
 
   //for data bindig to apply leave page
   List<LeaveTypes> leaveTypes = [];
   LeaveByEmp? leaveByEmp;
 
+  List<MyLeave> listOfLeave = [];
   String? errorMessage;
 
   Future<void> loadUserdataFromstorage() async {
@@ -47,6 +47,12 @@ class LeaveProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteLeaveSuccess(bool val) {
+    _isLoading = false;
+    _deleteSuccess = val;
+    notifyListeners();
+  }
+
   Future<void> getLeaveTypes({required Map<String, dynamic> body}) async {
     _setLoading(true);
     try {
@@ -60,7 +66,7 @@ class LeaveProvider extends ChangeNotifier {
       if (globalStatusCode == 200) {
         final decoded = jsonDecode(response);
         // _applyleaveModel = ApplyLeaveModel.fromJson(decoded);
-        _applyleaveModel = ApplyLeaveModel.fromApiJson(json.decode(response));
+        // ApplyLeaveModel.fromApiJson(json.decode(response));
         if (decoded['leaveByEmp'] != null) {
           leaveByEmp = LeaveByEmp.fromJson(decoded['leaveByEmp']);
         }
@@ -77,14 +83,10 @@ class LeaveProvider extends ChangeNotifier {
       }
     } catch (e) {
       _setLoading(false);
-      print("somethinf - $e");
     }
   }
 
-  Future<void> applyLeave(
-    BuildContext context, {
-    required Map<String, dynamic> body,
-  }) async {
+  Future<void> applyLeave({required Map<String, dynamic> body}) async {
     _setLoading(true);
 
     try {
@@ -96,23 +98,129 @@ class LeaveProvider extends ChangeNotifier {
       );
       if (globalStatusCode == 200) {
         final decoded = jsonDecode(response);
-        if (decoded['response'] == "success") {
+        if (decoded == "created") {
+          errorMessage = "Your leave request has been processed successfully.";
           _setApplyLeaveSuccess(true);
-        } else if (decoded['response'] == "error") {
-          errorMessage = decoded['message'] ?? "Leave request failed";
-          _setApplyLeaveSuccess(false);
         } else {
-          errorMessage = "Leave request failed.";
+          errorMessage = decoded ?? "Leave request failed. Please try again";
           _setApplyLeaveSuccess(false);
         }
       } else {
-        errorMessage = "Something went wrong. Try again.";
+        errorMessage =
+            "Failed to submit your leave request. Please try again later.";
         _setApplyLeaveSuccess(false);
       }
     } catch (e) {
-      print("error:- $e");
       errorMessage = "Something went wrong. Try again.";
       _setApplyLeaveSuccess(false);
+    }
+  }
+
+  Future<void> getAllLeaveByEmplyee() async {
+    _setLoading(true);
+    Map<String, dynamic> body = {
+      "draw": 1,
+      "columns": [
+        {
+          "data": 0,
+          "name": "id",
+          "searchable": true,
+          "orderable": false,
+          "search": {"value": "", "regex": false},
+        },
+        {
+          "data": 1,
+          "name": "firstname",
+          "searchable": true,
+          "orderable": true,
+          "search": {"value": "", "regex": false},
+        },
+        {
+          "data": 2,
+          "name": "leave_date",
+          "searchable": true,
+          "orderable": true,
+          "search": {"value": "all", "regex": false},
+        },
+        {
+          "data": 3,
+          "name": "leave_end_date",
+          "searchable": true,
+          "orderable": true,
+          "search": {"value": "", "regex": false},
+        },
+        {
+          "data": 4,
+          "name": "leave_count",
+          "searchable": true,
+          "orderable": true,
+          "search": {"value": "Pending", "regex": false},
+        },
+        {
+          "data": 5,
+          "name": "reason",
+          "searchable": true,
+          "orderable": true,
+          "search": {"value": "", "regex": false},
+        },
+        {
+          "data": 6,
+          "name": "status",
+          "searchable": false,
+          "orderable": false,
+          "search": {"value": "", "regex": false},
+        },
+      ],
+      "order": [],
+      "start": 0,
+      "length": 100,
+      "search": {"value": "", "regex": false},
+    };
+    try {
+      final response = await callApi(
+        url: ApiConfig.getAllListingLeaveUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+      if (globalStatusCode == 200) {
+        final decoded = jsonDecode(response);
+        if (decoded["data"] != null) {
+          final json = decoded["data"];
+          listOfLeave = (json["data"] as List<dynamic>)
+              .map((e) => MyLeave.fromApiJson(e))
+              .toList();
+        }
+
+        errorMessage = "You have successfully fetched.";
+        _setApplyLeaveSuccess(true);
+      } else {
+        errorMessage =
+            "Failed to submit your leave request. Please try again later.";
+        _setApplyLeaveSuccess(false);
+      }
+    } catch (e) {
+      errorMessage = "Something went wrong. Try again.";
+      _setApplyLeaveSuccess(false);
+    }
+  }
+
+  Future<void> deleteLeave({required Map<String, dynamic> body}) async {
+    _setLoading(true);
+    try {
+      await callApi(
+        url: ApiConfig.deleteLeaveUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+      if (globalStatusCode == 200) {
+        deleteLeaveSuccess(true);
+      } else {
+        deleteLeaveSuccess(false);
+      }
+    } catch (e) {
+      deleteLeaveSuccess(false);
     }
   }
 

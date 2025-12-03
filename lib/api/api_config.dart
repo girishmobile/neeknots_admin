@@ -23,6 +23,10 @@ class ApiConfig {
 
   static String applyLeave =
       "$BaseUrl/leave_application/save_leave_application";
+  static String getAllListingLeaveUrl = "$BaseUrl/datatable/getAllLeaves";
+
+  static String deleteLeaveUrl =
+      "$BaseUrl/leave_application/delete_leave_application";
 
   //API header
   static Future<Map<String, String>> getApiHeaders() async {

@@ -8,6 +8,7 @@ import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
+import 'package:neeknots_admin/provider/emp_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/screens/attendance_screen.dart';
 import 'package:neeknots_admin/screens/calendar_screen.dart';
@@ -70,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required AppProvider provider,
     required String title,
   }) {
-    return Consumer<ProfileProvider>(
+    return Consumer<AppProvider>(
       builder: (context, profilePro, child) {
         final fullImageUrl =
             (profilePro.profileImage != null &&
@@ -243,9 +244,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _leaveRequest(BuildContext context) {
     return Positioned.fill(
-      // bottom: safeBottom + bottomBarHeight + 8,
-      //left: 48,
-      //right: 48,
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Padding(
@@ -261,8 +259,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton.icon(
-              onPressed: () =>
-                  Navigator.pushNamed(context, RouteName.applyLeavePage),
+              onPressed: () async {
+                final refresh = await Navigator.pushNamed(
+                  context,
+                  RouteName.applyLeavePage,
+                );
+                if (refresh == true) {
+                  print("back to Dashboard");
+                  // user is employee
+                  final emp = context.read<EmpProvider>();
+                  final app = context.read<AppProvider>();
+                  await Future.wait([
+                    emp.getLeaveSummary(),
+                    emp.getLeaveBalance(body: {"emp_id": app.employeeId}),
+                  ]);
+                }
+              },
 
               label: const Text(
                 "Apply Leave",

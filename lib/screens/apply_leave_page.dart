@@ -18,9 +18,7 @@ final halfDayTypes = ["First Half", "Second Half"];
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
   DateTime? fromDate;
   DateTime? toDate;
-  //String? selectedLeaveType;
   String? employeeId;
-
   LeaveDropdownItem? selectedLeaveType;
 
   //half day
@@ -298,8 +296,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   }
 
   void validateAndApplyLeave(LeaveProvider provider) {
-    print("state employeeId = $employeeId");
-
     if (fromDate == null) {
       showError("Please select From Date");
       return;
@@ -338,11 +334,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       return showError("Please enter reason for leave");
     }
     // Success
-
-    ///showSuccess("Leave applied successfully");
-
     Map<String, dynamic> body = {
-      "user_id": employeeId ?? 0,
+      "leave_id": null,
+      "user_id": int.tryParse(employeeId ?? "0"),
       "leave_date": getFormattedDate(
         fromDate ?? DateTime.now(),
         format: "dd-MM-yyyy",
@@ -359,8 +353,32 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       "reason": reasonController.text.trim(),
       // "location ":locationProvider.currentAddress
     };
-    print("body of Leave:- $body");
-    provider.applyLeave(context, body: body);
+    leaveRequest(provider, body);
+  }
+
+  Future<void> leaveRequest(
+    LeaveProvider provider,
+    Map<String, dynamic> body,
+  ) async {
+    await provider.applyLeave(body: body);
+    if (!mounted) return; // ✅ use the State's mounted
+    if (provider.applySuccess) {
+      showSnackBar(
+        context,
+        message: provider.errorMessage ?? "Leave applied successfully.",
+        bgColor: Colors.green,
+      );
+
+      Navigator.pop(context, true); // request refresh
+    } else {
+      showSnackBar(
+        context,
+        message:
+            provider.errorMessage ??
+            "Unable to process your leave request. Please try again.",
+        bgColor: Colors.redAccent,
+      );
+    }
   }
 
   void showError(String msg) {

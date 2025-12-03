@@ -57,6 +57,7 @@ class LoginProvider with ChangeNotifier {
       );
       if (globalStatusCode == 200) {
         final decoded = jsonDecode(response);
+        print("jsond- $decoded");
         if (decoded['response'] == "success") {
           // Convert JSON → UserModel
           final user = UserModel.fromApiJson(decoded);
@@ -64,7 +65,9 @@ class LoginProvider with ChangeNotifier {
           await SecureStorage.saveUser(user);
           _setLoginSuccess(true);
         } else if (decoded['response'] == "error") {
-          errorMessage = decoded['message'] ?? "Invalid credentials";
+          final msg = decoded["data"];
+          errorMessage = msg['message'] ?? "Invalid credentials";
+
           _setLoginSuccess(false);
         } else {
           errorMessage = "Something went wrong. Try again.";

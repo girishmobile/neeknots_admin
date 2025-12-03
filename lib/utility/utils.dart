@@ -77,7 +77,13 @@ void showSnackBar(
 }) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, style: const TextStyle(color: Colors.white)),
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       backgroundColor: bgColor ?? Colors.black87,
       duration: const Duration(seconds: 2),
     ),
@@ -105,4 +111,28 @@ String getFormattedDate(DateTime dateTime, {String format = 'yyyy-MM-dd'}) {
 //Get only time (default HH:mm:ss)
 String getFormattedTime(DateTime dateTime, {String format = 'HH:mm:ss'}) {
   return DateFormat(format).format(dateTime);
+}
+
+String convertDate(String? date, {String format = "dd-MMM-yy"}) {
+  if (date == null || date.isEmpty) return '';
+  try {
+    final parsed = DateTime.parse(date);
+    return DateFormat(format).format(parsed);
+  } catch (_) {
+    return date;
+  }
+}
+
+String comrateStartEndate(dynamic startDate, dynamic endDate) {
+  String formattedDate;
+
+  if (startDate == endDate) {
+    // Same Date
+    formattedDate = convertDate(startDate, format: "dd MMM yyyy");
+  } else {
+    // Date Range
+    formattedDate =
+        '${convertDate(startDate, format: "dd MMM yyyy")} To ${convertDate(endDate, format: "dd MMM yyyy")}';
+  }
+  return formattedDate;
 }

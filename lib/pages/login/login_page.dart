@@ -125,7 +125,7 @@ class LoginPage extends StatelessWidget {
                                           showSnackBar(
                                             context,
                                             message:
-                                                errorMessage ??
+                                                provider.errorMessage ??
                                                 "Invalid credentials",
                                             bgColor: Colors.redAccent,
                                           );
