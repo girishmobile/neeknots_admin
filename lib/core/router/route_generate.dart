@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/models/all_leave_model.dart';
 import 'package:neeknots_admin/pages/customer/customer_detail_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_orders_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_spent_page.dart';
@@ -126,8 +127,8 @@ class RouteGenerate {
         screen = const AllLeavePage();
         break;
       case RouteName.editLeavePage:
-        final args = settings.arguments as String;
-        screen = EditLeavePage(leaveId: args);
+        final args = settings.arguments as MyLeave;
+        screen = EditLeavePage(item: args);
         break;
       default:
         screen = AppScaffold(

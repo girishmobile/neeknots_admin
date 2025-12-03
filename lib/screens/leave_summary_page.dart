@@ -39,32 +39,44 @@ class _LeaveSummaryPageState extends State<LeaveSummaryPage> {
     return AppScaffold(
       child: Consumer<LeaveProvider>(
         builder: (context, provider, child) {
-          return Stack(
-            children: [
-              provider.listOfLeave.isEmpty && !provider.isLoading
-                  ? Center(child: Text("You don’t have any leave records yet."))
-                  : ListView.separated(
-                      padding: EdgeInsets.only(
-                        left: 24,
-                        right: 24,
-                        top: appTopPadding(context),
-                      ),
-                      itemBuilder: (context, index) {
-                        final leave = provider.listOfLeave[index];
+          return appRefreshIndicator(
+            onRefresh: () async {
+              initLeave();
+            },
+            child: Stack(
+              children: [
+                provider.listOfLeave.isEmpty && !provider.isLoading
+                    ? Center(
+                        child: Text("You don’t have any leave records yet."),
+                      )
+                    : ListView.separated(
+                        padding: EdgeInsets.only(
+                          left: 24,
+                          right: 24,
+                          top: appTopPadding(context),
+                        ),
+                        itemBuilder: (context, index) {
+                          final leave = provider.listOfLeave[index];
 
-                        return _buildLeaveItem(item: leave, provider: provider);
-                      },
-                      separatorBuilder: (_, _) => SizedBox(height: 8),
-                      itemCount: provider.listOfLeave.length,
-                    ),
-              appNavigationBar(
-                title: widget.pageTitle,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
-            ],
+                          return _buildLeaveItem(
+                            item: leave,
+                            provider: provider,
+                          );
+                        },
+                        separatorBuilder: (_, _) => SizedBox(height: 8),
+                        itemCount: provider.listOfLeave.length,
+                      ),
+                appNavigationBar(
+                  title: widget.pageTitle,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                provider.isLoading
+                    ? showProgressIndicator()
+                    : SizedBox.shrink(),
+              ],
+            ),
           );
         },
       ),
@@ -99,11 +111,17 @@ class _LeaveSummaryPageState extends State<LeaveSummaryPage> {
           rowItem(
             title: "Status:",
             subTitle: "${item.status}",
-            onEdit: () => Navigator.pushNamed(
-              context,
-              RouteName.editLeavePage,
-              arguments: "${item.id}",
-            ),
+            onEdit: () async {
+              final refresh = await Navigator.pushNamed(
+                context,
+                RouteName.editLeavePage,
+                arguments: item,
+              );
+              if (refresh == true) {
+                initLeave();
+              }
+            },
+
             onDelete: () {
               showDialog(
                 context: context,

@@ -101,6 +101,9 @@ class LeaveProvider extends ChangeNotifier {
         if (decoded == "created") {
           errorMessage = "Your leave request has been processed successfully.";
           _setApplyLeaveSuccess(true);
+        } else if (decoded == "updated") {
+          errorMessage = "Your leave request has been updated successfully.";
+          _setApplyLeaveSuccess(true);
         } else {
           errorMessage = decoded ?? "Leave request failed. Please try again";
           _setApplyLeaveSuccess(false);
