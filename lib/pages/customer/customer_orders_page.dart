@@ -50,7 +50,7 @@ class CustomerOrdersPage extends StatelessWidget {
           spacing: 16,
           children: [
             appProfileImage(
-              imaheUrl: hostImage,
+              imageUrl: hostImage,
               radius: 28,
               padding: EdgeInsets.all(0),
             ),

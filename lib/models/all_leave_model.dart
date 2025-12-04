@@ -64,7 +64,7 @@ class MyLeave {
       reason: json['reason'],
       location: json['location'],
       finalApprove: json['final_approve'],
-      isLeaveWfh: json['is_leave_wfh'],
+      isLeaveWfh: json['is_leave_wfh'] == 1, // FIX
       rejectReason: json['reject_reason'],
       userId: json["user_id"] != null ? UserId.fromJson(json["user_id"]) : null,
       leaveType: json['leave_type'] != null

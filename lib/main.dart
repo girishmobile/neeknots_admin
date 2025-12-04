@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/core/router/route_generate.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
+import 'package:neeknots_admin/provider/emp_notifi_provider.dart';
 import 'package:neeknots_admin/provider/emp_provider.dart';
 import 'package:neeknots_admin/provider/leave_balance_provider.dart';
 import 'package:neeknots_admin/provider/leave_provider.dart';
@@ -9,6 +10,7 @@ import 'package:neeknots_admin/provider/login_provider.dart';
 import 'package:neeknots_admin/provider/manager_provider.dart';
 import 'package:neeknots_admin/provider/product_detail_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
+import 'package:neeknots_admin/provider/setting_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -21,6 +23,8 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider<EmpProvider>(create: (_) => EmpProvider()),
   ChangeNotifierProvider<ManagerProvider>(create: (_) => ManagerProvider()),
   ChangeNotifierProvider<LeaveProvider>(create: (_) => LeaveProvider()),
+  ChangeNotifierProvider<SettingProvider>(create: (_) => SettingProvider()),
+  ChangeNotifierProvider<EmpNotifiProvider>(create: (_) => EmpNotifiProvider()),
   ChangeNotifierProvider<LeaveBalanceProvider>(
     create: (_) => LeaveBalanceProvider(),
   ),

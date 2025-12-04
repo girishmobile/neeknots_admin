@@ -1,76 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
-import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/provider/profile_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final String employeeId;
+
+  const ProfileScreen({super.key, required this.employeeId});
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      child: Stack(
-        children: [
-          ListView(
-            padding: EdgeInsets.only(
-              left: 24,
-              right: 24,
-              top: appTopPadding(context),
-              bottom: appBottomPadding(context),
-            ),
-            children: [
-              appProfileImage(imaheUrl: hostImage, radius: 60),
-              SizedBox(height: 16),
-              loadTitleText(
-                title: "Girish Chauhan",
-                textAlign: TextAlign.center,
-              ),
-              loadSubText(title: "iOS Developer", textAlign: TextAlign.center),
-              SizedBox(height: 32),
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Map<String, dynamic> body = {"employee_id": employeeId};
 
-              _builRowTitle(
-                icon: Icons.person_outline_outlined,
-                label: "Basic Information",
+      context.read<ProfileProvider>().getUserProfile(body: body);
+    });
+    return AppScaffold(
+      child: Consumer<ProfileProvider>(
+        builder: (context, provider, child) {
+          return Stack(
+            children: [
+              ListView(
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  top: appTopPadding(context),
+                  bottom: appBottomPadding(context),
+                ),
+                children: [
+                  appProfileImage(
+                    imageUrl: setImagePath(
+                      provider.profileModel?.profileImage.toString(),
+                    ),
+                    radius: 60,
+                  ),
+                  SizedBox(height: 16),
+                  loadTitleText(
+                    title:
+                        "${provider.profileModel?.firstname ?? '-'} ${provider.profileModel?.lastname ?? '-'}",
+                    textAlign: TextAlign.center,
+                  ),
+                  loadSubText(
+                    title: provider.profileModel?.designation?.name ?? '-',
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 32),
+                  _builRowTitle(
+                    icon: Icons.person_outline_outlined,
+                    label: "Basic Information",
+                  ),
+                  SizedBox(height: 8),
+                  _buildPersonalInfo(provider: provider),
+                  SizedBox(height: 24),
+                  _builRowTitle(
+                    icon: Icons.account_balance_outlined,
+                    label: "Company Relations",
+                  ),
+                  SizedBox(height: 8),
+                  _buildCompnayInfo(provider: provider),
+                  SizedBox(height: 24),
+                  _builRowTitle(
+                    icon: Icons.call_outlined,
+                    label: "Contact Information",
+                  ),
+                  SizedBox(height: 8),
+                  _buildContactInfo(provider: provider),
+                  SizedBox(height: 24),
+                  _builRowTitle(icon: Icons.book_outlined, label: "Document"),
+                  SizedBox(height: 8),
+                  _buildDocuments(provider: provider),
+                  SizedBox(height: 24),
+                  _builRowTitle(
+                    icon: Icons.share_outlined,
+                    label: "Social Network",
+                  ),
+                  SizedBox(height: 8),
+                  _buildSocial(provider: provider),
+                  SizedBox(height: 24),
+                  gradientButton(title: "LOGOUT", onPressed: () {}),
+                ],
               ),
-              SizedBox(height: 8),
-              _buildPersonalInfo(),
-              SizedBox(height: 24),
-              _builRowTitle(
-                icon: Icons.account_balance_outlined,
-                label: "Company Relations",
+              appNavigationBar(
+                title: "PROFILE",
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
-              SizedBox(height: 8),
-              _buildCompnayInfo(),
-              SizedBox(height: 24),
-              _builRowTitle(
-                icon: Icons.call_outlined,
-                label: "Contact Information",
-              ),
-              SizedBox(height: 8),
-              _buildContactInfo(),
-              SizedBox(height: 24),
-              _builRowTitle(icon: Icons.book_outlined, label: "Document"),
-              SizedBox(height: 8),
-              _buildDocuments(),
-              SizedBox(height: 24),
-              _builRowTitle(
-                icon: Icons.share_outlined,
-                label: "Social Network",
-              ),
-              SizedBox(height: 8),
-              _buildSocial(),
-              SizedBox(height: 24),
-              gradientButton(title: "LOGOUT", onPressed: () {}),
             ],
-          ),
-          appNavigationBar(
-            title: "PROFILE",
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -89,100 +109,204 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPersonalInfo() {
+  Widget _buildPersonalInfo({required ProfileProvider provider}) {
     return appViewEffect(
       child: Column(
         spacing: 16,
         children: [
-          _builBasicRowInfo(label: "Full Name", titleText: "Girish Chauhan"),
-          _builBasicRowInfo(label: "Employee ID", titleText: "068"),
+          _builBasicRowInfo(
+            label: "Full Name",
+            titleText:
+                "${provider.profileModel?.firstname} ${provider.profileModel?.lastname}",
+          ),
+          _builBasicRowInfo(
+            label: "Employee ID",
+            titleText: "${provider.profileModel?.employeeId}",
+          ),
           _builBasicRowInfo(
             label: "Personal Email",
-            titleText: "girish@kaushalam.com",
+            titleText: provider.profileModel?.email ?? '-',
           ),
           _builBasicRowInfo(
             label: "Company Email",
-            titleText: "girish@kaushalam.com",
+            titleText: provider.profileModel?.companyEmail ?? '-',
           ),
-          _builBasicRowInfo(label: "Gender", titleText: "Male"),
-          _builBasicRowInfo(label: "Birthday", titleText: "01-Feb-1990"),
-          _builBasicRowInfo(label: "Blood Group", titleText: "-"),
-          _builBasicRowInfo(label: "Marital Status", titleText: "Married"),
-          _builBasicRowInfo(label: "Status", titleText: "Active"),
-          _builBasicRowInfo(label: "External System Access", titleText: "Yes"),
+          _builBasicRowInfo(
+            label: "Gender",
+            titleText: provider.profileModel?.gender?.valueText ?? '',
+          ),
+          _builBasicRowInfo(
+            label: "Birthday",
+            titleText: convertDate(
+              provider.profileModel?.dateOfBirth?.date,
+              format: "dd-MMM-yyyy",
+            ),
+          ),
+          _builBasicRowInfo(
+            label: "Blood Group",
+            titleText: provider.profileModel?.bloodGroup ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Marital Status",
+            titleText: (provider.profileModel?.maritalStatus ?? false)
+                ? "Married"
+                : "Single",
+          ),
+          _builBasicRowInfo(
+            label: "Status",
+            titleText: (provider.profileModel?.userExitStatus ?? false)
+                ? "Active"
+                : "Inactive",
+          ),
+
+          _builBasicRowInfo(
+            label: "External System Access",
+            titleText: (provider.profileModel?.allowedLogin ?? false)
+                ? "Yes"
+                : "No",
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildCompnayInfo() {
+  Widget _buildCompnayInfo({required ProfileProvider provider}) {
+    final durationText = getWorkDurationFromString(
+      provider.profileModel?.joiningDate?.date,
+    );
+
     return appViewEffect(
       child: Column(
         spacing: 16,
         children: [
-          _builBasicRowInfo(label: "Department", titleText: "Mobile"),
-          _builBasicRowInfo(label: "Designation", titleText: "iOS developer"),
-          _builBasicRowInfo(label: "Batch", titleText: "9:30 to 7:30"),
-          _builBasicRowInfo(label: "Reports To", titleText: "-"),
-          _builBasicRowInfo(label: "Joining Date", titleText: "13-Jun-2013"),
-          _builBasicRowInfo(label: "Probation End Date", titleText: "-"),
-          _builBasicRowInfo(label: "Work Duration", titleText: "-"),
+          _builBasicRowInfo(
+            label: "Department",
+            titleText: provider.profileModel?.department?.name ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Designation",
+            titleText: provider.profileModel?.designation?.name ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Batch",
+            titleText: provider.profileModel?.location?.name ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Reports To",
+            titleText: [
+              provider.profileModel?.reportTo?.firstname ?? "-",
+              provider.profileModel?.reportTo?.lastname ?? "",
+            ].where((e) => e.isNotEmpty).join(" ").trim(),
+          ),
+          _builBasicRowInfo(
+            label: "Joining Date",
+            titleText: convertDate(
+              provider.profileModel?.joiningDate?.date,
+              format: "dd-MMM-yyyy",
+            ),
+          ),
+          _builBasicRowInfo(
+            label: "Probation End Date",
+            titleText: convertDate(
+              provider.profileModel?.probationEndDate?.date,
+              format: "dd-MMM-yyyy",
+            ),
+          ),
+          _builBasicRowInfo(label: "Work Duration", titleText: durationText),
         ],
       ),
     );
   }
 
-  Widget _buildContactInfo() {
+  Widget _buildContactInfo({required ProfileProvider provider}) {
     return appViewEffect(
       child: Column(
         spacing: 16,
         children: [
-          _builBasicRowInfo(label: "Mobile Phone", titleText: "+91 9558697986"),
           _builBasicRowInfo(
-            label: "Emergency Contact Number",
-            titleText: "+91 9558697986",
+            label: "Mobile Phone",
+            titleText: provider.profileModel?.contactNo ?? '-',
           ),
           _builBasicRowInfo(
-            label: "Emergency Contact Person",
-            titleText: "Shreyansh Chauhan",
+            label: "Emergency Contact",
+            titleText: provider.profileModel?.emergencyContactNo ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Emergency Person",
+            titleText: provider.profileModel?.emergencyContactPerson ?? '-',
           ),
           _builBasicRowInfo(
             label: "Current Address",
-            titleText:
-                "I-404 Sahajanad Helenium, Chandkheda, Ahmedabad, 382424",
+            titleText: provider.profileModel?.address ?? '-',
           ),
           _builBasicRowInfo(
             label: "Permanent Address",
-            titleText: "Nari, Bhavnagar",
+            titleText: provider.profileModel?.perAddress ?? '-',
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDocuments() {
+  Widget _buildDocuments({required ProfileProvider provider}) {
     return appViewEffect(
       child: Column(
         spacing: 16,
         children: [
-          _builBasicRowInfo(label: "Driving License Number", titleText: "-"),
-          _builBasicRowInfo(label: "PAN Number", titleText: "ABCDE1234D"),
-          _builBasicRowInfo(label: "Aadhar Number", titleText: "245698745621"),
-          _builBasicRowInfo(label: "Voter ID Number", titleText: "-"),
+          _builBasicRowInfo(
+            label: "Driving License Number",
+            titleText: provider.profileModel?.drivingLicenseNumber ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "PAN Number",
+            titleText: provider.profileModel?.panNumber ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Aadhar Number",
+            titleText: provider.profileModel?.aadharNumber ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Voter ID Number",
+            titleText: provider.profileModel?.voterIdNumber ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "UAN Number",
+            titleText: provider.profileModel?.uanNumber ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "PF Number",
+            titleText: provider.profileModel?.pfNumber ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "ESIC Number",
+            titleText: provider.profileModel?.esicNumber ?? '-',
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildSocial() {
+  Widget _buildSocial({required ProfileProvider provider}) {
     return appViewEffect(
       child: Column(
         spacing: 16,
         children: [
-          _builBasicRowInfo(label: "Slack username", titleText: "-"),
-          _builBasicRowInfo(label: "Facebook username", titleText: "-"),
-          _builBasicRowInfo(label: "Twitter username", titleText: "-"),
-          _builBasicRowInfo(label: "LinkedIn username", titleText: "-"),
+          _builBasicRowInfo(
+            label: "Slack username",
+            titleText: provider.profileModel?.slackUsername ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Facebook username",
+            titleText: provider.profileModel?.facebookUsername ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "Twitter username",
+            titleText: provider.profileModel?.twitterUsername ?? '-',
+          ),
+          _builBasicRowInfo(
+            label: "LinkedIn username",
+            titleText: provider.profileModel?.linkdinUsername ?? '-',
+          ),
         ],
       ),
     );

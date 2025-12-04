@@ -19,7 +19,7 @@ class EmployeeDetailPage extends StatelessWidget {
               top: appTopPadding(context),
             ),
             children: [
-              appProfileImage(imaheUrl: hostImage, radius: 60),
+              appProfileImage(imageUrl: hostImage, radius: 60),
               SizedBox(height: 16),
               loadTitleText(title: "John Smith", textAlign: TextAlign.center),
               loadSubText(

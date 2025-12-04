@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:neeknots_admin/api/api_config.dart';
+import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:uuid/uuid.dart';
 
 class Utils {
@@ -90,6 +92,41 @@ void showSnackBar(
   );
 }
 
+String getWorkDurationFromString(String? joiningDateStr) {
+  if (joiningDateStr == null || joiningDateStr.isEmpty) {
+    return "Not Available";
+  }
+
+  DateTime? joiningDate;
+
+  try {
+    joiningDate = DateTime.parse(joiningDateStr); // e.g. "2023-05-10"
+  } catch (e) {
+    return "Invalid Date";
+  }
+
+  final now = DateTime.now();
+
+  int years = now.year - joiningDate.year;
+  int months = now.month - joiningDate.month;
+  int days = now.day - joiningDate.day;
+
+  // Fix day negative values
+  if (days < 0) {
+    final previousMonth = DateTime(now.year, now.month, 0);
+    days += previousMonth.day;
+    months -= 1;
+  }
+
+  // Fix negative months
+  if (months < 0) {
+    months += 12;
+    years -= 1;
+  }
+
+  return "$years year $months month $days days";
+}
+
 //Date Time
 DateTime getCurrentDateTime() {
   return DateTime.now();
@@ -114,7 +151,7 @@ String getFormattedTime(DateTime dateTime, {String format = 'HH:mm:ss'}) {
 }
 
 String convertDate(String? date, {String format = "dd-MMM-yy"}) {
-  if (date == null || date.isEmpty) return '';
+  if (date == null || date.isEmpty) return '-';
   try {
     final parsed = DateTime.parse(date);
     return DateFormat(format).format(parsed);
@@ -135,4 +172,15 @@ String comrateStartEndate(dynamic startDate, dynamic endDate) {
         '${convertDate(startDate, format: "dd MMM yyyy")} To ${convertDate(endDate, format: "dd MMM yyyy")}';
   }
   return formattedDate;
+}
+
+String? setImagePath(String? imageUrl) {
+  return (imageUrl != null && imageUrl.isNotEmpty)
+      ? "${ApiConfig.imageBaseUrl}$imageUrl"
+      : null;
+}
+
+String removeHtmlTags(String htmlText) {
+  final regex = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);
+  return htmlText.replaceAll(regex, "").trim();
 }

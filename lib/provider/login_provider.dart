@@ -36,6 +36,12 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void resetState() {
+    emailController.clear();
+    passwordController.clear();
+    notifyListeners();
+  }
+
   Future<void> checkLoginStatus() async {
     String? token = await SecureStorage.getToken();
     if (token != null && token.isNotEmpty) {
@@ -57,7 +63,7 @@ class LoginProvider with ChangeNotifier {
       );
       if (globalStatusCode == 200) {
         final decoded = jsonDecode(response);
-        print("jsond- $decoded");
+
         if (decoded['response'] == "success") {
           // Convert JSON → UserModel
           final user = UserModel.fromApiJson(decoded);
@@ -68,6 +74,38 @@ class LoginProvider with ChangeNotifier {
           final msg = decoded["data"];
           errorMessage = msg['message'] ?? "Invalid credentials";
 
+          _setLoginSuccess(false);
+        } else {
+          errorMessage = "Something went wrong. Try again.";
+          _setLoginSuccess(false);
+        }
+      } else {
+        errorMessage = "Something went wrong. Try again.";
+        _setLoginSuccess(false);
+      }
+    } catch (e) {
+      errorMessage = "Something went wrong. Try again.";
+      _setLoginSuccess(false);
+    }
+  }
+
+  Future<void> forgotpassword({required Map<String, dynamic> body}) async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.forgotPasswordUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+      if (globalStatusCode == 200) {
+        final decoded = jsonDecode(response);
+        if (decoded['response'] == "success") {
+          resetState();
+          _setLoginSuccess(true);
+        } else if (decoded['response'] == "error") {
+          errorMessage =
+              decoded['message'] ?? "User not found with this email address";
           _setLoginSuccess(false);
         } else {
           errorMessage = "Something went wrong. Try again.";

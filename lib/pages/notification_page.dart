@@ -2,53 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
+import 'package:neeknots_admin/provider/emp_notifi_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<EmpNotifiProvider>().getEmployeeNotification();
+    });
     return AppScaffold(
-      child: Stack(
-        children: [
-          _listOfNotification(context),
-          _searchBar(context),
-          appNavigationBar(
-            title: "NOTIFICATION",
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+      child: Consumer<EmpNotifiProvider>(
+        builder: (context, provider, child) {
+          return Stack(
+            children: [
+              provider.notifications.isEmpty && !provider.isLoading
+                  ? Center(child: Text("You don’t have any notification yet."))
+                  : ListView.separated(
+                      padding: EdgeInsets.only(
+                        left: 24,
+                        right: 24,
+                        top: listTop(context),
+                        bottom: appBottomPadding(context),
+                      ),
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: true,
+                      cacheExtent: 500,
+                      itemBuilder: (context, index) {
+                        final dataModel = provider.notifications[index];
+                        return RepaintBoundary(
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: notificationCard(dataModel),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 8),
+                      itemCount: provider.notifications.length,
+                    ),
+              _searchBar(context),
+              appNavigationBar(
+                title: "NOTIFICATION",
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
+            ],
+          );
+        },
       ),
-    );
-  }
-
-  Widget _listOfNotification(BuildContext context) {
-    final safeBottom = MediaQuery.of(context).padding.bottom;
-
-    return ListView.separated(
-      padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
-        top: listTop(context),
-        bottom: safeBottom,
-      ),
-      addAutomaticKeepAlives: false,
-      addRepaintBoundaries: true,
-      cacheExtent: 500,
-      itemBuilder: (context, index) {
-        final dataModel = listOfnotification[index];
-        return RepaintBoundary(
-          child: GestureDetector(
-            onTap: () {},
-            child: notificationCard(dataModel),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
-      itemCount: listOfnotification.length,
     );
   }
 

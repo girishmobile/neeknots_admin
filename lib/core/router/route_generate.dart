@@ -94,7 +94,8 @@ class RouteGenerate {
         screen = const ApplyLeavePage();
         break;
       case RouteName.profileScreen:
-        screen = const ProfileScreen();
+        final args = settings.arguments as String;
+        screen = ProfileScreen(employeeId: args);
         break;
       case RouteName.editProfilePage:
         screen = const EditProfilePage();

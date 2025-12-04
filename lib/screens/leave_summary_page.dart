@@ -27,8 +27,7 @@ class _LeaveSummaryPageState extends State<LeaveSummaryPage> {
 
   Future<void> initLeave() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //context.read<LeaveProvider>().getAllHolidays();
-      context.read<LeaveProvider>().getAllLeaveByEmplyee();
+      context.read<LeaveProvider>().getAllLeaveByEmployee();
     });
   }
 

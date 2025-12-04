@@ -26,16 +26,8 @@ class ManagerScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             _buildRowItem(
-              title: "Today's leave (1)",
-              icon: Icons.pending_actions_outlined,
-              onTap: () {},
-            ),
-
-            //Add leave {{url}}leave_application/save_leave_application
-            const SizedBox(height: 12),
-            _buildRowItem(
               icon: Icons.rocket_launch_outlined,
-              title: "Pending leave request",
+              title: "Leave request",
               onTap: () =>
                   Navigator.pushNamed(context, RouteName.pendingLeavePage),
             ),

@@ -10,6 +10,8 @@ class ApiConfig {
 
   //End point
   static String loginUrl = "$BaseUrl/login";
+  static String forgotPasswordUrl = "$BaseUrl/forgotPassword";
+
   static String attendanceUrl =
       "$BaseUrl/hikattendance/currentMonthHikAttendanceRecord";
   static String leaveCountDataUrl = "$BaseUrl/leave_application/summary";
@@ -23,10 +25,23 @@ class ApiConfig {
 
   static String applyLeave =
       "$BaseUrl/leave_application/save_leave_application";
-  static String getAllListingLeaveUrl = "$BaseUrl/datatable/getAllLeaves";
+  static String getAllEmployeeLeaveUrl = "$BaseUrl/datatable/getAllLeaves";
+  static String getLeaveDataDashboardUrl =
+      "$BaseUrl/dashboard/getLeaveDataDashboard";
 
+  static String employeeLeavesUrl = "$BaseUrl/datatable/getLeaveRequiredData";
   static String deleteLeaveUrl =
       "$BaseUrl/leave_application/delete_leave_application";
+
+  static String getUserDetailsByIdUrl = "$BaseUrl/user/getEmployeeById";
+  static String employeeNotificationUrl =
+      "$BaseUrl/activity_box/getEmpNotifications?start=0&length=10";
+
+  static String rejectLeaveUrl =
+      "$BaseUrl/leave_application/update_reject_status";
+
+  static String approvedLeaveUrl =
+      "$BaseUrl/leave_application/update_accept_status";
 
   //API header
   static Future<Map<String, String>> getApiHeaders() async {

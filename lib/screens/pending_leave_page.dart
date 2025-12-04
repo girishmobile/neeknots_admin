@@ -4,7 +4,11 @@ import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
+import 'package:neeknots_admin/models/manager_leave_model.dart';
+import 'package:neeknots_admin/provider/leave_provider.dart';
+import 'package:neeknots_admin/provider/manager_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
+import 'package:provider/provider.dart';
 
 class PendingLeavePage extends StatefulWidget {
   const PendingLeavePage({super.key});
@@ -25,106 +29,147 @@ class _PendingLeavePageState extends State<PendingLeavePage> {
     "Rejected Leave",
     "Canceled Leave",
   ];
+  @override
+  void initState() {
+    super.initState();
+    initLeave();
+  }
+
+  Future<void> initLeave() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ManagerProvider>().getAllLeavesForManager();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final safeTop = MediaQuery.of(context).padding.top;
-    final topBarHeight = 48.0; // from Dashboard SafeArea Row
     return AppScaffold(
-      child: Stack(
-        children: [
-          _listOfLeaveRequest(context),
-
-          Positioned(
-            top: safeTop + topBarHeight + 16,
-            left: 24,
-            right: 24,
-            child: _filterOption(),
-          ),
-          appNavigationBar(
-            title: "LEAVES REQUEST",
-            onTap: () => Navigator.pop(context),
-          ),
-        ],
+      child: Consumer<ManagerProvider>(
+        builder: (context, provider, child) {
+          return Stack(
+            children: [
+              provider.recent_leaves.isEmpty && !provider.isLoading
+                  ? Center(child: Text("You don’t have any leave records yet."))
+                  : ListView.separated(
+                      padding: EdgeInsets.only(
+                        left: 24,
+                        right: 24,
+                        top: appTopPadding(context),
+                        bottom: appBottomPadding(context),
+                      ),
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: true,
+                      cacheExtent: 500,
+                      itemBuilder: (context, index) {
+                        final leave = provider.recent_leaves[index];
+                        return RepaintBoundary(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteName.employeeDetailPage,
+                              );
+                            },
+                            child: leaveCard(leave),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 8),
+                      itemCount: provider.recent_leaves.length,
+                    ),
+              appNavigationBar(
+                title: "LEAVES REQUEST",
+                onTap: () => Navigator.pop(context),
+              ),
+              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
+            ],
+          );
+        },
       ),
     );
   }
 
   Widget _filterOption() {
-    return SizedBox(
-      width: double.infinity,
-      height: 36,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
+    return Positioned(
+      top: appTopPadding(context, extra: 8),
+      left: 24,
+      right: 24,
+      child: SizedBox(
+        width: double.infinity,
+        height: 36,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
 
-        itemBuilder: (context, index) {
-          final isSelected = selectedIndex == index;
-          return GestureDetector(
-            onTap: () => setState(() => selectedIndex = index),
-            child: AnimatedContainer(
-              duration: Duration(microseconds: 200),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                // color: isSelected ? Colors.orange.shade50 : Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: isSelected ? btnColor2 : color2,
-                  width: 1,
-                ),
-                gradient: viewBackgroundGradinet(),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    filters[index],
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: isSelected
-                          ? FontWeight.w500
-                          : FontWeight.normal,
-                      color: isSelected ? btnColor2 : Colors.black54,
-                    ),
+          itemBuilder: (context, index) {
+            final isSelected = selectedIndex == index;
+            return GestureDetector(
+              onTap: () => setState(() => selectedIndex = index),
+              child: AnimatedContainer(
+                duration: Duration(microseconds: 200),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  // color: isSelected ? Colors.orange.shade50 : Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: isSelected ? btnColor2 : color2,
+                    width: 1,
                   ),
-                  if (isSelected) ...[
-                    SizedBox(width: 6),
-                    Icon(Icons.check, size: 16, color: btnColor2),
+                  gradient: viewBackgroundGradinet(),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      filters[index],
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: isSelected
+                            ? FontWeight.w500
+                            : FontWeight.normal,
+                        color: isSelected ? btnColor2 : Colors.black54,
+                      ),
+                    ),
+                    if (isSelected) ...[
+                      SizedBox(width: 6),
+                      Icon(Icons.check, size: 16, color: btnColor2),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-          );
-        },
-        separatorBuilder: (_, _) => SizedBox(width: 10),
-        itemCount: filters.length,
+            );
+          },
+          separatorBuilder: (_, _) => SizedBox(width: 10),
+          itemCount: filters.length,
+        ),
       ),
     );
   }
 
-  Widget _listOfLeaveRequest(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
-        top: appTopPadding(context, extra: 56),
-        bottom: appBottomPadding(context),
-      ),
-      addAutomaticKeepAlives: false,
-      addRepaintBoundaries: true,
-      cacheExtent: 500,
-      itemBuilder: (context, index) {
-        final custModel = sampleCustomers[index];
-        return RepaintBoundary(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.employeeDetailPage);
-            },
-            child: leaveCard(custModel),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
-      itemCount: sampleCustomers.length,
-    );
-  }
+  // Widget _listOfLeaveRequest(BuildContext context) {
+  //   return ListView.separated(
+  //     padding: EdgeInsets.only(
+  //       left: 24,
+  //       right: 24,
+  //       top: appTopPadding(context),
+  //       bottom: appBottomPadding(context),
+  //     ),
+  //     addAutomaticKeepAlives: false,
+  //     addRepaintBoundaries: true,
+  //     cacheExtent: 500,
+  //     itemBuilder: (context, index) {
+  //       final custModel = sampleCustomers[index];
+  //       return RepaintBoundary(
+  //         child: GestureDetector(
+  //           onTap: () {
+  //             Navigator.pushNamed(context, RouteName.employeeDetailPage);
+  //           },
+  //           child: leaveCard(custModel),
+  //         ),
+  //       );
+  //     },
+  //     separatorBuilder: (context, index) => const SizedBox(height: 8),
+  //     itemCount: sampleCustomers.length,
+  //   );
+  // }
 }

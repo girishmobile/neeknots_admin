@@ -12,7 +12,6 @@ class ApplyLeavePage extends StatefulWidget {
   State<ApplyLeavePage> createState() => _ApplyLeavePageState();
 }
 
-final leaveTypes = ["Casual Leave", "Sick Leave", "Paid Leave"];
 final halfDayTypes = ["First Half", "Second Half"];
 
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
@@ -221,7 +220,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                 ],
               ),
 
-              // NAV BAR
               appNavigationBar(
                 title: "LEAVE REQUEST",
                 onTap: () => Navigator.pop(context),

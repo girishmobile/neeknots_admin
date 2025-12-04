@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/models/all_leave_model.dart';
 import 'package:neeknots_admin/models/birth_holiday_model.dart';
 import 'package:neeknots_admin/models/customer_model.dart';
+import 'package:neeknots_admin/models/emp_notification_model.dart';
+import 'package:neeknots_admin/models/manager_leave_model.dart';
 import 'package:neeknots_admin/models/notification_model.dart';
 import 'package:neeknots_admin/models/order_model.dart';
 import 'package:neeknots_admin/provider/leave_provider.dart';
@@ -442,6 +445,8 @@ Widget appOrangeTextField({
     validator: validator,
     controller: textController,
     obscureText: isPassword ? obscure : false,
+    autocorrect: false,
+    enableSuggestions: false,
     decoration: InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(color: Colors.black54, fontSize: 14),
@@ -573,7 +578,17 @@ Widget employeeCard(CustomerModel customer) {
   );
 }
 
-Widget leaveCard(CustomerModel customer) {
+Widget leaveCard({
+  required RecentLeave item,
+  required VoidCallback onReject,
+  required VoidCallback onAccept,
+  required VoidCallback onInfo,
+}) {
+  final leaveDate = comrateStartEndate(
+    item.detail.leaveDate.toString(),
+    item.detail.leaveEndDate.toString(),
+  );
+
   return appViewEffect(
     child: Column(
       spacing: 4,
@@ -581,7 +596,13 @@ Widget leaveCard(CustomerModel customer) {
       children: [
         Row(
           children: [
-            appCircleImage(imageUrl: customer.imageUrl, radius: 24),
+            appCircleImage(
+              imageUrl: setImagePath(item.profileImage),
+              radius: 24,
+              icon: Icons.person_outline,
+              iconColor: color3,
+              borderColor: color2,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -593,7 +614,7 @@ Widget leaveCard(CustomerModel customer) {
                     children: [
                       Expanded(
                         child: Text(
-                          customer.name,
+                          "${item.firstname} ${item.lastname}",
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -601,7 +622,7 @@ Widget leaveCard(CustomerModel customer) {
                         ),
                       ),
                       Text(
-                        "Days: 3",
+                        "Days: ${item.detail.leaveCount}",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.black54,
@@ -612,7 +633,7 @@ Widget leaveCard(CustomerModel customer) {
                   ),
 
                   Text(
-                    "Leave On:-24-Nov to 26-Nov",
+                    "Leave On: $leaveDate",
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.black87,
@@ -632,7 +653,7 @@ Widget leaveCard(CustomerModel customer) {
                       ),
                       Expanded(
                         child: Text(
-                          "Going to out of town",
+                          item.detail.reason,
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.black54,
@@ -657,22 +678,20 @@ Widget leaveCard(CustomerModel customer) {
               bgColor: Colors.green,
               title: "Accept",
               icon: Icons.check,
-              onTap: () {},
+              onTap: onAccept,
             ),
             acceptOrRejectBtn(
               bgColor: Colors.red,
               title: "Decline",
               icon: Icons.close,
-              onTap: () {},
+              onTap: onReject,
             ),
             acceptOrRejectBtn(
               title: "Info",
               bgColor: Colors.grey,
 
               icon: Icons.info,
-              onTap: () {
-                print("Info");
-              },
+              onTap: onInfo,
             ),
           ],
         ),
@@ -768,7 +787,7 @@ Widget birthDayCard({required BirthDay item, double radius = 32}) {
   );
 }
 
-Widget notificationCard(NotificationModel notification) {
+Widget notificationCard(EmpNotificationModel notification) {
   return appViewEffect(
     child: Row(
       children: [
@@ -778,7 +797,7 @@ Widget notificationCard(NotificationModel notification) {
             spacing: 4,
             children: [
               Text(
-                notification.title,
+                notification.title ?? '-',
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
@@ -786,16 +805,24 @@ Widget notificationCard(NotificationModel notification) {
                 ),
               ),
               Text(
-                notification.message,
+                removeHtmlTags(notification.details ?? ''),
                 style: const TextStyle(fontSize: 12, color: Colors.black54),
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  timeAgo(notification.time),
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+              Text(
+                convertDate(
+                  notification.updatedAt?.date ?? '',
+                  format: "dd-MMM-yyyy hh:mm:ss",
                 ),
+
+                style: const TextStyle(fontSize: 10, color: Colors.black54),
               ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: Text(
+              //     timeAgo(notification.time),
+              //     style: const TextStyle(fontSize: 12, color: Colors.black54),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -1001,19 +1028,20 @@ Widget gradientButton({
 }
 
 Widget appProfileImage({
-  String imaheUrl = hostImage,
+  String? imageUrl,
   double radius = 60,
   EdgeInsetsGeometry? padding,
 }) {
   return Container(
-    padding: padding ?? const EdgeInsets.all(3), // thickness of border
+    padding: padding ?? const EdgeInsets.all(2), // thickness of border
     decoration: BoxDecoration(shape: BoxShape.circle, gradient: appGradient()),
     child: Container(
       height: radius * 2,
       width: radius * 2,
       decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
       child: appCircleImage(
-        imageUrl: hostImage,
+        imageUrl: imageUrl,
+        icon: Icons.person_outline,
         radius: (radius - 2),
         onTap: () {},
       ),

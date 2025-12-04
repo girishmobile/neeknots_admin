@@ -72,11 +72,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required String title,
   }) {
     return Consumer<AppProvider>(
-      builder: (context, profilePro, child) {
+      builder: (context, provider, child) {
         final fullImageUrl =
-            (profilePro.profileImage != null &&
-                profilePro.profileImage!.isNotEmpty)
-            ? "${ApiConfig.imageBaseUrl}${profilePro.profileImage}"
+            (provider.profileImage != null && provider.profileImage!.isNotEmpty)
+            ? "${ApiConfig.imageBaseUrl}${provider.profileImage}"
             : hostImage;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -87,7 +86,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 imageUrl: fullImageUrl,
                 radius: 18,
                 onTap: () {
-                  Navigator.pushNamed(context, RouteName.profileScreen);
+                  Navigator.pushNamed(
+                    context,
+                    RouteName.profileScreen,
+                    arguments: provider.employeeId,
+                  );
                 },
               ),
 
@@ -264,6 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   context,
                   RouteName.applyLeavePage,
                 );
+
                 if (refresh == true) {
                   print("back to Dashboard");
                   // user is employee

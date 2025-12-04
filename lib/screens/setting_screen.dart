@@ -5,18 +5,40 @@ import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/provider/app_provider.dart';
 import 'package:neeknots_admin/provider/profile_provider.dart';
+import 'package:neeknots_admin/provider/setting_provider.dart';
 import 'package:neeknots_admin/utility/secure_storage.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 import 'package:provider/provider.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
+
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    initSetting();
+  }
+
+  Future<void> initSetting() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<SettingProvider>().loadUserdataFromstorage();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      child: Consumer<ProfileProvider>(
+      child: Consumer<SettingProvider>(
         builder: (context, provider, child) {
+          final username =
+              "${provider.userModel?.firstname ?? ""} ${provider.userModel?.lastname ?? ""}";
+          final email = provider.userModel?.email ?? "";
+
           return Stack(
             children: [
               ListView(
@@ -26,16 +48,13 @@ class SettingScreen extends StatelessWidget {
                   top: appTopPadding(context),
                 ),
                 children: [
-                  appProfileImage(imaheUrl: hostImage, radius: 60),
+                  appProfileImage(
+                    imageUrl: setImagePath(provider.userModel?.profile),
+                    radius: 60,
+                  ),
                   SizedBox(height: 16),
-                  loadTitleText(
-                    title: "Girish Chauhan",
-                    textAlign: TextAlign.center,
-                  ),
-                  loadSubText(
-                    title: "iOS Developer",
-                    textAlign: TextAlign.center,
-                  ),
+                  loadTitleText(title: username, textAlign: TextAlign.center),
+                  loadSubText(title: email, textAlign: TextAlign.center),
                   SizedBox(height: 32),
                   _buildRowItem(
                     title: "Edit Profile",

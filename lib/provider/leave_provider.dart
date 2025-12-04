@@ -8,6 +8,7 @@ import 'package:neeknots_admin/models/all_leave_model.dart';
 import 'package:neeknots_admin/models/apply_leave_model.dart';
 import 'package:neeknots_admin/models/user_model.dart';
 import 'package:neeknots_admin/utility/secure_storage.dart';
+import 'package:neeknots_admin/utility/utils.dart';
 
 class LeaveProvider extends ChangeNotifier {
   bool _isLoading = false;
@@ -119,7 +120,7 @@ class LeaveProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getAllLeaveByEmplyee() async {
+  Future<void> getAllLeaveByEmployee() async {
     _setLoading(true);
     Map<String, dynamic> body = {
       "draw": 1,
@@ -181,7 +182,7 @@ class LeaveProvider extends ChangeNotifier {
     };
     try {
       final response = await callApi(
-        url: ApiConfig.getAllListingLeaveUrl,
+        url: ApiConfig.employeeLeavesUrl,
         method: HttpMethod.post,
         body: body,
         headers: null,
@@ -189,10 +190,13 @@ class LeaveProvider extends ChangeNotifier {
       if (globalStatusCode == 200) {
         final decoded = jsonDecode(response);
         if (decoded["data"] != null) {
-          final json = decoded["data"];
-          listOfLeave = (json["data"] as List<dynamic>)
-              .map((e) => MyLeave.fromApiJson(e))
-              .toList();
+          try {
+            listOfLeave = (decoded["data"] as List<dynamic>)
+                .map((e) => MyLeave.fromApiJson(e))
+                .toList();
+          } catch (e) {
+            print("error- $e");
+          }
         }
 
         errorMessage = "You have successfully fetched.";

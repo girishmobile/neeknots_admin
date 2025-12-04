@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
               top: appTopPadding(context),
             ),
             children: [
-              appProfileImage(imaheUrl: hostImage, radius: 60),
+              appProfileImage(imageUrl: hostImage, radius: 60),
               SizedBox(height: 16),
               loadTitleText(title: "Shophia Lee", textAlign: TextAlign.center),
               loadSubText(title: "Execiutive", textAlign: TextAlign.center),
