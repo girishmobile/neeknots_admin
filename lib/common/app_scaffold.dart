@@ -20,20 +20,7 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              // gradient: LinearGradient(
-              //   begin: Alignment.topCenter,
-              //   end: Alignment.bottomCenter,
-              //   colors: [color1, color2, color3],
-              // ),
-              //gradient: appOrangeGradient(),
-              color: Colors.white,
-            ),
-          ),
-          // Container(
-          //   color: Colors.black.withValues(alpha: 0.05), // light overlay
-          // ),
+          Container(decoration: BoxDecoration(gradient: appOrangeGradient())),
           SafeArea(top: isTopSafeArea, bottom: isBottomSafeArea, child: child),
         ],
       ),

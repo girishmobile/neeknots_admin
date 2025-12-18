@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
-import 'package:neeknots_admin/models/all_leave_model.dart';
 import 'package:neeknots_admin/pages/customer/customer_detail_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_orders_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_spent_page.dart';
@@ -16,22 +15,7 @@ import 'package:neeknots_admin/pages/product/all_product_page.dart';
 import 'package:neeknots_admin/pages/product/product_detail_page.dart';
 import 'package:neeknots_admin/pages/profile_page.dart';
 import 'package:neeknots_admin/pages/today_sale_page.dart';
-import 'package:neeknots_admin/screens/all_leave_page.dart';
-import 'package:neeknots_admin/screens/apply_leave_page.dart';
-import 'package:neeknots_admin/screens/birthday_list.dart';
-import 'package:neeknots_admin/screens/dashboard_screen.dart';
-import 'package:neeknots_admin/screens/edit_leave_page.dart';
-import 'package:neeknots_admin/screens/employee_leave_balance.dart';
-import 'package:neeknots_admin/screens/holiday_page.dart';
-import 'package:neeknots_admin/screens/leave_summary_page.dart';
-import 'package:neeknots_admin/screens/pending_leave_page.dart';
-import 'package:neeknots_admin/screens/profile_screen.dart';
-import 'package:neeknots_admin/screens/setting/all_emplyee_page.dart';
-import 'package:neeknots_admin/screens/setting/change_password_page.dart';
-import 'package:neeknots_admin/screens/setting/edit_profile_page.dart';
-import 'package:neeknots_admin/screens/setting/employee_detail_page.dart';
-import 'package:neeknots_admin/screens/setting/my_hours_page.dart';
-import 'package:neeknots_admin/screens/splash_screen.dart';
+import 'package:neeknots_admin/pages/splash_screen.dart';
 
 class RouteGenerate {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -81,55 +65,6 @@ class RouteGenerate {
         break;
       case RouteName.customerSpentPage:
         screen = const CustomerSpentPage();
-        break;
-      //Orange theme
-      case RouteName.dashboardScreen:
-        screen = const DashboardScreen();
-        break;
-      case RouteName.leaveSummaryPage:
-        final args = settings.arguments as String;
-        screen = LeaveSummaryPage(pageTitle: args);
-        break;
-      case RouteName.applyLeavePage:
-        screen = const ApplyLeavePage();
-        break;
-      case RouteName.profileScreen:
-        final args = settings.arguments as String;
-        screen = ProfileScreen(employeeId: args);
-        break;
-      case RouteName.editProfilePage:
-        screen = const EditProfilePage();
-        break;
-      case RouteName.changePasswordPage:
-        screen = const ChangePasswordPage();
-        break;
-      case RouteName.myHoursPage:
-        screen = const MyHoursPage();
-        break;
-      case RouteName.allEmplyeePage:
-        screen = const AllEmplyeePage();
-        break;
-      case RouteName.employeeDetailPage:
-        screen = const EmployeeDetailPage();
-        break;
-      case RouteName.holidayPage:
-        screen = const HolidayPage();
-        break;
-      case RouteName.pendingLeavePage:
-        screen = const PendingLeavePage();
-        break;
-      case RouteName.birthdayList:
-        screen = const BirthdayList();
-        break;
-      case RouteName.employeeLeaveBalance:
-        screen = const EmployeeLeaveBalance();
-        break;
-      case RouteName.allLeavePage:
-        screen = const AllLeavePage();
-        break;
-      case RouteName.editLeavePage:
-        final args = settings.arguments as MyLeave;
-        screen = EditLeavePage(item: args);
         break;
       default:
         screen = AppScaffold(

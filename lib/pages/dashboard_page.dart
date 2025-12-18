@@ -77,11 +77,7 @@ class DashboardPage extends StatelessWidget {
 
           // ✅ Show logo only for Home, otherwise show title
           provider.pageIndex == 2
-              ? appGradientText(
-                  text: "KAUSHALAM",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-                  gradient: appGradient(),
-                ) //loadAssetImage(name: headerlogo, height: 26)
+              ? loadAssetImage(name: headerlogo, height: 24)
               : appGradientText(
                   text: title,
                   style: const TextStyle(

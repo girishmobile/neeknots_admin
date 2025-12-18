@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:neeknots_admin/api/api_config.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
-import 'package:neeknots_admin/core/constants/validations.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
-import 'package:neeknots_admin/provider/login_provider.dart';
-import 'package:neeknots_admin/utility/top_snack_bar.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +14,7 @@ class LoginPage extends StatelessWidget {
     final formLoginKey = GlobalKey<FormState>();
 
     return AppScaffold(
-      child: Consumer<LoginProvider>(
+      child: Consumer(
         builder: (context, provider, child) {
           return Stack(
             children: [
@@ -31,7 +27,7 @@ class LoginPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 32),
                         child: Column(
                           children: [
-                            loadAssetImage(name: applogo, height: 128),
+                            loadAssetImage(name: headerlogo, height: 40),
                             const SizedBox(height: 32),
                             Align(
                               alignment: Alignment.center,
@@ -51,24 +47,14 @@ class LoginPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   // Logo
-                                  appOrangeTextField(
+                                  appTextField(
                                     hintText: "Employee email",
                                     icon: Icons.email_outlined,
-                                    textController: provider.emailController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    validator: validateEmail,
                                   ),
                                   const SizedBox(height: 16),
-                                  appOrangeTextField(
+                                  appTextField(
                                     hintText: "Password",
                                     icon: Icons.lock_outline,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    textController: provider.passwordController,
-                                    isPassword: true,
-                                    obscure: provider.obscurePassword,
-                                    onTogglePassword: () =>
-                                        provider.togglePassword(),
-                                    validator: validatePassword,
                                   ),
                                   const SizedBox(height: 16),
                                   Align(
@@ -95,42 +81,11 @@ class LoginPage extends StatelessWidget {
                                     title: "LOGIN",
                                     onPressed: () async {
                                       hideKeyboard(context);
-
-                                      if (formLoginKey.currentState!
-                                          .validate()) {
-                                        Map<String, dynamic> body = {
-                                          "email": provider.emailController.text
-                                              .trim(),
-                                          "password": provider
-                                              .passwordController
-                                              .text
-                                              .trim(),
-                                          "isLogin": "1",
-                                          "uuid": Utils.generateUUID(),
-                                        };
-                                        await provider.loginApi(body: body);
-                                        if (!context.mounted) return;
-                                        if (provider.loginSuccess) {
-                                          showSnackBar(
-                                            context,
-                                            message: "Login Sccussful",
-                                            bgColor: Colors.green,
-                                          );
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            RouteName.dashboardScreen,
-                                            (route) => false,
-                                          );
-                                        } else {
-                                          showSnackBar(
-                                            context,
-                                            message:
-                                                provider.errorMessage ??
-                                                "Invalid credentials",
-                                            bgColor: Colors.redAccent,
-                                          );
-                                        }
-                                      }
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        RouteName.dashBoardPage,
+                                        (route) => false,
+                                      );
                                     },
                                   ),
                                 ],
@@ -146,11 +101,11 @@ class LoginPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "© 2025 Kaushalam Inc",
-                          style: TextStyle(
+                        Text(
+                          "© ${DateTime.now().year} NeekNots",
+                          style: const TextStyle(
                             color: Colors.black54,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                             fontSize: 12,
                           ),
                         ),
@@ -159,7 +114,6 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
             ],
           );
         },

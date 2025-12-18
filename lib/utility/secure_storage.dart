@@ -1,22 +1,21 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:neeknots_admin/models/user_model.dart';
 
 class SecureStorage {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
-  static Future<void> saveUser(UserModel user) async {
-    final String userJson = jsonEncode(user.toJson());
+  static Future<void> saveUser(Map<String, dynamic> user) async {
+    final Map<String, dynamic> userJson = {'name': 'Girish'};
     // Save full user json
-    await _storage.write(key: "user", value: userJson);
+    await _storage.write(key: "user", value: jsonEncode(userJson));
     // Save token separately
-    await _storage.write(key: "token", value: user.token);
+    // await _storage.write(key: "token", value: user.token);
   }
 
-  static Future<UserModel?> getUser() async {
+  static Future<Map<String, dynamic>?> getUser() async {
     final jsonStr = await _storage.read(key: "user");
 
     if (jsonStr == null) return null;
-    return UserModel.fromLocalJson(jsonDecode(jsonStr));
+    return (jsonDecode(jsonStr));
   }
 
   // Get only token

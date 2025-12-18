@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
-import 'package:neeknots_admin/core/constants/validations.dart';
-import 'package:neeknots_admin/provider/login_provider.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +12,7 @@ class ForgotPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final formLoginKey = GlobalKey<FormState>();
     return AppScaffold(
-      child: Consumer<LoginProvider>(
+      child: Consumer(
         builder: (context, provider, child) {
           return Stack(
             children: [
@@ -42,50 +40,15 @@ class ForgotPasswordPage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            appOrangeTextField(
+                            appTextField(
                               hintText: "Employee email",
                               icon: Icons.email_outlined,
-                              textController: provider.emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              validator: validateEmail,
                             ),
                             const SizedBox(height: 32),
                             gradientButton(
                               title: "SEND RESET LINK",
                               onPressed: () async {
                                 hideKeyboard(context);
-
-                                if (formLoginKey.currentState!.validate()) {
-                                  Map<String, dynamic> body = {
-                                    "email": provider.emailController.text
-                                        .trim(),
-                                  };
-                                  await provider.forgotpassword(body: body);
-                                  if (!context.mounted) return;
-                                  if (provider.loginSuccess) {
-                                    showSnackBar(
-                                      context,
-                                      message:
-                                          "Password reset link has been sent to your email address",
-                                      bgColor: Colors.green,
-                                    );
-                                    Future.delayed(
-                                      const Duration(seconds: 2),
-                                      () {
-                                        if (!context.mounted) return;
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  } else {
-                                    showSnackBar(
-                                      context,
-                                      message:
-                                          provider.errorMessage ??
-                                          "User not found with this email address",
-                                      bgColor: Colors.redAccent,
-                                    );
-                                  }
-                                }
                               },
                             ),
                             const SizedBox(height: 8),
@@ -97,7 +60,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   ),
                 ),
               ),
-              provider.isLoading ? showProgressIndicator() : SizedBox.shrink(),
+
               appNavigationBar(
                 title: "FORGOT PASSWORD",
                 onTap: () {

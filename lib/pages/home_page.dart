@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/order_card.dart';
 import 'package:neeknots_admin/common/sales_bar_chart.dart';
 import 'package:neeknots_admin/components/components.dart';
+import 'package:neeknots_admin/core/constants/colors.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
 import 'package:neeknots_admin/models/order_model.dart';
@@ -24,9 +25,14 @@ class HomePage extends StatelessWidget {
         bottom: listBottom(context),
       ),
       children: [
-        Text(
-          "Summary",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        appGradientText(
+          text: "Order Summary ",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: btnColor2,
+          ),
+          gradient: appGradient(),
         ),
         const SizedBox(height: 8),
         Row(
