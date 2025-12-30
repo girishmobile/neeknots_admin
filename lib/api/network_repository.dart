@@ -73,7 +73,6 @@ Future callApi({
 
     return {'status': false, 'message': errorMessage};
   } catch (e) {
-    print("error from API ${e.toString()}");
     errorMessage = "Something went wrong. Please try again.";
     return {'status': false, 'message': errorMessage};
   }
@@ -106,6 +105,7 @@ Future<String> getResponse(http.Response response) async {
       final context = navigatorKey.currentContext;
       // Optional message SnackBar
       if (context != null && message != null) {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message, style: const TextStyle(color: Colors.white)),
