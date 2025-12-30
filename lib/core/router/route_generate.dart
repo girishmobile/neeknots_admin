@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/models/product_model.dart';
+import 'package:neeknots_admin/pages/customer/all_customer.dart';
 import 'package:neeknots_admin/pages/customer/customer_detail_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_orders_page.dart';
 import 'package:neeknots_admin/pages/customer/customer_spent_page.dart';
@@ -48,8 +50,12 @@ class RouteGenerate {
       case RouteName.allProductPage:
         screen = const AllProductPage();
         break;
+      case RouteName.allCustomer:
+        screen = const AllCustomer();
+        break;
       case RouteName.productDetailPage:
-        screen = const ProductDetailPage();
+        final args = settings.arguments as ProductModel;
+        screen = ProductDetailPage(product: args);
         break;
       case RouteName.allOrderPage:
         screen = const AllOrderPage();

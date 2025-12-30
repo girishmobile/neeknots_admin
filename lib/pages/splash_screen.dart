@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      child: Center(child: loadAssetImage(name: applogo, height: 124)),
+      child: Center(child: loadAssetImage(name: headerlogo, height: 84)),
     );
   }
 }

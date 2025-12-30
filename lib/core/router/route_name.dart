@@ -15,4 +15,5 @@ class RouteName {
 
   static const String singUpPage = "/SingupPage";
   static const String forgotPasswordPage = "/ForgotPasswordPage";
+  static const String allCustomer = '/AllCustomer';
 }

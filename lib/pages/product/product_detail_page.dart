@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
 import 'package:neeknots_admin/core/constants/string_constant.dart';
+import 'package:neeknots_admin/models/product_model.dart';
 import 'package:neeknots_admin/provider/product_detail_provider.dart';
+import 'package:neeknots_admin/utility/utils.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({super.key});
+  final ProductModel product;
+  const ProductDetailPage({required this.product, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,8 @@ class ProductDetailPage extends StatelessWidget {
                       onPageChanged: (index) =>
                           context.read<ProductDetailProvider>().setPage(index),
                       itemBuilder: (context, index) {
-                        return loadAssetImage(
-                          name: productImage,
+                        return loadNetworkImage(
+                          imageUrl: product.imageUrl,
                           fit: BoxFit.cover,
                         );
                       },
@@ -73,12 +76,14 @@ class ProductDetailPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              loadTitleText(title: 'Umbrella Lamp-Large 36" ', fontSize: 18),
+              loadTitleText(title: product.name, fontSize: 18),
               const SizedBox(height: 8),
-              loadTitleText(title: '\$199.00'),
+              loadTitleText(title: formatPrice(product.price)),
               const SizedBox(height: 8),
               Text(
-                5 > 0 ? "In Stock: ${5}" : "Out of Stock",
+                product.quantity > 0
+                    ? "In Stock: ${product.quantity}"
+                    : "Out of Stock",
                 style: TextStyle(
                   fontSize: 14,
                   color: 5 > 0 ? Colors.black87 : Colors.red,
@@ -86,11 +91,8 @@ class ProductDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               // 📜 Description
-              const Text(
-                "A beautifully handcrafted hanging lamp inspired by the soft curves of an umbrella. "
-                "Designed with intricate detailing and woven texture, it casts a warm, diffused glow "
-                "that enhances any interior space. Perfect for living rooms, bedrooms, or cafés, this "
-                "36-inch large size makes it a statement piece that blends elegance and functionality.",
+              Text(
+                product.description,
                 style: TextStyle(
                   fontSize: 14,
                   height: 1.5,

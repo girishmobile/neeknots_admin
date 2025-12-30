@@ -42,16 +42,13 @@ class DashboardPage extends StatelessWidget {
       child: Stack(
         children: [
           screens[provider.pageIndex],
-          // IndexedStack(index: provider.pageIndex, children: screens),
           //Top bar
           topBar(
             context,
             provider: provider,
             title: titles[provider.pageIndex],
           ),
-          //Bottom bar
           bottomBar(context),
-          //hrmsBottomBar(context),
         ],
       ),
     );

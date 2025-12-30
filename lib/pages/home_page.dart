@@ -76,6 +76,8 @@ class HomePage extends StatelessWidget {
             ),
             Expanded(
               child: _dashboardItem(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteName.allCustomer),
                 icon: Icons.people_outline_rounded,
                 title: "Total Customer",
                 subTitle: "+10% income",
@@ -179,7 +181,7 @@ class HomePage extends StatelessWidget {
                         topRight: Radius.circular(8),
                       ),
                       child: loadAssetImage(
-                        name: productImage,
+                        name: product_15,
                         width: 168,
                         height: 140,
                         fit: BoxFit.cover,

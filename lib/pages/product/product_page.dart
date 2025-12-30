@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/components/components.dart';
-import 'package:neeknots_admin/core/constants/string_constant.dart';
 import 'package:neeknots_admin/core/router/route_name.dart';
+import 'package:neeknots_admin/models/product_model.dart';
 import 'package:neeknots_admin/utility/utils.dart';
 
 class ProductPage extends StatelessWidget {
@@ -42,21 +42,26 @@ class ProductPage extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
-        childAspectRatio: 0.65,
+        childAspectRatio: 0.68,
       ),
       itemBuilder: (context, index) {
+        final item = sampleProduct[index];
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, RouteName.productDetailPage);
+            Navigator.pushNamed(
+              context,
+              RouteName.productDetailPage,
+              arguments: item,
+            );
           },
-          child: _buildGridItem(index: index),
+          child: _buildGridItem(product: item),
         );
       },
-      itemCount: 20,
+      itemCount: sampleProduct.length,
     );
   }
 
-  Widget _buildGridItem({required int index}) {
+  Widget _buildGridItem({required ProductModel product}) {
     return appGlassEffect(
       padding: const EdgeInsets.only(left: 1, right: 1, top: 1, bottom: 1),
       child: Column(
@@ -68,10 +73,10 @@ class ProductPage extends StatelessWidget {
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
             ),
-            child: loadAssetImage(
-              name: index % 2 == 0 ? productImage : productImage_1,
+            child: loadNetworkImage(
+              imageUrl: product.imageUrl,
               width: double.infinity,
-              height: 140,
+              height: 150,
               fit: BoxFit.cover,
             ),
           ),
@@ -85,7 +90,7 @@ class ProductPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Umbrella Lamp-Large 36 inch",
+                    product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -96,7 +101,7 @@ class ProductPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    formatPrice(99),
+                    formatPrice(product.price),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -105,7 +110,9 @@ class ProductPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    5 > 0 ? "In Stock: ${5}" : "Out of Stock",
+                    product.quantity > 0
+                        ? "In Stock: ${product.quantity}"
+                        : "Out of Stock",
                     style: TextStyle(
                       fontSize: 12,
                       color: 5 > 0 ? Colors.black87 : Colors.red,

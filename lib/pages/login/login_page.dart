@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:neeknots_admin/common/app_scaffold.dart';
 import 'package:neeknots_admin/components/components.dart';
@@ -91,11 +92,42 @@ class LoginPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 12),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Don't have an account? ",
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Sign Up',
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            RouteName.singUpPage,
+                                          );
+                                        },
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Row(

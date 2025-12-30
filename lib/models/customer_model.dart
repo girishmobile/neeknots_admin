@@ -29,7 +29,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Jane Smith",
     email: "jane.smith@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_1,
     joinedDate: DateTime.now().subtract(const Duration(days: 25)),
     totalOrders: 5,
     totalSpent: 780.00,
@@ -45,7 +45,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Emily Johnson",
     email: "emily.johnson@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_0,
     joinedDate: DateTime.now().subtract(const Duration(days: 5)),
     totalOrders: 3,
     totalSpent: 320.00,
@@ -53,7 +53,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "David Williams",
     email: "david.williams@example.com",
-    imageUrl: productImage,
+    imageUrl: product_14,
     joinedDate: DateTime.now().subtract(const Duration(days: 60)),
     totalOrders: 15,
     totalSpent: 4100.00,
@@ -61,7 +61,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Sophia Miller",
     email: "sophia.miller@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_2,
     joinedDate: DateTime.now().subtract(const Duration(days: 2)),
     totalOrders: 2,
     totalSpent: 180.00,
@@ -77,7 +77,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Olivia Martinez",
     email: "olivia.martinez@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_5,
     joinedDate: DateTime.now().subtract(const Duration(days: 8)),
     totalOrders: 6,
     totalSpent: 1125.00,
@@ -85,7 +85,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "William Anderson",
     email: "william.anderson@example.com",
-    imageUrl: productImage,
+    imageUrl: product_6,
     joinedDate: DateTime.now().subtract(const Duration(days: 35)),
     totalOrders: 9,
     totalSpent: 1560.40,
@@ -93,7 +93,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Ava Thompson",
     email: "ava.thompson@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_4,
     joinedDate: DateTime.now().subtract(const Duration(days: 3)),
     totalOrders: 4,
     totalSpent: 480.75,
@@ -101,7 +101,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "John Doe",
     email: "john.doe@example.com",
-    imageUrl: productImage,
+    imageUrl: product_5,
     joinedDate: DateTime.now().subtract(const Duration(days: 10)),
     totalOrders: 8,
     totalSpent: 1250.50,
@@ -109,7 +109,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Jane Smith",
     email: "jane.smith@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_7,
     joinedDate: DateTime.now().subtract(const Duration(days: 25)),
     totalOrders: 5,
     totalSpent: 780.00,
@@ -117,7 +117,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Michael Brown",
     email: "michael.brown@example.com",
-    imageUrl: productImage,
+    imageUrl: product_15,
     joinedDate: DateTime.now().subtract(const Duration(days: 45)),
     totalOrders: 12,
     totalSpent: 2050.75,
@@ -125,7 +125,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Emily Johnson",
     email: "emily.johnson@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_8,
     joinedDate: DateTime.now().subtract(const Duration(days: 5)),
     totalOrders: 3,
     totalSpent: 320.00,
@@ -133,7 +133,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "David Williams",
     email: "david.williams@example.com",
-    imageUrl: productImage,
+    imageUrl: product_14,
     joinedDate: DateTime.now().subtract(const Duration(days: 60)),
     totalOrders: 15,
     totalSpent: 4100.00,
@@ -141,7 +141,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Sophia Miller",
     email: "sophia.miller@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_9,
     joinedDate: DateTime.now().subtract(const Duration(days: 2)),
     totalOrders: 2,
     totalSpent: 180.00,
@@ -149,7 +149,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Daniel Wilson",
     email: "daniel.wilson@example.com",
-    imageUrl: productImage,
+    imageUrl: product_13,
     joinedDate: DateTime.now().subtract(const Duration(days: 20)),
     totalOrders: 7,
     totalSpent: 950.25,
@@ -157,7 +157,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Olivia Martinez",
     email: "olivia.martinez@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_11,
     joinedDate: DateTime.now().subtract(const Duration(days: 8)),
     totalOrders: 6,
     totalSpent: 1125.00,
@@ -165,7 +165,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "William Anderson",
     email: "william.anderson@example.com",
-    imageUrl: productImage,
+    imageUrl: product_16,
     joinedDate: DateTime.now().subtract(const Duration(days: 35)),
     totalOrders: 9,
     totalSpent: 1560.40,
@@ -173,7 +173,7 @@ List<CustomerModel> sampleCustomers = [
   CustomerModel(
     name: "Ava Thompson",
     email: "ava.thompson@example.com",
-    imageUrl: productImage_1,
+    imageUrl: product_12,
     joinedDate: DateTime.now().subtract(const Duration(days: 3)),
     totalOrders: 4,
     totalSpent: 480.75,
